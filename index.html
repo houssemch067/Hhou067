@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d9488">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="DentOrdo">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>DentOrdo — Ordonnances pour chirurgiens-dentistes</title>
+<style>
+:root{--p:#0d9488;--p2:#0f766e;--pl:#ccfbf1;--bg:#f1f5f9;--card:#fff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--red:#dc2626;--amb:#d97706;--r:16px}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--tx);font-size:14px}
+button,input,select,textarea{font:inherit;color:inherit}
+#app{display:flex;min-height:100vh}
+.side{width:236px;background:linear-gradient(180deg,#0f172a,#134e4a);color:#cbd5e1;padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:19px;padding:4px 8px 18px}
+.brand i{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#2dd4bf,#0d9488);display:grid;place-items:center}
+.brand svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2}
+.brand small{display:block;font-weight:500;font-size:11px;color:#94a3b8}
+.nav{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;border:0;background:none;color:inherit;cursor:pointer;text-align:left;width:100%;font-weight:500;transition:.15s}
+.nav svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.nav:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav.on{background:var(--p);color:#fff;box-shadow:0 6px 16px rgba(13,148,136,.4)}
+.side .foot{margin-top:auto;font-size:11px;color:#94a3b8;padding:8px;line-height:1.4}
+main{flex:1;padding:26px 30px 60px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.top h1{font-size:25px;letter-spacing:-.4px}.top p{color:var(--mu);margin-top:4px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--bd);background:#fff;padding:9px 15px;border-radius:11px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:.15s}
+.btn:hover{border-color:var(--p);color:var(--p2)}
+.btn.primary{background:var(--p);border-color:var(--p);color:#fff;box-shadow:0 4px 12px rgba(13,148,136,.3)}
+.btn.primary:hover{background:var(--p2);color:#fff}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--red)}.btn.danger:hover{border-color:var(--red);color:var(--red)}
+.btn.sm{padding:5px 10px;font-size:12.5px;border-radius:9px}
+.card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:0 1px 3px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.04);margin-bottom:16px}
+.card h3{font-size:15px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.g2{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+.stat{display:flex;gap:14px;align-items:center}
+.stat b{font-size:28px;display:block;line-height:1}
+.stat span{color:var(--mu);font-size:13px}
+.stat i{width:46px;height:46px;border-radius:14px;background:var(--pl);display:grid;place-items:center}
+.stat svg{width:22px;height:22px;stroke:var(--p2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+label.f{display:block;margin-bottom:10px}
+label.f>span{display:block;font-size:12px;font-weight:600;color:var(--mu);margin-bottom:4px}
+input,select,textarea{width:100%;border:1px solid var(--bd);background:#fff;border-radius:10px;padding:9px 11px;outline:none;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(13,148,136,.15)}
+textarea{resize:vertical;min-height:40px}
+input[type=checkbox]{width:auto}
+.row{display:grid;gap:10px}.r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:1fr 1fr 1fr}.r4{grid-template-columns:2fr 1fr 1.3fr 1fr}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--bd);background:#fff;border-radius:99px;padding:5px 12px;font-size:12.5px;cursor:pointer;font-weight:500}
+.chip.on{background:var(--p);color:#fff;border-color:var(--p)}
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11.5px;font-weight:600;background:var(--pl);color:var(--p2)}
+.badge.red{background:#fee2e2;color:#b91c1c}.badge.amb{background:#fef3c7;color:#92400e}.badge.gr{background:#f1f5f9;color:var(--mu)}
+.list{display:flex;flex-direction:column}
+.item{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--bd)}
+.item:last-child{border:0}
+.item .grow{flex:1;min-width:0}.item .t{font-weight:600}.item .s{color:var(--mu);font-size:12.5px;margin-top:2px}
+.av{width:38px;height:38px;border-radius:12px;background:var(--pl);color:var(--p2);display:grid;place-items:center;font-weight:700;flex-shrink:0}
+.dcard{display:flex;flex-direction:column;gap:8px;margin:0}
+.dcard .h{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.dcard .n{font-weight:700;font-size:15px}.dcard .d{color:var(--mu);font-size:12.5px}
+.dcard .po{background:#f8fafc;border-radius:10px;padding:8px 10px;font-size:12.5px}
+.dcard .bt{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.empty{color:var(--mu);text-align:center;padding:24px}
+.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}.toolbar input{flex:1;min-width:200px}.toolbar select{width:auto}
+.rxgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:start}
+.sticky{position:sticky;top:16px}
+.pickres{max-height:250px;overflow:auto;border:1px solid var(--bd);border-radius:12px;margin-top:10px}
+.pr{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--bd);cursor:pointer}
+.pr:hover{background:#f0fdfa}.pr:last-child{border:0}
+.pr .grow{flex:1;min-width:0}.pr b{font-size:13.5px}.pr small{display:block;color:var(--mu);font-size:12px}
+.plus{width:28px;height:28px;border-radius:9px;background:var(--p);color:#fff;border:0;font-size:18px;cursor:pointer;line-height:1}
+.ln{border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:10px;background:#fcfffe;border-left:4px solid var(--p)}
+.ln .lh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px;flex-wrap:wrap}
+.ln .lt{font-weight:700;font-size:12px;color:var(--p2);text-transform:uppercase;letter-spacing:.5px}
+.ln .ctl{display:flex;gap:4px}
+.ib{border:1px solid var(--bd);background:#fff;border-radius:8px;width:28px;height:28px;cursor:pointer}
+.ib:hover{border-color:var(--p)}
+.warn{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:10px;padding:7px 10px;font-size:12.5px;margin-bottom:8px;font-weight:500}
+.info{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:7px 10px;font-size:12px;margin-top:8px}
+.brands{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0 2px;align-items:center;font-size:12px;color:var(--mu)}
+.brands button{border:1px dashed var(--p);color:var(--p2);background:#f0fdfa;border-radius:99px;padding:2px 9px;font-size:12px;cursor:pointer}
+.banner{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;padding:10px 14px;border-radius:12px;margin-bottom:14px;font-weight:500}
+#pvWrap{overflow:hidden;border-radius:12px;background:#cbd5e1;padding:0}
+.pvbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap}
+.seg{display:inline-flex;background:#e2e8f0;border-radius:10px;padding:3px}
+.seg button{border:0;background:none;padding:5px 14px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--mu)}
+.seg button.on{background:#fff;color:var(--p2);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.paper{background:#fff;color:#111;width:148mm;min-height:209mm;padding:9mm 11mm 8mm;display:flex;flex-direction:column;font-family:Georgia,"Times New Roman",serif;font-size:10.5pt;line-height:1.35;--ac:#0d9488}
+.paper.A4{width:210mm;min-height:296mm;padding:13mm 16mm 11mm;font-size:12pt}
+.paper .rep{text-align:center;font-size:8pt;letter-spacing:.4px;text-transform:uppercase;margin-bottom:5px;font-weight:bold}
+.paper .ph{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:start;border-bottom:2px solid var(--ac);padding-bottom:7px}
+.paper .pl1 b,.paper .pr1 b{font-size:1.15em;color:var(--ac)}
+.paper .pr1{text-align:right;font-family:"Amiri","Traditional Arabic","Noto Naskh Arabic",serif}
+.paper .sm{font-size:.82em;color:#444}
+.paper .plogo img{max-height:18mm;max-width:30mm;object-fit:contain}
+.paper .hspace{height:34mm}
+.paper .pm{display:flex;justify-content:space-between;gap:10px;margin:10px 0 4px;font-size:.95em;flex-wrap:wrap}
+.paper h2{text-align:center;letter-spacing:5px;font-size:1.3em;margin:8px 0 10px;font-weight:700}
+.paper h2:after{content:"";display:block;width:50px;height:2px;background:var(--ac);margin:4px auto 0}
+.paper .pb{flex:1}
+.paper .pl{margin-bottom:9px;page-break-inside:avoid}
+.paper .pn .num{color:var(--ac);font-weight:bold}
+.paper .pq{float:right;font-style:italic;font-size:.9em;margin-left:8px}
+.paper .dc{color:#444}
+.paper .pp{padding-left:16px;font-size:.97em;color:#222}
+.paper .pt{white-space:pre-line;font-style:italic;border-left:2px solid var(--ac);padding-left:8px}
+.paper .empty{color:#999;font-style:italic;padding:20px 0;text-align:left}
+.paper .pnote{white-space:pre-line;font-size:.88em;margin-top:8px;border-top:1px dashed #bbb;padding-top:6px;color:#333}
+.paper .sig{text-align:right;margin-top:10px;font-size:.88em;min-height:20mm}
+.paper .sig span{border-top:1px solid #777;padding-top:3px;display:inline-block;min-width:45mm;text-align:center}
+.paper .pf{border-top:2px solid var(--ac);padding-top:5px;text-align:center;font-size:.78em;color:#333;margin-top:6px}
+.paper.cab{padding:11mm 11mm 9mm;font-family:"Noto Serif",Cambria,Georgia,"Times New Roman",serif}
+.paper.cab.A4{padding:15mm 16mm 12mm}
+.cab .ch{display:grid;grid-template-columns:1.25fr .9fr 1.1fr;gap:8px;align-items:start;min-height:30mm}
+.cab .cl b{display:block;font-size:1.2em;color:var(--ac);line-height:1.2}
+.cab .cl i{display:block;font-size:.8em;color:#222;margin:4px 0;line-height:1.3}
+.cab .cl .ord{font-size:.88em}
+.cab .cm{text-align:center}
+.cab .cm img{max-width:100%;max-height:20mm;object-fit:contain}
+.cab .cr{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;align-items:end;font-size:.78em}
+.cab .cr b{color:var(--ac);text-transform:uppercase}
+.cab .cr span{border-bottom:1px dotted #222;min-height:1.4em;padding:0 3px;font-family:Arial,Helvetica,sans-serif;font-size:1.05em;overflow-wrap:anywhere}
+.paper.cab h2{letter-spacing:1px;font-size:1.9em;display:table;margin:16px auto 16px;padding:0 16px 3px;border-bottom:2px solid var(--ac);color:var(--ac)}
+.paper.cab h2:after{display:none}
+.cab .pl{margin-bottom:10px}
+.cab .pn{font-size:1.08em}
+.cab .pn b{color:var(--ac)}
+.cab .pn em{color:#333}
+.cab .pp{padding-left:22px;font-style:italic}
+.cab .cfl{border-top:2px solid var(--ac);margin-top:8px}
+.cab .cft{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end;padding-top:12px;font-size:.7em;font-weight:bold;color:var(--ac)}
+.cab .cft .sg{border-top:2px solid var(--ac);text-align:center;padding:3px 14px 0;min-width:34mm;color:var(--ac)}
+.cab .cft .tl{text-align:right}
+.ov{position:fixed;inset:0;background:rgba(15,23,42,.55);display:grid;place-items:center;padding:16px;z-index:50;backdrop-filter:blur(3px)}
+.md{background:#fff;border-radius:20px;width:min(520px,100%);max-height:92vh;overflow:auto;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.md.wide{width:min(760px,100%)}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.mh h3{font-size:18px}
+.mh button{border:0;background:#f1f5f9;border-radius:9px;width:30px;height:30px;cursor:pointer}
+.mf{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.cbg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.cbg label{display:flex;gap:8px;align-items:center;font-size:13px;padding:6px 9px;border:1px solid var(--bd);border-radius:9px;cursor:pointer}
+.cbg label:has(input:checked){background:#f0fdfa;border-color:var(--p)}
+h4.sec{margin:14px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--p2)}
+#toasts{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:99}
+.toast{background:#0f172a;color:#fff;padding:11px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:in .25s}
+.toast.err{background:#b91c1c}
+@keyframes in{from{transform:translateY(10px);opacity:0}}
+.logoPrev{height:60px;border:1px dashed var(--bd);border-radius:10px;display:grid;place-items:center;padding:4px;margin-bottom:8px}.logoPrev img{max-height:50px;max-width:100%}
+.disc{font-size:12px;color:var(--mu);background:#f8fafc;border-radius:12px;padding:10px 12px;margin-top:12px;line-height:1.5}
+#printArea{display:none}
+#fatalError{display:none;position:fixed;inset:0;background:#fff;z-index:99999;padding:30px;font-family:monospace;font-size:14px;color:#111;overflow:auto}
+#fatalError h1{color:#dc2626;margin-bottom:16px}
+#fatalError pre{background:#fef2f2;padding:16px;border-radius:8px;border:1px solid #fecaca;white-space:pre-wrap;margin:16px 0}
+#fatalError button{background:#0d9488;color:#fff;border:0;padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:600;margin-top:16px}
+@media(max-width:1100px){.rxgrid{grid-template-columns:1fr}.sticky{position:static}}
+@media(max-width:860px){
+ #app{flex-direction:column}
+ .side{position:fixed;bottom:0;top:auto;left:0;right:0;width:auto;height:auto;flex-direction:row;padding:6px;z-index:40;justify-content:space-around;border-radius:18px 18px 0 0}
+ .brand,.side .foot{display:none}.nav{flex-direction:column;gap:3px;font-size:10px;padding:7px 4px;text-align:center;justify-content:center}
+ main{padding:18px 14px 100px}.r4,.r3,.r2{grid-template-columns:1fr 1fr}
+}
+@media print{
+ html,body{background:#fff;margin:0;padding:0;height:auto}
+ #app,#modalRoot,#toasts,#fatalError{display:none!important}
+ #printArea{display:block}
+ #printArea .paper{width:148mm!important;min-height:209mm;box-shadow:none;transform:none;margin:0}
+ #printArea .paper.A4{width:210mm!important;min-height:296mm}
+}
+@media(max-width:860px){.side{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}}
+</style>
+</head>
+<body>
+<div id="app">
+ <aside class="side" id="side"></aside>
+ <main id="main"></main>
+</div>
+<div id="modalRoot"></div>
+<div id="toasts"></div>
+<div id="printArea"></div>
+<style id="pageStyle"></style>
+<div id="fatalError">
+  <h1>⚠️ Erreur au démarrage</h1>
+  <p>L'application n'a pas pu démarrer. Voici le détail :</p>
+  <pre id="errDetail"></pre>
+  <p>Essayez de <b>réinitialiser les données locales</b> (elles sont stockées dans ce navigateur, pas sur un serveur).</p>
+  <button onclick="try{localStorage.removeItem('dentordo_v1')}catch(e){};location.reload()">Réinitialiser et recharger</button>
+</div>
+
+<script>
+/* ================= Affichage des erreurs fatales ================= */
+function showFatal(msg, stack){
+  var box = document.getElementById('fatalError');
+  var det = document.getElementById('errDetail');
+  if (!box) return;
+  det.textContent = msg + (stack ? '\n\n' + stack : '');
+  box.style.display = 'block';
+}
+window.addEventListener('error', function(ev){
+  showFatal(ev.message || String(ev.error || ev), (ev.error && ev.error.stack) || ('ligne ' + ev.lineno));
+});
+window.addEventListener('unhandledrejection', function(ev){
+  showFatal('Promise rejetée : ' + (ev.reason && ev.reason.message || ev.reason), ev.reason && ev.reason.stack);
+});
+
+try {
+  /* ================= Utilitaires ================= */
+  var $=function(s,e){return (e||document).querySelector(s)};
+  var uid=function(){return Math.random().toString(36).slice(2,10)};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  var norm=function(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()};
+  var today=function(){return new Date().toISOString().slice(0,10)};
+  var fmtDate=function(d){return d?d.split('-').reverse().join('/'):''};
+  var KEY='dentordo_v1';
+  var clone=function(o){return JSON.parse(JSON.stringify(o))};
+
+  var RISKS={penicilline:'Allergie aux pénicillines',ains:'Allergie / CI aux AINS - aspirine',macrolide:'Allergie aux macrolides',lincosamide:'Allergie aux lincosamides',anesthesique:'Allergie aux anesthésiques locaux',grossesse:'Grossesse',allaitement:'Allaitement',anticoagulant:'Anticoagulants / antiagrégants',diabete:'Diabète',hta:'Hypertension artérielle',cardiopathie:'Cardiopathie',renal:'Insuffisance rénale',hepatique:'Insuffisance hépatique',ulcere:'Ulcère gastro-duodénal',asthme:'Asthme',thyroide:'Pathologie thyroïdienne',enfant:'Enfant (< 12 ans)'};
+  var PATIENT_RISKS=Object.keys(RISKS).filter(function(k){return k!=='enfant'});
+
+  var IC={
+    home:'<path d="M3 11l9-8 9 8v9a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2z"/>',
+    rx:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/>',
+    hist:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+    users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+    pill:'<path d="M10.5 20.5l10-10a4.95 4.95 0 0 0-7-7l-10 10a4.95 4.95 0 0 0 7 7z"/><path d="M8.5 8.5l7 7"/>',
+    tpl:'<path d="M12 2l10 5-10 5L2 7z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>',
+    set:'<circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>'
+  };
+  var icon=function(n){return '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">'+IC[n]+'</svg>'};
+  var TOOTH='<svg viewBox="0 0 24 24" stroke-linejoin="round"><path d="M7 3c-2.5 0-4 2-4 4.5 0 2 .8 3.3 1.3 5C5 15 5.2 21 7.5 21c1.7 0 1.5-5 4.5-5s2.8 5 4.5 5c2.3 0 2.5-6 3.2-8.5.5-1.7 1.3-3 1.3-5C21 5 19.5 3 17 3c-2 0-3 1-5 1S9 3 7 3z"/></svg>';
+
+  function toast(m,t){var e=document.createElement('div');e.className='toast '+(t||'');e.textContent=m;$('#toasts').appendChild(e);setTimeout(function(){e.remove()},2800)}
+
+  /* ================= Données initiales ================= */
+  var CATS=['Antibiotiques','Antalgiques','Anti-inflammatoires (AINS)','Corticoïdes','Protecteurs gastriques','Bains de bouche & antiseptiques','Antifongiques','Antiviraux','Anxiolytiques','Soins locaux, fluor & hygiène','Anesthésiques (usage cabinet)'];
+  var D=function(id,cat,nom,dci,dosage,forme,marques,poso,duree,qte,alerts,note,enfant){return{id:id,cat:cat,nom:nom,dci:dci,dosage:dosage,forme:forme,marques:marques,poso:poso,duree:duree,qte:qte,alerts:alerts||[],note:note||'',enfant:enfant||''}};
+  var AINS_AL=['ains','grossesse','renal','ulcere','anticoagulant','hta','cardiopathie','asthme'];
+
+  function seedDrugs(){return[
+  D('amox1g',CATS[0],'Amoxicilline','Amoxicilline','1 g','comprimé dispersible / gélule','Clamoxyl, Amoxil','1 g matin et soir, au milieu des repas','pendant 6 jours','1 boîte',['penicilline','anticoagulant'],'CI : allergie aux pénicillines. Antibiotique de 1re intention en odontologie.','50 mg/kg/jour en 2 à 3 prises (suspension buvable)'),
+  D('augm','Antibiotiques','Amoxicilline + Acide clavulanique','Amoxicilline + Acide clavulanique','1 g / 125 mg','sachet / comprimé','Augmentin, Amoclan','1 sachet (ou cp) matin et soir, au début des repas','pendant 6 jours','1 boîte',['penicilline','anticoagulant','hepatique'],'En cas d’échec ou d’infection sévère / récidivante.','50 à 80 mg/kg/jour (amoxicilline) en 3 prises'),
+  D('metro500','Antibiotiques','Métronidazole','Métronidazole','500 mg','comprimé','Flagyl','1 cp matin, midi et soir, pendant les repas','pendant 5 jours','1 boîte',['anticoagulant'],'Éviter l’alcool (effet antabuse). Interaction avec les AVK.','20 à 30 mg/kg/jour en 2 à 3 prises'),
+  D('birod','Antibiotiques','Spiramycine + Métronidazole','Spiramycine + Métronidazole','1,5 MUI / 250 mg','comprimé pelliculé','Birodogyl, Rodogyl','2 cp matin et soir, pendant les repas','pendant 5 jours','1 boîte',['anticoagulant','macrolide'],'Éviter l’alcool. Interaction avec les AVK.','Selon poids - voir RCP (enfant > 6 ans)'),
+  D('clinda300','Antibiotiques','Clindamycine','Clindamycine','300 mg','gélule','Dalacine','1 gélule toutes les 8 heures','pendant 7 jours','1 boîte',['lincosamide'],'Alternative en cas d’allergie aux pénicillines. Risque de colite pseudo-membraneuse.','Selon poids - voir RCP'),
+  D('azit500','Antibiotiques','Azithromycine','Azithromycine','500 mg','comprimé','Zithromax','1 cp par jour en une prise','pendant 3 jours','1 boîte',['macrolide','anticoagulant'],'','20 mg/kg/jour en une prise (suspension buvable)'),
+  D('doxy100','Antibiotiques','Doxycycline','Doxycycline','100 mg','comprimé','Vibramycine','1 cp par jour au cours d’un repas, avec un grand verre d’eau','pendant 10 jours','1 boîte',['grossesse','allaitement','enfant'],'CI : grossesse, allaitement, enfant < 8 ans. Photosensibilisation.'),
+  D('spira3','Antibiotiques','Spiramycine','Spiramycine','3 MUI','comprimé','Rovamycine','1 cp matin et soir','pendant 7 jours','1 boîte',['macrolide'],'Utilisable pendant la grossesse.','150 000 UI/kg/jour en 2 à 3 prises'),
+  D('pyos','Antibiotiques','Pristinamycine','Pristinamycine','500 mg','comprimé pelliculé','Pyostacine','2 cp matin et soir, pendant les repas','pendant 5 jours','1 boîte',[],'Alternative en cas d’allergie aux bêta-lactamines.'),
+  D('para1g','Antalgiques','Paracétamol','Paracétamol','1 g','comprimé','Doliprane, Efferalgan, Dafalgan','1 cp toutes les 6 heures en cas de douleur (maximum 4 cp par jour)','pendant 3 à 5 jours','1 boîte',['hepatique'],'Antalgique de palier 1 : sûr pendant la grossesse. Respecter l’intervalle de 6 h.','15 mg/kg toutes les 6 heures (maximum 60 mg/kg/jour)'),
+  D('para500','Antalgiques','Paracétamol','Paracétamol','500 mg','comprimé','Doliprane, Efferalgan','1 à 2 cp toutes les 6 heures en cas de douleur (maximum 6 cp par jour)','pendant 3 à 5 jours','1 boîte',['hepatique'],'','15 mg/kg toutes les 6 heures'),
+  D('paracod','Antalgiques','Paracétamol + Codéine','Paracétamol + Codéine','500 mg / 30 mg','comprimé effervescent','Dafalgan Codéine, Klipal','1 à 2 cp toutes les 6 à 8 heures en cas de douleur intense (maximum 6 cp par jour)','pendant 3 jours','1 boîte',['enfant','allaitement','hepatique'],'Palier 2. CI : enfant < 12 ans, allaitement. Somnolence, constipation. Respecter la réglementation en vigueur.'),
+  D('tramal','Antalgiques','Tramadol','Tramadol','50 mg','gélule','Topalgic, Contramal','1 gélule toutes les 8 heures en cas de douleur intense (maximum 4 par jour)','pendant 3 jours','1 boîte',['enfant','allaitement','hepatique','renal','grossesse'],'Palier 2. Substance à prescription contrôlée : respecter la réglementation en vigueur. Somnolence, risque convulsif.'),
+  D('ixprim','Antalgiques','Tramadol + Paracétamol','Tramadol + Paracétamol','37,5 mg / 325 mg','comprimé','Ixprim, Zaldiar','1 à 2 cp toutes les 6 à 8 heures en cas de douleur intense (maximum 8 cp par jour)','pendant 3 jours','1 boîte',['enfant','allaitement','hepatique','renal','grossesse'],'Palier 2. Substance à prescription contrôlée : respecter la réglementation en vigueur.'),
+  D('ibu400','Anti-inflammatoires (AINS)','Ibuprofène','Ibuprofène','400 mg','comprimé pelliculé','Brufen, Advil, Nurofen','1 cp 3 fois par jour, au cours des repas','pendant 3 jours','1 boîte',AINS_AL,'À éviter en cas d’infection non contrôlée. Contre-indiqué à partir du 6e mois de grossesse, à éviter avant.','20 à 30 mg/kg/jour en 3 prises (suspension buvable)'),
+  D('keto100','Anti-inflammatoires (AINS)','Kétoprofène','Kétoprofène','100 mg','comprimé','Profénid, Bi-Profénid','1 cp matin et soir, au cours des repas','pendant 3 à 5 jours','1 boîte',AINS_AL.concat(['enfant']),'Contre-indiqué à partir du 6e mois de grossesse. Photosensibilisation.'),
+  D('diclo50','Anti-inflammatoires (AINS)','Diclofénac','Diclofénac','50 mg','comprimé gastro-résistant','Voltarène','1 cp 2 à 3 fois par jour, au cours des repas','pendant 3 à 5 jours','1 boîte',AINS_AL,'Contre-indiqué à partir du 6e mois de grossesse.'),
+  D('predni20','Corticoïdes','Prednisolone','Prednisolone','20 mg','comprimé orodispersible','Solupred','2 cp le matin en une prise, au cours du repas','pendant 3 jours','1 boîte',['diabete','hta','ulcere'],'Cure courte (œdème post-opératoire, trismus). Surveiller la glycémie chez le diabétique.','1 mg/kg/jour le matin'),
+  D('medrol16','Corticoïdes','Méthylprednisolone','Méthylprednisolone','16 mg','comprimé sécable','Médrol','1 à 2 cp le matin, au cours du repas','pendant 3 jours','1 boîte',['diabete','hta','ulcere'],'Cure courte.'),
+  D('ome20','Protecteurs gastriques','Oméprazole','Oméprazole','20 mg','gélule gastro-résistante','Mopral, Zoltum','1 gélule le matin à jeun','pendant la durée du traitement par AINS / corticoïdes','1 boîte',[],'À associer aux AINS ou corticoïdes chez les patients à risque.'),
+  D('chx012','Bains de bouche & antiseptiques','Chlorhexidine 0,12 %','Chlorhexidine','0,12 %','bain de bouche','Paroex, Corsodyl','Bains de bouche : 15 ml pendant 30 secondes, 2 à 3 fois par jour après le brossage ; ne pas avaler','pendant 7 jours','1 flacon',[],'Coloration brune réversible des dents / langue. Ne pas dépasser 15 jours.','Non recommandé avant 6 ans'),
+  D('eludril','Bains de bouche & antiseptiques','Chlorhexidine + Chlorobutanol','Chlorhexidine + Chlorobutanol','0,10 % / 0,30 %','bain de bouche','Eludril Classic','1 bouchon dans un demi-verre d’eau tiède, en bains de bouche 2 à 3 fois par jour ; ne pas avaler','pendant 7 jours','1 flacon',[],'Ne pas utiliser plus de 15 jours.'),
+  D('betadine','Bains de bouche & antiseptiques','Povidone iodée 1,6 %','Povidone iodée','1,6 %','bain de bouche','Bétadine bain de bouche','1 à 2 bains de bouche par jour, pur ou dilué dans de l’eau tiède (10 à 25 ml) ; ne pas avaler','pendant 5 jours maximum','1 flacon',['thyroide','grossesse','allaitement','enfant'],'CI : dysthyroïdie, grossesse, allaitement, enfant < 6 ans.'),
+  D('hextril','Bains de bouche & antiseptiques','Hexétidine 0,1 %','Hexétidine','0,1 %','bain de bouche','Hextril','Bains de bouche 2 fois par jour, 15 ml pur, pendant 30 secondes ; ne pas avaler','pendant 7 jours','1 flacon',[],''),
+  D('bicarb','Bains de bouche & antiseptiques','Bicarbonate de sodium 1,4 %','Bicarbonate de sodium','1,4 %','solution pour bain de bouche','Soluté bicarbonaté','Bains de bouche tièdes 4 à 6 fois par jour, notamment après les repas','pendant 5 jours','1 flacon de 250 ml',[],'Utile en cas de candidose ou après extraction (à partir de J+1).'),
+  D('mico','Antifongiques','Miconazole gel buccal 2 %','Miconazole','2 %','gel buccal','Daktarin gel buccal','1/2 mesure-cuillère (≈ 2,5 ml) 4 fois par jour, après les repas ; garder en bouche le plus longtemps possible','pendant 14 jours (continuer 7 jours après la guérison)','1 tube',['anticoagulant'],'Interaction avec les AVK (↑ INR). Retirer et nettoyer les prothèses avant application.'),
+  D('nysta','Antifongiques','Nystatine','Nystatine','100 000 UI/ml','suspension buvable','Mycostatine','4 à 6 ml 4 fois par jour, à distance des repas ; garder en bouche puis avaler','pendant 14 jours','1 flacon',[],''),
+  D('fluco','Antifongiques','Fluconazole','Fluconazole','50 mg','gélule','Triflucan','1 gélule par jour','pendant 7 à 14 jours','1 boîte',['grossesse','anticoagulant','hepatique'],'Candidoses oropharyngées étendues / résistantes. Nombreuses interactions.'),
+  D('acycre','Antiviraux','Aciclovir crème 5 %','Aciclovir','5 %','crème','Zovirax crème','Appliquer 5 fois par jour (toutes les 4 heures environ) sur les lésions','pendant 5 à 10 jours','1 tube',[],'Herpès labial.'),
+  D('acycp','Antiviraux','Aciclovir','Aciclovir','200 mg','comprimé','Zovirax','1 cp 5 fois par jour (toutes les 4 heures, sauf la nuit)','pendant 5 jours','1 boîte',['renal'],'Gingivostomatite herpétique primaire. Bonne hydratation.','Selon âge / poids - voir RCP'),
+  D('valacy','Antiviraux','Valaciclovir','Valaciclovir','500 mg','comprimé','Zelitrex','2 cp matin et soir (en une seule journée)','1 jour','1 boîte',['renal','enfant'],'Herpès labial récurrent.'),
+  D('hydroxy','Anxiolytiques','Hydroxyzine','Hydroxyzine','25 mg','comprimé','Atarax','1 cp la veille au coucher et 1 cp 1 heure avant le rendez-vous','dose unique','1 boîte',['grossesse','allaitement','cardiopathie'],'Somnolence : ne pas conduire. Prémédication de l’anxiété dentaire.','1 mg/kg/jour (sirop)'),
+  D('dentif','Soins locaux, fluor & hygiène','Dentifrice fluoré 1450 ppm','Fluor','1450 ppm','dentifrice','Fluocaril, Elgydium, Elmex','Brosser les dents 2 à 3 minutes, 2 à 3 fois par jour','en usage continu','1 tube',[],''),
+  D('desens','Soins locaux, fluor & hygiène','Dentifrice désensibilisant','Nitrate de potassium / fluorure d’étain','','dentifrice','Sensodyne, Elgydium Sensitive','Brosser 2 fois par jour ; laisser agir 1 minute avant de rincer','pendant 4 semaines','1 tube',[],''),
+  D('gelfluor','Soins locaux, fluor & hygiène','Gel fluoré 1,25 %','Fluor','1,25 %','gel dentaire','Elmex gel','1 application par semaine en remplacement du dentifrice du soir ; ne pas rincer','en usage continu','1 tube',[],'Réservé à l’enfant > 6 ans et à l’adulte.'),
+  D('gengi','Soins locaux, fluor & hygiène','Acide hyaluronique gel','Acide hyaluronique','0,2 %','gel gingival','Gengigel','Appliquer sur la zone concernée 3 fois par jour, après le brossage','pendant 7 à 10 jours','1 tube',[],'Cicatrisation gingivale, aphtes.'),
+  D('lidogel','Soins locaux, fluor & hygiène','Lidocaïne gel buccal','Lidocaïne','2 %','gel buccal','','Application locale sur la zone douloureuse, 2 à 3 fois par jour (maximum 4)','pendant 3 jours','1 tube',['anesthesique'],'Ne pas manger ni boire chaud pendant l’anesthésie.'),
+  D('alvogyl','Soins locaux, fluor & hygiène','Pansement alvéolaire','Eugénol / Butamben / Iodoforme','','pâte (usage cabinet)','Alvogyl','Application intra-alvéolaire au cabinet (alvéolite)','selon évolution','1 pot',[],'Usage cabinet.'),
+  D('brosse','Soins locaux, fluor & hygiène','Brosse à dents chirurgicale 7/100','','7/100','brosse à dents','Inava Post-op, Elgydium Post-chirurgical','Brosser délicatement 3 fois par jour après les repas, dès le lendemain de l’intervention','pendant 10 jours','1 brosse',[],''),
+  D('compr','Soins locaux, fluor & hygiène','Compresses stériles','','','boîte','','En cas de saignement : mordre fermement sur une compresse pendant 30 minutes','si besoin','1 boîte',[],''),
+  D('artic','Anesthésiques (usage cabinet)','Articaïne + adrénaline','Articaïne + Adrénaline','4 % / 1:100 000','cartouche 1,7 ml','Septanest, Ubistesin','Usage cabinet : 1 à 2 cartouches (dose maximale 7 mg/kg)','','',['anesthesique','cardiopathie','hta'],'Limiter la dose d’adrénaline chez le patient cardiaque / hypertendu.'),
+  D('lidoadr','Anesthésiques (usage cabinet)','Lidocaïne + adrénaline','Lidocaïne + Adrénaline','2 % / 1:80 000','cartouche 1,8 ml','Xylocaïne dentaire','Usage cabinet (dose maximale 4,4 mg/kg)','','',['anesthesique','cardiopathie','hta'],''),
+  D('mepi','Anesthésiques (usage cabinet)','Mépivacaïne','Mépivacaïne','3 %','cartouche 1,8 ml (sans vasoconstricteur)','Scandonest','Usage cabinet : indiquée chez le patient cardiaque (dose maximale 4,4 mg/kg)','','',['anesthesique'],'Sans vasoconstricteur.')
+  ]}
+
+  function lineFromDrug(d){return{t:'d',id:uid(),drugId:d.id,nom:d.nom||d.dci,dci:d.dci,dosage:d.dosage,forme:d.forme,qte:d.qte,poso:d.poso,duree:d.duree,enfant:d.enfant,marques:d.marques,alerts:(d.alerts||[]).slice(),note:d.note}}
+
+  function ibuTemplate(drugs){
+    var g=(drugs||[]).filter(function(d){return d.id==='ibu400'})[0];
+    var base=g?lineFromDrug(g):{t:'d',id:uid(),drugId:'',nom:'Ibuprofène',dci:'Ibuprofène',marques:'Brufen, Advil, Nurofen',enfant:'',alerts:AINS_AL.slice(),note:''};
+    return{id:uid(),name:'Anti-inflammatoire – Ibuprofène 8 jours',desc:'Ibuprofène 400 mg, 1 cp x 3/j (repas) pendant 8 jours',note:'',
+      lines:[Object.assign({},base,{nom:'Ibuprofène',dosage:'400 mg',forme:'Comprimé',qte:'',poso:'1 cp x 3/j (repas)',duree:'pendant 8j'})]}
+  }
+
+  function seedTemplates(drugs){
+    function g(id){return (drugs||[]).filter(function(d){return d.id===id})[0]}
+    function L(id,o){o=o||{};var d=g(id);if(!d)return null;return Object.assign({},lineFromDrug(d),o)}
+    function clean(a){return a.filter(Boolean)}
+    return [
+      {id:uid(),name:'Extraction dentaire simple',desc:'Antalgique + bain de bouche + conseils',note:'Conseils post-extraction : ne pas rincer ni cracher durant les 24 premières heures ; alimentation froide ou tiède et molle, mastiquer du côté opposé ; éviter tabac, alcool et efforts physiques pendant 48 h ; en cas de saignement, mordre sur une compresse 30 minutes ; application de froid sur la joue. Consulter en cas de fièvre, douleur croissante ou gonflement important.',lines:clean([L('para1g'),L('chx012',{poso:'À partir du lendemain : bains de bouche de 15 ml pendant 30 secondes, 2 à 3 fois par jour ; ne pas avaler'})])},
+      {id:uid(),name:'Chirurgie - dent de sagesse incluse',desc:'Antibiotique, antalgiques, AINS, corticoïde, protecteur gastrique',note:'Appliquer du froid sur la joue les premières 24 h ; alimentation froide et molle ; pas de rinçage durant 24 h ; éviter tabac et alcool ; brossage doux dès le lendemain. Consulter en cas de fièvre, trismus ou gonflement persistant au-delà de 72 h.',lines:clean([L('amox1g'),L('ibu400'),L('para1g'),L('predni20'),L('ome20',{duree:'pendant 5 jours'}),L('chx012',{poso:'À partir du lendemain : bains de bouche de 15 ml pendant 30 secondes, 2 à 3 fois par jour'}),L('brosse')])},
+      {id:uid(),name:'Abcès / infection d’origine dentaire',desc:'Amoxicilline + Métronidazole + antalgique (sans AINS)',note:'Le traitement étiologique (drainage, pulpectomie ou avulsion) est indispensable. Éviter les AINS en cas d’infection. Consulter en urgence en cas de fièvre élevée, trismus, gonflement diffus ou difficulté à respirer / avaler.',lines:clean([L('amox1g',{duree:'pendant 7 jours'}),L('metro500',{duree:'pendant 7 jours'}),L('para1g'),L('chx012')])},
+      {id:uid(),name:'Pulpite / douleur dentaire aiguë',desc:'Antalgique + AINS + protecteur gastrique',note:'Traitement symptomatique : un traitement endodontique ou une extraction reste nécessaire. Reconsulter si la douleur persiste.',lines:clean([L('para1g'),L('ibu400'),L('ome20',{duree:'pendant 3 jours'})])},
+      {id:uid(),name:'Gingivite / Parodontite',desc:'Bain de bouche + hygiène',note:'Brossage 2 à 3 fois par jour avec une brosse souple, nettoyage interdentaire quotidien. Contrôle et détartrage à prévoir.',lines:clean([L('chx012',{duree:'pendant 10 jours'}),L('dentif'),L('gengi')])},
+      {id:uid(),name:'Candidose buccale',desc:'Miconazole gel + hygiène des prothèses',note:'Retirer les prothèses la nuit, les nettoyer et les désinfecter quotidiennement (bicarbonate ou solution antifongique). Rincer la bouche après usage de corticoïdes inhalés.',lines:clean([L('mico'),L('bicarb')])},
+      {id:uid(),name:'Herpès buccal / labial',desc:'Aciclovir + antalgique',note:'Éviter les contacts rapprochés (risque de contagion), ne pas toucher les lésions. Alimentation tiède et non acide.',lines:clean([L('acycre'),L('para1g'),L('bicarb')])},
+      {id:uid(),name:'Alvéolite (alvéole sèche)',desc:'Antalgiques + bain de bouche (pansement au cabinet)',note:'Pansement alvéolaire réalisé au cabinet après irrigation. Ne pas fumer. Revoir dans 48 h si besoin.',lines:clean([L('para1g'),L('ibu400'),L('chx012')])},
+      {id:uid(),name:'Prophylaxie de l’endocardite infectieuse',desc:'Amoxicilline 2 g en prise unique avant le geste',note:'En cas d’allergie aux pénicillines : alternative à choisir selon les recommandations en vigueur (ex. azithromycine 500 mg en prise unique 1 heure avant le geste).',lines:clean([L('amox1g',{poso:'2 g (2 cp de 1 g) en prise unique, 30 à 60 minutes avant le geste',duree:'prise unique'})])},
+      {id:uid(),name:'Hypersensibilité dentinaire',desc:'Dentifrice désensibilisant + fluor',note:'Éviter les brossages énergiques et les boissons / aliments acides ; brosse à dents souple.',lines:clean([L('desens'),L('gelfluor')])},
+      {id:uid(),name:'Anxiété - prémédication',desc:'Hydroxyzine avant le rendez-vous',note:'Ne pas conduire après la prise ; venir accompagné.',lines:clean([L('hydroxy')])},
+      ibuTemplate(drugs)
+    ]
+  }
+
+  var GOLDEN={layout:'cabinet',nom:'Dr KERROUM Amine',titre:'',diplomes:'Soins esthétiques - Extraction - Blanchiment - Prothèse - ODF - Détartrage et Petite chirurgie - Rx RVG',ordre:'16/4023',adresse:'HOUCH MIHOUB N° 695 BARAKI-ALGER',ville:'BARAKI',tel:'0553.64.82.36',format:'A5',couleur:'#1f3a68',header:true,footer:true,signature:true};
+
+  function seed(){
+    var drugs=seedDrugs();
+    return{v2:true,settings:{nom:'Dr. Prénom NOM',titre:'Chirurgien-Dentiste',diplomes:'Diplômé de la Faculté de Médecine Dentaire',adresse:'Adresse du cabinet',ville:'Alger',tel:'0550 00 00 00',email:'',horaires:'Du dimanche au jeudi : 09h00 - 17h00',ordre:'',nomAr:'الدكتور ...',titreAr:'جرّاح أسنان',diplomesAr:'',logo:'',republique:true,header:true,footer:true,signature:true,format:'A5',couleur:'#0d9488',layout:'classic'},
+    patients:[],drugs:drugs,templates:seedTemplates(drugs),rx:[],draft:null}
+  }
+
+  /* ================= Etat ================= */
+  var db=null;
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){db=JSON.parse(raw)}
+  }catch(e){db=null}
+
+  // Validation robuste : si les données sont absentes/corrompues, on repart de zéro
+  if(!db || !db.settings || !Array.isArray(db.drugs) || !db.drugs.length){
+    db=seed();
+  }
+  if(!Array.isArray(db.patients))db.patients=[];
+  if(!Array.isArray(db.templates))db.templates=[];
+  if(!Array.isArray(db.rx))db.rx=[];
+
+  var save=function(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){toast('Stockage plein : exportez vos données','err')}};
+  var saveT;var saveSoon=function(){clearTimeout(saveT);saveT=setTimeout(save,300)};
+
+  function migrate(){
+    if(!db.settings)db.settings=seed().settings;
+    if(!db.settings.layout)db.settings.layout='classic';
+    if(!db.v2){db.templates=db.templates||[];db.templates.push(ibuTemplate(db.drugs));db.v2=true;save()}
+  }
+  migrate();
+
+  var blankDraft=function(pid){return{id:null,patientId:pid||'',pName:'',pAge:'',date:today(),lines:[],note:'',editTpl:null}};
+  if(!db.draft)db.draft=blankDraft();
+
+  var ui={view:'dash',pickCat:'',pickQ:'',drugQ:'',drugCat:'',patQ:'',histQ:'',tplQ:''};
+
+  function fullName(p){return ((p.nom||'').toUpperCase()+' '+(p.prenom||'')).trim()}
+  function ageOf(p){if(!p||!p.naissance)return null;var b=new Date(p.naissance),n=new Date();var a=n.getFullYear()-b.getFullYear();var m=n.getMonth()-b.getMonth();if(m<0||(m===0&&n.getDate()<b.getDate()))a--;return a}
+  function patientInfo(rx){
+    var p=db.patients.filter(function(x){return x.id===rx.patientId})[0];
+    if(p){var a=ageOf(p);return{name:fullName(p),nom:(p.nom||'').toUpperCase(),prenom:p.prenom||'',age:a!=null?(a<1?'< 1 an':a+' ans'):''}}
+    var full=String(rx.pName||'').trim(),sp=full.indexOf(' ');
+    return{name:full,nom:sp<0?full:full.slice(0,sp),prenom:sp<0?'':full.slice(sp+1),age:rx.pAge?(/^\d+$/.test(String(rx.pAge).trim())?rx.pAge+' ans':rx.pAge):''}
+  }
+  function draftRisks(){
+    var d=db.draft,p=db.patients.filter(function(x){return x.id===d.patientId})[0];
+    var r=p?(p.risks||[]).slice():[];
+    var a=p?ageOf(p):(String(d.pAge).trim()!==''&&!isNaN(+d.pAge)?+d.pAge:null);
+    if(a!=null&&a<12)r.push('enfant');
+    return r
+  }
+
+  /* ================= Ordonnance : rendu papier ================= */
+  function bodyHTML(rx,cab){
+    var n=0;
+    var lines=(rx&&rx.lines)||[];
+    return lines.length?lines.map(function(l){
+      if(l.t==='t')return '<div class="pl pt">'+esc(l.text)+'</div>';
+      n++;
+      var q=l.qte?'<span class="pq">'+esc(l.qte)+'</span>':'';
+      if(cab){
+        var nm=[(l.nom||l.dci||''),l.dosage].filter(Boolean).map(esc).join(' ');
+        var ps=[l.poso,l.duree].filter(Boolean).map(esc).join(' ');
+        return '<div class="pl"><div class="pn">'+n+'. <b>'+nm+'</b>'+(l.forme?' — <em>'+esc(l.forme)+'</em>':'')+q+'</div>'+(ps?'<div class="pp">'+ps+'</div>':'')+'</div>'
+      }
+      var dci=(l.dci&&l.nom&&norm(l.dci)!==norm(l.nom))?' <span class="dc">('+esc(l.dci)+')</span>':'';
+      var spec=[l.dosage,l.forme].filter(Boolean).map(esc).join(', ');
+      var ps2=[l.poso,l.duree].filter(Boolean).map(esc).join(' - ');
+      return '<div class="pl"><div class="pn"><span class="num">'+n+'.</span> <b>'+esc((l.nom||l.dci||'').toUpperCase())+'</b>'+dci+(spec?' '+spec:'')+q+'</div>'+(ps2?'<div class="pp">'+ps2+'</div>':'')+'</div>'
+    }).join(''):'<div class="empty">Aucun médicament ajouté.</div>'
+  }
+
+  function cabinetHTML(rx){
+    var s=db.settings,pi=patientInfo(rx);
+    var left=s.header?('<b>'+esc(s.nom)+'</b>'+(s.titre?'<i>'+esc(s.titre)+'</i>':'')+(s.diplomes?'<i>'+esc(s.diplomes)+'</i>':'')+(s.ordre?'<b class="ord">N° D\'ordre.'+esc(s.ordre)+'</b>':'')):'';
+    var logo=s.header&&s.logo?'<img src="'+s.logo+'">':'';
+    return '<div class="paper cab '+s.format+'" style="--ac:'+esc(s.couleur)+'">'+
+      '<div class="ch"><div class="cl">'+left+'</div><div class="cm">'+logo+'</div>'+
+      '<div class="cr"><b>'+esc((s.ville||'').toUpperCase())+' Le</b><span>'+fmtDate(rx.date)+'</span><b>Nom</b><span>'+esc(pi.nom)+'</span><b>Prénom</b><span>'+esc(pi.prenom)+'</span><b>Âge</b><span>'+esc(pi.age||'ans')+'</span></div></div>'+
+      '<h2>ORDONNANCE</h2>'+
+      '<div class="pb">'+bodyHTML(rx,true)+(rx.note?'<div class="pnote">'+esc(rx.note)+'</div>':'')+'</div>'+
+      '<div class="cfl"></div>'+
+      '<div class="cft"><div>'+(s.footer?esc(s.adresse):'')+'</div><div class="'+(s.signature?'sg':'')+'">'+(s.signature?'Signature et cachet':'')+'</div><div class="tl">'+(s.footer&&s.tel?'TEL '+esc(s.tel):'')+'</div></div></div>'
+  }
+
+  function paperHTML(rx){
+    var s=db.settings;
+    if(s.layout==='cabinet')return cabinetHTML(rx);
+    var pi=patientInfo(rx);
+    var body=bodyHTML(rx,false);
+    var head=s.header?(s.republique?'<div class="rep">République Algérienne Démocratique et Populaire</div>':'')+
+      '<div class="ph"><div class="pl1"><b>'+esc(s.nom)+'</b><div>'+esc(s.titre)+'</div><div class="sm">'+esc(s.diplomes)+'</div></div>'+
+      '<div class="plogo">'+(s.logo?'<img src="'+s.logo+'">':'')+'</div>'+
+      '<div class="pr1" dir="rtl"><b>'+esc(s.nomAr)+'</b><div>'+esc(s.titreAr)+'</div><div class="sm">'+esc(s.diplomesAr)+'</div></div></div>'
+      :'<div class="hspace"></div>';
+    var foot=s.footer?'<div class="pf">'+[s.adresse,s.tel?'Tél : '+s.tel:'',s.email,s.horaires,s.ordre?'N° d’inscription à l’Ordre : '+s.ordre:''].filter(Boolean).map(esc).join(' &bull; ')+'</div>':'';
+    return '<div class="paper '+s.format+'" style="--ac:'+esc(s.couleur)+'">'+head+
+      '<div class="pm"><div>Patient : <b>'+(esc(pi.name)||'…………………………')+'</b>'+(pi.age?' - Âge : '+esc(pi.age):'')+'</div><div>'+esc(s.ville)+', le '+fmtDate(rx.date)+'</div></div>'+
+      '<h2>ORDONNANCE</h2><div class="pb">'+body+(rx.note?'<div class="pnote">'+esc(rx.note)+'</div>':'')+'</div>'+
+      (s.signature?'<div class="sig"><span>Cachet et signature</span></div>':'')+foot+'</div>'
+  }
+
+  function refreshPreview(){var el=$('#pvPaper');if(!el)return;el.innerHTML=paperHTML(db.draft);fitPreview()}
+
+  function fitPreview(){
+    var w=$('#pvWrap'),p=$('#pvPaper .paper');
+    if(!w||!p)return;
+    // Repart d'un état neutre
+    p.style.transform='none';
+    w.style.height='auto';
+    // Attendre le prochain frame pour que la mise en page soit stabilisée
+    requestAnimationFrame(function(){
+      var ww=w.clientWidth;
+      var pw=p.offsetWidth;
+      var ph=p.offsetHeight;
+      if(!ww||!pw||!ph)return;
+      var s=Math.min(1,ww/pw);
+      if(!isFinite(s)||s<=0)s=1;
+      p.style.transformOrigin='top left';
+      p.style.transform='scale('+s+')';
+      w.style.height=(ph*s)+'px';
+    });
+  }
+
+  window.addEventListener('resize',function(){setTimeout(fitPreview,50)});
+
+  function doPrint(rx){
+    $('#pageStyle').textContent='@page{size:'+db.settings.format+' portrait;margin:0}';
+    $('#printArea').innerHTML=paperHTML(rx);
+    // 200ms : laisse le temps au navigateur de peindre le contenu avant d'ouvrir la boîte d'impression
+    setTimeout(function(){window.print()},200);
+  }
+
+  /* ================= Vues ================= */
+  function top(t,sub,act){return '<header class="top"><div><h1>'+t+'</h1><p>'+sub+'</p></div><div class="actions">'+(act||'')+'</div></header>'}
+  var NAV=[['dash','home','Tableau de bord'],['rx','rx','Nouvelle ordonnance'],['hist','hist','Historique'],['pat','users','Patients'],['drugs','pill','Médicaments'],['tpl','tpl','Modèles'],['set','set','Paramètres']];
+
+  function renderNav(){
+    $('#side').innerHTML='<div class="brand"><i>'+TOOTH+'</i><div>DentOrdo<small>Cabinet dentaire · Algérie</small></div></div>'+
+      NAV.map(function(x){return '<button class="nav '+(ui.view===x[0]?'on':'')+'" data-act="nav" data-v="'+x[0]+'">'+icon(x[1])+'<span>'+x[2]+'</span></button>'}).join('')+
+      '<div class="foot">Données enregistrées localement sur cet appareil. Pensez à exporter une sauvegarde régulièrement.</div>'
+  }
+
+  function vDash(){
+    var m=today().slice(0,7);
+    var recent=db.rx.slice().sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0)}).slice(0,6);
+    return top('Bonjour, '+esc(db.settings.nom),'Voici l’activité de votre cabinet','<button class="btn primary" data-act="newRx">＋ Nouvelle ordonnance</button><button class="btn" data-act="newPatient">＋ Patient</button>')+
+      '<div class="grid g4" style="margin-bottom:16px">'+
+      [['users',db.patients.length,'Patients'],['rx',db.rx.length,'Ordonnances'],['hist',db.rx.filter(function(r){return (r.date||'').slice(0,7)===m}).length,'Ce mois-ci'],['pill',db.drugs.length,'Médicaments en base']].map(function(x){return '<div class="card stat" style="margin:0"><i>'+icon(x[0])+'</i><div><b>'+x[1]+'</b><span>'+x[2]+'</span></div></div>'}).join('')+'</div>'+
+      '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">'+
+      '<div class="card"><h3>Dernières ordonnances <button class="btn sm" data-act="nav" data-v="hist">Tout voir</button></h3>'+(recent.length?'<div class="list">'+recent.map(rxItem).join('')+'</div>':'<div class="empty">Aucune ordonnance pour le moment.</div>')+'</div>'+
+      '<div class="card"><h3>Modèles rapides</h3><div class="list">'+(db.templates.slice(0,6).map(function(t){return '<div class="item"><div class="grow"><div class="t">'+esc(t.name)+'</div><div class="s">'+esc(t.desc||'')+'</div></div><button class="btn sm primary" data-act="useTpl" data-id="'+t.id+'">Utiliser</button></div>'}).join('')||'<div class="empty">Aucun modèle.</div>')+'</div></div></div>'+
+      '<div class="disc">⚕️ Les posologies de la base sont indicatives et doivent être validées par le praticien selon le patient et le RCP du produit. Chaque médicament, posologie, durée ou modèle est modifiable.</div>'
+  }
+
+  function rxItem(r){
+    var pi=patientInfo(r);var names=(r.lines||[]).filter(function(l){return l.t==='d'}).map(function(l){return l.nom}).join(', ');
+    return '<div class="item"><div class="av">'+esc((pi.name||'?').charAt(0))+'</div><div class="grow"><div class="t">'+esc(pi.name||'Patient de passage')+'</div><div class="s">'+fmtDate(r.date)+' · '+(esc(names)||'—')+'</div></div>'+
+      '<button class="btn sm" data-act="printSaved" data-id="'+r.id+'">🖨</button><button class="btn sm" data-act="editRx" data-id="'+r.id+'">✎</button></div>'
+  }
+
+  function pickChips(){
+    return [''].concat(CATS).map(function(c){return '<button class="chip '+((ui.pickCat||'')===c?'on':'')+'" data-act="pickCat" data-c="'+esc(c)+'">'+(c?esc(c):'Tous')+'</button>'}).join('')
+  }
+
+  function renderPick(){
+    var q=norm(ui.pickQ||'');
+    var r=db.drugs.filter(function(d){return (!ui.pickCat||d.cat===ui.pickCat)&&(!q||norm([d.nom,d.dci,d.marques,d.cat].join(' ')).indexOf(q)>=0)}).slice(0,50);
+    return r.length?r.map(function(d){return '<div class="pr" data-act="addDrug" data-id="'+d.id+'"><div class="grow"><b>'+esc(d.nom)+(d.dosage?' '+esc(d.dosage):'')+'</b><small>'+esc(d.forme)+(d.marques?' · '+esc(d.marques):'')+'</small></div><button class="plus" tabindex="-1">+</button></div>'}).join(''):'<div class="empty">Aucun médicament trouvé.</div>'
+  }
+
+  function lineHTML(l,n){
+    var ctl='<div class="ctl"><button class="ib" data-act="up" data-id="'+l.id+'">▲</button><button class="ib" data-act="down" data-id="'+l.id+'">▼</button><button class="ib" data-act="delLine" data-id="'+l.id+'">✕</button></div>';
+    if(l.t==='t')return '<div class="ln"><div class="lh"><span class="lt">Texte libre</span>'+ctl+'</div><textarea data-l="'+l.id+'" data-k="text" rows="3">'+esc(l.text)+'</textarea></div>';
+    var rk=draftRisks();
+    var hits=(l.alerts||[]).filter(function(a){return rk.indexOf(a)>=0});
+    var warn=hits.length?'<div class="warn">⚠ Attention : '+hits.map(function(a){return esc(RISKS[a]||a)}).join(' · ')+'</div>':'';
+    var inp=function(k,lab){return '<label class="f"><span>'+lab+'</span><input data-l="'+l.id+'" data-k="'+k+'" value="'+esc(l[k])+'"></label>'};
+    var bl=(l.marques||'').split(',').map(function(x){return x.trim()}).filter(Boolean);
+    var br=bl.length?'<div class="brands">Marques : '+bl.map(function(b){return '<button data-act="brand" data-id="'+l.id+'" data-b="'+esc(b)+'">'+esc(b)+'</button>'}).join('')+'</div>':'';
+    var inf=(l.note||l.enfant)?'<div class="info">'+(l.note?esc(l.note):'')+(l.enfant?(l.note?'<br>':'')+'Enfant : '+esc(l.enfant)+' <button class="btn sm" data-act="childDose" data-id="'+l.id+'">Utiliser</button>':'')+'</div>':'';
+    return '<div class="ln"><div class="lh"><span class="lt">'+n+'. '+esc(l.dci||l.nom||'Médicament')+'</span>'+ctl+'</div>'+warn+
+      '<div class="row r4">'+inp('nom','Nom / marque')+inp('dosage','Dosage')+inp('forme','Forme')+inp('qte','Quantité')+'</div>'+
+      '<label class="f"><span>Posologie</span><textarea data-l="'+l.id+'" data-k="poso" rows="2">'+esc(l.poso)+'</textarea></label>'+
+      inp('duree','Durée')+br+inf+'</div>'
+  }
+
+  function renderLines(){
+    var L=db.draft.lines||[];var n=0;
+    return L.length?L.map(function(l){return lineHTML(l,l.t==='t'?0:++n)}).join(''):'<div class="empty">Ajoutez des médicaments depuis la liste ci-dessus ou utilisez un modèle.</div>'
+  }
+
+  function vRx(){
+    ensureRxLines();
+    var d=db.draft,et=d.editTpl;
+    var tp=et?db.templates.filter(function(t){return t.id===et})[0]:null;
+    var p=db.patients.filter(function(x){return x.id===d.patientId})[0];
+    var pats=db.patients.slice().sort(function(a,b){return fullName(a).localeCompare(fullName(b))});
+    var act=et?'<button class="btn" data-act="cancelTpl">Annuler</button><button class="btn primary" data-act="saveTpl">💾 Enregistrer le modèle</button>':'<button class="btn" data-act="clearRx">Vider</button><button class="btn" data-act="saveAsTpl">★ Comme modèle</button><button class="btn" data-act="saveRx">💾 Enregistrer</button><button class="btn primary" data-act="printRx">🖨 Imprimer</button>';
+    var patCard=et?'':'<div class="card"><h3>Patient</h3>'+
+      '<label class="f"><span>Patient enregistré</span><select data-d="patientId"><option value="">— Patient de passage (saisie libre) —</option>'+pats.map(function(x){return '<option value="'+x.id+'" '+(x.id===d.patientId?'selected':'')+'>'+esc(fullName(x))+'</option>'}).join('')+'</select></label>'+
+      '<div class="row '+(p?'':'r3')+'">'+(p?'':'<label class="f"><span>Nom et prénom</span><input data-d="pName" value="'+esc(d.pName)+'"></label><label class="f"><span>Âge</span><input data-d="pAge" value="'+esc(d.pAge)+'"></label>')+'<label class="f"><span>Date</span><input type="date" data-d="date" value="'+esc(d.date)+'"></label></div>'+
+      (p&&(p.risks||[]).length?'<div class="chips">'+p.risks.map(function(k){return '<span class="badge red">'+esc(RISKS[k]||k)+'</span>'}).join('')+'</div>':'')+'</div>';
+    return top(d.id?'Modifier l’ordonnance':(et?'Modifier le modèle':'Nouvelle ordonnance'),'Ajoutez des médicaments, modifiez chaque ligne, puis imprimez',act)+
+      (tp?'<div class="banner">Modification du modèle « '+esc(tp.name)+' »</div>':'')+
+      '<div class="rxgrid"><div>'+patCard+
+      '<div class="card"><h3>Ajouter un médicament <span style="display:flex;gap:6px"><button class="btn sm" data-act="addText">＋ Texte</button><button class="btn sm" data-act="addBlank">＋ Libre</button></span></h3>'+
+      '<input data-q="pickQ" placeholder="Rechercher (nom, DCI, marque)…" value="'+esc(ui.pickQ||'')+'">'+
+      '<div class="chips" id="pickChips" style="margin-top:10px">'+pickChips()+'</div>'+
+      '<div class="pickres" id="pickRes">'+renderPick()+'</div></div>'+
+      '<div class="card"><h3>Ordonnance</h3><div id="lines">'+renderLines()+'</div>'+
+      '<label class="f" style="margin-top:10px"><span>Note / conseils (imprimé en bas)</span><textarea data-d="note" rows="4">'+esc(d.note)+'</textarea></label></div></div>'+
+      '<div class="sticky"><div class="card"><div class="pvbar"><b>Aperçu</b><div class="seg"><button class="'+(db.settings.format==='A5'?'on':'')+'" data-act="fmt" data-f="A5">A5</button><button class="'+(db.settings.format==='A4'?'on':'')+'" data-act="fmt" data-f="A4">A4</button></div></div>'+
+      '<div id="pvWrap"><div id="pvPaper">'+paperHTML(d)+'</div></div></div></div></div>'
+  }
+
+  function histListHTML(){
+    var q=norm(ui.histQ);
+    var r=db.rx.slice().sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0)}).filter(function(x){
+      if(!q)return true;
+      return norm(patientInfo(x).name+' '+(x.lines||[]).filter(function(l){return l.t==='d'}).map(function(l){return l.nom}).join(' ')).indexOf(q)>=0
+    });
+    return r.length?'<div class="list">'+r.map(function(x){
+      var pi=patientInfo(x),names=(x.lines||[]).filter(function(l){return l.t==='d'}).map(function(l){return l.nom}).join(', ');
+      return '<div class="item"><div class="av">'+esc((pi.name||'?').charAt(0))+'</div><div class="grow"><div class="t">'+esc(pi.name||'Patient de passage')+'</div><div class="s">'+fmtDate(x.date)+' · '+(esc(names)||'—')+'</div></div>'+
+        '<button class="btn sm" data-act="printSaved" data-id="'+x.id+'">🖨</button><button class="btn sm" data-act="editRx" data-id="'+x.id+'">✎</button><button class="btn sm" data-act="dupRx" data-id="'+x.id+'">⧉</button><button class="btn sm danger" data-act="delRx" data-id="'+x.id+'">🗑</button></div>'
+    }).join('')+'</div>':'<div class="empty">Aucune ordonnance.</div>'
+  }
+  function vHist(){
+    return top('Historique',db.rx.length+' ordonnance(s) enregistrée(s)')+
+      '<div class="toolbar"><input data-q="histQ" placeholder="Rechercher (patient, médicament)…" value="'+esc(ui.histQ)+'"></div><div class="card" id="histList">'+histListHTML()+'</div>'
+  }
+
+  function patListHTML(){
+    var q=norm(ui.patQ);
+    var r=db.patients.filter(function(p){return !q||norm(fullName(p)+' '+(p.tel||'')).indexOf(q)>=0}).sort(function(a,b){return fullName(a).localeCompare(fullName(b))});
+    return r.length?'<div class="list">'+r.map(function(p){
+      var a=ageOf(p);
+      return '<div class="item"><div class="av">'+esc((p.nom||p.prenom||'?').charAt(0).toUpperCase())+'</div><div class="grow"><div class="t">'+esc(fullName(p))+'</div><div class="s">'+(a!=null?a+' ans':'')+(p.tel?' · '+esc(p.tel):'')+'</div>'+((p.risks||[]).length?'<div class="chips" style="margin-top:5px">'+p.risks.map(function(k){return '<span class="badge red">'+esc(RISKS[k]||k)+'</span>'}).join('')+'</div>':'')+'</div>'+
+        '<button class="btn sm primary" data-act="rxFor" data-id="'+p.id+'">Ordonnance</button><button class="btn sm" data-act="editPatient" data-id="'+p.id+'">✎</button><button class="btn sm danger" data-act="delPatient" data-id="'+p.id+'">🗑</button></div>'
+    }).join('')+'</div>':'<div class="empty">Aucun patient.</div>'
+  }
+  function vPat(){
+    return top('Patients',db.patients.length+' patient(s) enregistré(s)','<button class="btn primary" data-act="newPatient">＋ Patient</button>')+
+      '<div class="toolbar"><input data-q="patQ" placeholder="Rechercher un patient…" value="'+esc(ui.patQ)+'"></div><div class="card" id="patList">'+patListHTML()+'</div>'
+  }
+
+  function drugListHTML(){
+    var q=norm(ui.drugQ);
+    var r=db.drugs.filter(function(d){return (!ui.drugCat||d.cat===ui.drugCat)&&(!q||norm([d.nom,d.dci,d.marques,d.cat].join(' ')).indexOf(q)>=0)});
+    return r.length?'<div class="grid g2">'+r.map(function(d){return '<div class="card dcard" style="margin:0"><div class="h"><div><div class="n">'+esc(d.nom)+(d.dosage?' '+esc(d.dosage):'')+'</div><div class="d">'+esc(d.forme)+(d.marques?' · '+esc(d.marques):'')+'</div></div><span class="badge gr">'+esc(d.cat)+'</span></div>'+
+      '<div class="po">'+(esc(d.poso)||'—')+(d.duree?'<br><b>'+esc(d.duree)+'</b>':'')+'</div>'+
+      '<div class="bt"><button class="btn sm primary" data-act="drugToRx" data-id="'+d.id+'">Prescrire</button><button class="btn sm" data-act="editDrug" data-id="'+d.id+'">Modifier</button><button class="btn sm danger" data-act="delDrug" data-id="'+d.id+'">Supprimer</button></div></div>'}).join('')+'</div>':'<div class="card empty">Aucun médicament.</div>'
+  }
+  function vDrugs(){
+    return top('Médicaments',db.drugs.length+' médicaments · tous modifiables','<button class="btn primary" data-act="newDrug">＋ Médicament</button>')+
+      '<div class="toolbar"><input data-q="drugQ" placeholder="Rechercher (nom, DCI, marque)…" value="'+esc(ui.drugQ)+'"><select data-q="drugCat"><option value="">Toutes les catégories</option>'+CATS.map(function(c){return '<option '+(ui.drugCat===c?'selected':'')+'>'+esc(c)+'</option>'}).join('')+'</select></div><div id="drugList">'+drugListHTML()+'</div>'
+  }
+
+  function tplListHTML(){
+    var q=norm(ui.tplQ);
+    var r=db.templates.filter(function(t){return !q||norm(t.name+' '+(t.desc||'')).indexOf(q)>=0});
+    return r.length?'<div class="grid g2">'+r.map(function(t){
+      var names=(t.lines||[]).filter(function(l){return l.t==='d'}).map(function(l){return l.nom}).join(', ');
+      return '<div class="card dcard" style="margin:0"><div class="h"><div class="n">'+esc(t.name)+'</div><span class="badge gr">'+((t.lines||[]).length)+' ligne(s)</span></div><div class="d">'+esc(t.desc||'')+'</div><div class="po">'+(esc(names)||'—')+'</div>'+
+        '<div class="bt"><button class="btn sm primary" data-act="useTpl" data-id="'+t.id+'">Utiliser</button><button class="btn sm" data-act="editTpl" data-id="'+t.id+'">Modifier</button><button class="btn sm danger" data-act="delTpl" data-id="'+t.id+'">Supprimer</button></div></div>'
+    }).join('')+'</div>':'<div class="card empty">Aucun modèle.</div>'
+  }
+  function vTpl(){
+    return top('Modèles','Ordonnances types prêtes à l’emploi','<button class="btn primary" data-act="newTpl">＋ Nouveau modèle</button>')+
+      '<div class="toolbar"><input data-q="tplQ" placeholder="Rechercher un modèle…" value="'+esc(ui.tplQ)+'"></div><div id="tplList">'+tplListHTML()+'</div>'
+  }
+
+  var $$=function(s,e){return Array.prototype.slice.call((e||document).querySelectorAll(s))};
+  function vSet(){
+    var s=db.settings;
+    var tx=function(k,l){return '<label class="f"><span>'+l+'</span><input data-s="'+k+'" value="'+esc(s[k])+'"></label>'};
+    var ck=function(k,l){return '<label class="f" style="display:flex;gap:8px;align-items:center"><input type="checkbox" data-s="'+k+'" '+(s[k]?'checked':'')+'><span style="margin:0">'+l+'</span></label>'};
+    return top('Paramètres','Informations du cabinet et préférences d’impression','<button class="btn" data-act="applyGolden">✨ Appliquer le modèle Golden Smile</button><button class="btn primary" data-act="saveSet">💾 Enregistrer</button>')+
+      '<div class="grid g2">'+
+      '<div class="card"><h3>Cabinet</h3>'+tx('nom','Nom du praticien')+tx('titre','Titre')+tx('diplomes','Diplômes / spécialités')+
+      '<div class="row r2">'+tx('ordre','N° d’inscription à l’Ordre')+tx('ville','Ville')+'</div>'+tx('adresse','Adresse')+
+      '<div class="row r2">'+tx('tel','Téléphone')+tx('email','E-mail')+'</div>'+tx('horaires','Horaires')+'</div>'+
+      '<div class="card"><h3>En-tête arabe (disposition classique)</h3>'+tx('nomAr','الاسم')+tx('titreAr','اللقب')+tx('diplomesAr','الشهادات')+'</div>'+
+      '<div class="card"><h3>Impression</h3>'+
+      '<div class="row r2"><label class="f"><span>Disposition</span><select data-s="layout"><option value="classic" '+(s.layout==='classic'?'selected':'')+'>Classique</option><option value="cabinet" '+(s.layout==='cabinet'?'selected':'')+'>Cabinet (modèle Golden Smile)</option></select></label>'+
+      '<label class="f"><span>Format</span><select data-s="format"><option '+(s.format==='A5'?'selected':'')+'>A5</option><option '+(s.format==='A4'?'selected':'')+'>A4</option></select></label></div>'+
+      '<label class="f"><span>Couleur</span><input type="color" data-s="couleur" value="'+esc(s.couleur)+'"></label>'+
+      ck('republique','Afficher « République Algérienne… » (classique)')+ck('header','Afficher l’en-tête')+ck('footer','Afficher le pied de page')+ck('signature','Afficher « Signature et cachet »')+'</div>'+
+      '<div class="card"><h3>Logo du cabinet</h3>'+
+      '<div class="logoPrev">'+(s.logo?'<img src="'+s.logo+'">':'<span style="color:var(--mu)">Aucun logo</span>')+'</div>'+
+      '<input type="file" id="logoIn" accept="image/*">'+
+      (s.logo?'<button class="btn sm danger" style="margin-top:8px" data-act="logoDel">Retirer le logo</button>':'')+
+      '<p style="color:var(--mu);font-size:12px;margin-top:8px">Après avoir choisi l’image, cliquez sur « Enregistrer ».</p></div>'+
+      '<div class="card"><h3>Données</h3>'+
+      '<div class="actions"><button class="btn" data-act="exportDb">⬇ Exporter (JSON)</button><button class="btn" data-act="importBtn">⬆ Importer</button><button class="btn danger" data-act="resetAll">Réinitialiser</button></div>'+
+      '<input type="file" id="impIn" accept=".json,application/json" style="display:none">'+
+      '<p style="color:var(--mu);font-size:12px;margin-top:8px">Les données sont stockées dans ce navigateur. Exportez une sauvegarde régulièrement.</p></div>'+
+      '</div>'
+  }
+
+  var views={dash:vDash,rx:vRx,hist:vHist,pat:vPat,drugs:vDrugs,tpl:vTpl,set:vSet};
+  function render(){
+    renderNav();
+    $('#main').innerHTML=(views[ui.view]||vDash)();
+    if(ui.view==='rx')fitPreview()
+  }
+  function go(v){ui.view=v;render();window.scrollTo(0,0)}
+
+  function modal(title,body,foot,wide){
+    $('#modalRoot').innerHTML='<div class="ov" data-act="ovClose"><div class="md '+(wide?'wide':'')+'"><div class="mh"><h3>'+esc(title)+'</h3><button data-act="closeModal">✕</button></div>'+body+'<div class="mf">'+(foot||'')+'</div></div></div>'
+  }
+  function closeModal(){$('#modalRoot').innerHTML=''}
+
+  var FI=function(k,l,v,t){return '<label class="f"><span>'+l+'</span><input type="'+(t||'text')+'" data-f="'+k+'" value="'+esc(v)+'"></label>'};
+  var FT=function(k,l,v,r){return '<label class="f"><span>'+l+'</span><textarea data-f="'+k+'" rows="'+(r||3)+'">'+esc(v)+'</textarea></label>'};
+  var CB=function(k,keys,sel){return '<div class="cbg">'+keys.map(function(x){return '<label><input type="checkbox" data-cb="'+k+'" value="'+x+'" '+((sel||[]).indexOf(x)>=0?'checked':'')+'>'+esc(RISKS[x]||x)+'</label>'}).join('')+'</div>'};
+  function formVals(){
+    var o={};
+    $$('#modalRoot [data-f]').forEach(function(e){o[e.dataset.f]=e.value});
+    $$('#modalRoot input[data-cb]').forEach(function(e){var k=e.dataset.cb;if(!o[k])o[k]=[];if(e.checked)o[k].push(e.value)});
+    return o
+  }
+
+  function patientForm(id){
+    var p=id?db.patients.filter(function(x){return x.id===id})[0]||{}:{};
+    modal(id?'Modifier le patient':'Nouveau patient',
+      '<div class="row r2">'+FI('nom','Nom',p.nom)+FI('prenom','Prénom',p.prenom)+'</div>'+
+      '<div class="row r2">'+FI('naissance','Date de naissance',p.naissance,'date')+FI('tel','Téléphone',p.tel)+'</div>'+
+      FT('notes','Notes',p.notes,2)+
+      '<h4 class="sec">Allergies et terrain (alertes à la prescription)</h4>'+CB('risks',PATIENT_RISKS,p.risks),
+      '<button class="btn" data-act="closeModal">Annuler</button><button class="btn primary" data-act="savePatient" data-id="'+(id||'')+'">Enregistrer</button>')
+  }
+
+  function drugForm(id){
+    var d=id?db.drugs.filter(function(x){return x.id===id})[0]||{}:{cat:CATS[0]};
+    modal(id?'Modifier le médicament':'Nouveau médicament',
+      '<div class="row r2">'+FI('nom','Nom',d.nom)+FI('dci','DCI',d.dci)+'</div>'+
+      '<div class="row r3">'+FI('dosage','Dosage',d.dosage)+FI('forme','Forme',d.forme)+FI('qte','Quantité',d.qte)+'</div>'+
+      '<label class="f"><span>Catégorie</span><select data-f="cat">'+CATS.map(function(c){return '<option '+(d.cat===c?'selected':'')+'>'+esc(c)+'</option>'}).join('')+'</select></label>'+
+      FI('marques','Marques (séparées par des virgules)',d.marques)+
+      FT('poso','Posologie',d.poso,2)+FI('duree','Durée',d.duree)+
+      FT('enfant','Posologie enfant (indicative)',d.enfant,2)+
+      FT('note','Note / précautions',d.note,2)+
+      '<h4 class="sec">Alertes (précautions / contre-indications)</h4>'+CB('alerts',Object.keys(RISKS),d.alerts),
+      '<button class="btn" data-act="closeModal">Annuler</button><button class="btn primary" data-act="saveDrug" data-id="'+(id||'')+'">Enregistrer</button>',true)
+  }
+
+  function ensureRxLines(){
+    if(!db.draft)db.draft=blankDraft();
+    if(!Array.isArray(db.draft.lines))db.draft.lines=[];
+    db.draft.lines.forEach(function(l){if(!l.id)l.id=uid()})
+  }
+  function addLine(l){ensureRxLines();db.draft.lines.push(l);save()}
+  function addDrugToDraft(d){addLine(lineFromDrug(d))}
+
+  function saveRx(){
+    ensureRxLines();
+    var d=db.draft;
+    if(!d.lines.length){toast('Ajoutez au moins une ligne','err');return null}
+    var rec=Object.assign({},clone(d),{editTpl:null});
+    if(d.patientId){
+      var p=db.patients.filter(function(x){return x.id===d.patientId})[0];
+      if(p){rec.pName=fullName(p);var a=ageOf(p);rec.pAge=a!=null?String(a):'';}
+    }
+    var r=d.id?db.rx.filter(function(x){return x.id===d.id})[0]:null;
+    if(r){Object.assign(r,rec,{id:r.id,createdAt:r.createdAt})}
+    else{r=Object.assign({},rec,{id:uid(),createdAt:Date.now()});db.rx.push(r);d.id=r.id}
+    save();
+    return r
+  }
+
+  function collectSettings(){
+    $$('[data-s]',$('#main')).forEach(function(e){db.settings[e.dataset.s]=e.type==='checkbox'?e.checked:e.value})
+  }
+  function newRxFor(pid){db.draft=blankDraft(pid||'');save();go('rx')}
+  function refreshLines(){var el=$('#lines');if(el)el.innerHTML=renderLines();refreshPreview()}
+  var findLine=function(id){ensureRxLines();return db.draft.lines.filter(function(l){return l.id===id})[0]};
+  var blankLine=function(){return{t:'d',id:uid(),drugId:'',nom:'',dci:'',dosage:'',forme:'',qte:'',poso:'',duree:'',enfant:'',marques:'',alerts:[],note:''}};
+  var tplNames=function(lines){return (lines||[]).filter(function(l){return l.t==='d'}).map(function(l){return l.nom}).join(', ')};
+  function openTplEdit(t){
+    db.draft=Object.assign({},blankDraft(),{lines:clone(t.lines||[]).map(function(l){return Object.assign({},l,{id:uid()})}),note:t.note||'',editTpl:t.id});
+    save();go('rx')
+  }
+
+  function readImage(file,cb){
+    var fr=new FileReader();
+    fr.onload=function(){
+      var img=new Image();
+      img.onload=function(){
+        var m=500,r=Math.min(1,m/Math.max(img.width,img.height));
+        var c=document.createElement('canvas');c.width=Math.round(img.width*r);c.height=Math.round(img.height*r);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        cb(c.toDataURL('image/png'))
+      };
+      img.onerror=function(){toast('Image illisible','err')};
+      img.src=fr.result
+    };
+    fr.readAsDataURL(file)
+  }
+
+  var A={
+    nav:function(el){go(el.dataset.v)},
+    newRx:function(){newRxFor('')},
+    newPatient:function(){patientForm()},
+    useTpl:function(el){
+      var t=db.templates.filter(function(x){return x.id===el.dataset.id})[0];if(!t)return;
+      db.draft=Object.assign({},blankDraft(),{lines:clone(t.lines||[]).map(function(l){return Object.assign({},l,{id:uid()})}),note:t.note||''});
+      save();go('rx');toast('Modèle appliqué')
+    },
+    printSaved:function(el){var r=db.rx.filter(function(x){return x.id===el.dataset.id})[0];if(r)doPrint(r)},
+    editRx:function(el){
+      var r=db.rx.filter(function(x){return x.id===el.dataset.id})[0];if(!r)return;
+      db.draft=Object.assign({},clone(r),{editTpl:null});save();go('rx')
+    },
+    dupRx:function(el){
+      var r=db.rx.filter(function(x){return x.id===el.dataset.id})[0];if(!r)return;
+      var c=clone(r);c.id=uid();c.createdAt=Date.now();c.date=today();(c.lines||[]).forEach(function(l){l.id=uid()});
+      db.rx.push(c);save();render();toast('Ordonnance dupliquée')
+    },
+    delRx:function(el){
+      if(!confirm('Supprimer cette ordonnance ?'))return;
+      db.rx=db.rx.filter(function(x){return x.id!==el.dataset.id});save();render()
+    },
+    rxFor:function(el){newRxFor(el.dataset.id)},
+    pickCat:function(el){
+      ui.pickCat=el.dataset.c;
+      $('#pickChips').innerHTML=pickChips();$('#pickRes').innerHTML=renderPick()
+    },
+    addDrug:function(el){
+      var d=db.drugs.filter(function(x){return x.id===el.dataset.id})[0];if(!d)return;
+      addDrugToDraft(d);refreshLines();toast('Ajouté : '+d.nom)
+    },
+    addText:function(){addLine({t:'t',id:uid(),text:''});refreshLines()},
+    addBlank:function(){addLine(blankLine());refreshLines()},
+    up:function(el){
+      var L=db.draft.lines,i=L.findIndex(function(l){return l.id===el.dataset.id});
+      if(i>0){var t=L[i-1];L[i-1]=L[i];L[i]=t;save();refreshLines()}
+    },
+    down:function(el){
+      var L=db.draft.lines,i=L.findIndex(function(l){return l.id===el.dataset.id});
+      if(i>=0&&i<L.length-1){var t=L[i+1];L[i+1]=L[i];L[i]=t;save();refreshLines()}
+    },
+    delLine:function(el){db.draft.lines=db.draft.lines.filter(function(l){return l.id!==el.dataset.id});save();refreshLines()},
+    brand:function(el){var l=findLine(el.dataset.id);if(l){l.nom=el.dataset.b;save();refreshLines()}},
+    childDose:function(el){var l=findLine(el.dataset.id);if(l){l.poso=l.enfant;save();refreshLines()}},
+    clearRx:function(){
+      if(db.draft.lines.length&&!confirm('Vider l’ordonnance en cours ?'))return;
+      db.draft=blankDraft();save();render()
+    },
+    saveRx:function(){if(saveRx()){toast('Ordonnance enregistrée');render()}},
+    printRx:function(){var r=saveRx();if(r){render();doPrint(r)}},
+    fmt:function(el){db.settings.format=el.dataset.f;save();render()},
+    saveAsTpl:function(){
+      ensureRxLines();
+      if(!db.draft.lines.length){toast('Ajoutez au moins une ligne','err');return}
+      var name=prompt('Nom du modèle ?');if(!name)return;
+      db.templates.push({id:uid(),name:name.trim(),desc:tplNames(db.draft.lines||[]),note:db.draft.note||'',lines:clone(db.draft.lines||[]).map(function(l){return Object.assign({},l,{id:uid()})})});
+      save();toast('Modèle créé')
+    },
+    newTpl:function(){
+      var name=prompt('Nom du nouveau modèle ?');if(!name)return;
+      var t={id:uid(),name:name.trim(),desc:'',note:'',lines:[]};
+      db.templates.push(t);save();openTplEdit(t)
+    },
+    editTpl:function(el){var t=db.templates.filter(function(x){return x.id===el.dataset.id})[0];if(t)openTplEdit(t)},
+    saveTpl:function(){
+      var t=db.templates.filter(function(x){return x.id===db.draft.editTpl})[0];
+      if(t){
+        t.lines=clone(db.draft.lines||[]).map(function(l){return Object.assign({},l,{id:uid()})});t.note=db.draft.note||'';
+        if(!t.desc)t.desc=tplNames(t.lines)
+      }
+      db.draft=blankDraft();save();go('tpl');toast('Modèle enregistré')
+    },
+    cancelTpl:function(){db.draft=blankDraft();save();go('tpl')},
+    delTpl:function(el){
+      if(!confirm('Supprimer ce modèle ?'))return;
+      db.templates=db.templates.filter(function(x){return x.id!==el.dataset.id});save();render()
+    },
+    editPatient:function(el){patientForm(el.dataset.id)},
+    delPatient:function(el){
+      if(!confirm('Supprimer ce patient ?'))return;
+      var id=el.dataset.id;
+      db.patients=db.patients.filter(function(x){return x.id!==id});
+      if(db.draft.patientId===id)db.draft.patientId='';
+      save();render()
+    },
+    savePatient:function(el){
+      var v=formVals(),id=el.dataset.id;
+      if(!v.nom&&!v.prenom){toast('Saisissez un nom','err');return}
+      var p=id?db.patients.filter(function(x){return x.id===id})[0]:null;
+      if(p)Object.assign(p,v);else db.patients.push(Object.assign({id:uid()},v));
+      save();closeModal();render();toast('Patient enregistré')
+    },
+    newDrug:function(){drugForm()},
+    editDrug:function(el){drugForm(el.dataset.id)},
+    drugToRx:function(el){
+      var d=db.drugs.filter(function(x){return x.id===el.dataset.id})[0];if(!d)return;
+      addDrugToDraft(d);go('rx');toast('Ajouté : '+d.nom)
+    },
+    delDrug:function(el){
+      if(!confirm('Supprimer ce médicament de la base ?'))return;
+      db.drugs=db.drugs.filter(function(x){return x.id!==el.dataset.id});save();render()
+    },
+    saveDrug:function(el){
+      var v=formVals(),id=el.dataset.id;
+      if(!v.nom){toast('Saisissez un nom','err');return}
+      var d=id?db.drugs.filter(function(x){return x.id===id})[0]:null;
+      if(d)Object.assign(d,v);else db.drugs.push(Object.assign({id:uid()},v));
+      save();closeModal();render();toast('Médicament enregistré')
+    },
+    saveSet:function(){collectSettings();save();render();toast('Paramètres enregistrés')},
+    applyGolden:function(){
+      collectSettings();Object.assign(db.settings,GOLDEN);save();render();
+      toast('Modèle Golden Smile appliqué : ajoutez votre logo puis enregistrez')
+    },
+    logoDel:function(){collectSettings();db.settings.logo='';save();render()},
+    exportDb:function(){
+      var b=new Blob([JSON.stringify(db,null,1)],{type:'application/json'});
+      var a=document.createElement('a');a.href=URL.createObjectURL(b);
+      a.download='dentordo-sauvegarde-'+today()+'.json';
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(a.href)},2000)
+    },
+    importBtn:function(){$('#impIn').click()},
+    resetAll:function(){
+      if(!confirm('Tout réinitialiser ? Toutes vos données seront perdues.'))return;
+      db=seed();db.draft=blankDraft();save();ui.view='dash';render();toast('Données réinitialisées')
+    },
+    closeModal:function(){closeModal()},
+    ovClose:function(el,e){if(e.target===el)closeModal()}
+  };
+
+  document.addEventListener('click',function(e){
+    var el=e.target.closest('[data-act]');if(!el)return;
+    var f=A[el.dataset.act];if(f)f(el,e)
+  });
+
+  var LISTS={
+    pickQ:function(){var e=$('#pickRes');if(e)e.innerHTML=renderPick()},
+    histQ:function(){var e=$('#histList');if(e)e.innerHTML=histListHTML()},
+    patQ:function(){var e=$('#patList');if(e)e.innerHTML=patListHTML()},
+    drugQ:function(){var e=$('#drugList');if(e)e.innerHTML=drugListHTML()},
+    drugCat:function(){var e=$('#drugList');if(e)e.innerHTML=drugListHTML()},
+    tplQ:function(){var e=$('#tplList');if(e)e.innerHTML=tplListHTML()}
+  };
+  function onInput(e){
+    var t=e.target;
+    if(t.dataset.l){
+      var l=findLine(t.dataset.l);
+      if(l){l[t.dataset.k]=t.value;saveSoon();refreshPreview()}
+    }else if(t.dataset.d&&t.dataset.d!=='patientId'){
+      ensureRxLines();
+      db.draft[t.dataset.d]=t.value;saveSoon();refreshPreview();
+      if(t.dataset.d==='pAge'){var el=$('#lines');if(el)el.innerHTML=renderLines()}
+    }else if(t.dataset.q){
+      ui[t.dataset.q]=t.value;
+      if(LISTS[t.dataset.q])LISTS[t.dataset.q]()
+    }
+  }
+  document.addEventListener('input',onInput);
+  document.addEventListener('change',function(e){
+    var t=e.target;
+    if(t.id==='logoIn'&&t.files&&t.files[0]){
+      var f=t.files[0];
+      readImage(f,function(data){collectSettings();db.settings.logo=data;save();render();toast('Logo chargé')});
+      return
+    }
+    if(t.id==='impIn'&&t.files&&t.files[0]){
+      var fr=new FileReader();
+      fr.onload=function(){
+        try{
+          var o=JSON.parse(fr.result);
+          if(!o||!Array.isArray(o.drugs))throw 0;
+          db=o;db.settings=Object.assign(seed().settings,db.settings||{});
+          db.patients=db.patients||[];db.templates=db.templates||[];db.rx=db.rx||[];
+          if(!db.draft)db.draft=blankDraft();
+          migrate();save();ui.view='dash';render();toast('Données importées')
+        }catch(err){toast('Fichier invalide','err')}
+      };
+      fr.readAsText(t.files[0]);t.value='';
+      return
+    }
+    if(t.dataset.d==='patientId'){
+      ensureRxLines();db.draft.patientId=t.value;save();render();
+      return
+    }
+    onInput(e)
+  });
+
+  render();
+  if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+
+} catch(err) {
+  showFatal(err.message || String(err), err.stack || '');
+  try{ console.error(err); }catch(e){}
+}
+</script>
+</body>
+</html>
