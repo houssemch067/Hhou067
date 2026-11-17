@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><title>DentaGest DZ Ad v3</title>
+<link rel="stylesheet" href="dg/fonts/fonts.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0A0A0A;font-family:"Open Sans","Noto Color Emoji",sans-serif;-webkit-font-smoothing:antialiased}
+.L{position:absolute;inset:0;overflow:hidden}
+#vid{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover;transform-origin:50% 35%}
+#shadeTop{position:absolute;left:0;right:0;top:0;height:420px;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,0))}
+#shadeBot{position:absolute;left:0;right:0;bottom:0;height:1000px;background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,0));opacity:0}
+
+/* retention: progress + teaser */
+#prog{position:absolute;left:60px;right:60px;top:92px;display:flex;gap:12px;opacity:0}
+#prog i{flex:1;height:12px;border-radius:99px;background:rgba(255,255,255,.28);overflow:hidden;position:relative}
+#prog i b{position:absolute;inset:0;background:#fff;transform-origin:left;transform:scaleX(0)}
+#prog i.last{background:rgba(255,255,255,.28);box-shadow:0 0 0 2px rgba(255,255,255,.5)}
+#count{position:absolute;right:60px;top:126px;font-family:Outfit;font-weight:800;color:#fff;font-size:40px;opacity:0;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+#teaser{position:absolute;left:60px;top:126px;font-family:Outfit;font-weight:700;color:#fff;font-size:34px;opacity:0;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+#hookT{position:absolute;left:50px;right:50px;top:150px;text-align:center;opacity:0}
+#hookT span{display:inline-block;background:#fff;color:#0A0A0A;font-family:Outfit;font-weight:800;font-size:64px;line-height:1.08;padding:14px 30px 18px;border-radius:26px;box-shadow:0 20px 50px rgba(0,0,0,.4);letter-spacing:-1.5px}
+
+/* feature label */
+#feat{position:absolute;left:60px;top:1010px;opacity:0;display:flex;align-items:center;gap:18px}
+#feat .n{width:96px;height:96px;border-radius:28px;background:#fff;color:#0A0A0A;font-family:Outfit;font-weight:800;font-size:60px;display:grid;place-items:center;box-shadow:0 16px 40px rgba(0,0,0,.4)}
+#feat .t{font-family:Outfit;font-weight:800;color:#fff;font-size:42px;line-height:1.08;letter-spacing:-.5px;text-shadow:0 4px 20px rgba(0,0,0,.7);max-width:330px}
+
+/* phone */
+#phone{position:absolute;left:540px;top:900px;width:470px;height:990px;border-radius:68px;background:#18181b;padding:12px;box-shadow:0 0 0 3px #3f3f46,0 50px 120px rgba(0,0,0,.7);transform-origin:50% 100%;opacity:0}
+#screen{position:relative;width:446px;height:966px;border-radius:57px;overflow:hidden;background:#fff}
+.scr{position:absolute;left:0;top:40px;width:446px;opacity:0}
+.full{position:absolute;inset:0;width:446px;height:966px;object-fit:cover;opacity:0}
+#sbar{position:absolute;left:0;right:0;top:0;height:40px;display:flex;justify-content:space-between;align-items:center;padding:4px 38px 0 46px;font-weight:700;font-size:18px;z-index:3;font-family:Outfit;color:#0A0A0A}
+#notch{position:absolute;left:50%;top:8px;width:128px;height:30px;border-radius:24px;background:#18181b;transform:translateX(-50%);z-index:4}
+.ring{position:absolute;border:5px solid #0A0A0A;border-radius:18px;opacity:0;z-index:6;box-shadow:0 0 0 3px #fff,0 0 30px rgba(0,0,0,.35)}
+#wa{position:absolute;left:40px;width:520px;top:1300px;background:#DCF8C6;color:#111;border-radius:28px 28px 28px 6px;padding:20px 24px 14px;font-size:23px;line-height:1.36;box-shadow:0 26px 60px rgba(0,0,0,.55);opacity:0;z-index:8}
+#wa .h{display:flex;align-items:center;gap:10px;font-weight:700;color:#075E54;font-size:22px;margin-bottom:6px;font-family:Outfit}
+#wa .h i{width:32px;height:32px;border-radius:50%;background:#25D366;display:grid;place-items:center}
+.stick{position:absolute;background:#fff;color:#0A0A0A;font-family:Outfit;font-weight:800;font-size:38px;padding:14px 26px;border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.6);opacity:0;white-space:nowrap;z-index:8}
+.stick small{display:block;font-size:20px;font-weight:600;color:#737373;letter-spacing:1px;text-transform:uppercase}
+.stick b{color:#dc2626}
+
+/* captions */
+#cap{position:absolute;left:50px;right:50px;top:830px;text-align:center;font-family:Outfit;font-weight:800;font-size:58px;line-height:1.12;color:#fff;letter-spacing:-.5px;text-shadow:0 3px 0 rgba(0,0,0,.55),0 0 26px rgba(0,0,0,.65)}
+#cap span{opacity:.0}
+#cap span.on{opacity:1}
+#cap span.cur{background:#fff;color:#0A0A0A;border-radius:12px;padding:0 8px;text-shadow:none}
+
+/* end card */
+#cta{opacity:0;background:radial-gradient(circle at 50% 36%,#262626 0%,#0A0A0A 60%)}
+#ctaIcon{position:absolute;left:50%;top:360px;width:280px;height:280px;margin-left:-140px;border-radius:70px;background:#0A0A0A;box-shadow:0 0 0 4px rgba(255,255,255,.9),0 40px 120px rgba(255,255,255,.12);overflow:hidden;opacity:0}
+#ctaIcon img{width:100%;height:100%}
+#ctaT{position:absolute;left:0;right:0;top:720px;display:flex;justify-content:center;align-items:center;gap:22px;color:#fff;font-family:Outfit;font-weight:800;font-size:126px;letter-spacing:-4px;opacity:0;line-height:1}
+.dz{font-family:Outfit;font-size:52px;font-weight:700;letter-spacing:1px;border:5px solid #fff;border-radius:99px;padding:8px 22px;line-height:1}
+#ctaSub{position:absolute;left:0;right:0;top:880px;text-align:center;color:#a3a3a3;font-family:Outfit;font-weight:600;font-size:32px;letter-spacing:8px;opacity:0}
+#ctaChecks{position:absolute;left:0;right:0;top:980px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;padding:0 60px;opacity:0}
+#ctaChecks span{border:2px solid rgba(255,255,255,.25);color:#e5e5e5;font-weight:700;font-size:30px;padding:10px 22px;border-radius:99px}
+#trial{position:absolute;left:50%;top:1190px;transform:translateX(-50%);background:#fff;color:#0A0A0A;font-family:Outfit;font-weight:800;font-size:66px;padding:30px 60px;border-radius:40px;white-space:nowrap;opacity:0;text-align:center;line-height:1.05}
+#trial small{display:block;font-size:30px;font-weight:600;color:#525252;margin-top:10px}
+#ctaBtn{position:absolute;left:50%;top:1470px;transform:translateX(-50%);border:4px solid #fff;color:#fff;font-family:Outfit;font-weight:800;font-size:52px;padding:26px 60px;border-radius:99px;white-space:nowrap;opacity:0}
+#by{position:absolute;left:0;right:0;bottom:110px;text-align:center;color:#737373;font-size:24px;letter-spacing:3px;opacity:0}
+#by b{color:#fff}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+</style></head><body>
+<div class="L" id="main">
+  <img id="vid" src="v3/frames/f00001.jpg">
+  <div id="shadeTop"></div><div id="shadeBot"></div>
+  <div id="prog"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i class="last"><b></b></i></div>
+  <div id="teaser">la 5<sup>e</sup> va vous surprendre 👀</div><div id="count">1/5</div>
+  <div id="hookT"><span>Docteur, vous utilisez<br>encore ce carnet ? 📒</span></div>
+  <div id="feat"><div class="n" id="fn">1</div><div class="t" id="ft">Agenda &amp; rappels WhatsApp</div></div>
+  <div id="phone"><div id="screen">
+    <div id="sbar"><span>9:41</span><span>●●● ▮</span></div><div id="notch"></div>
+    <img class="scr" id="s_agenda" src="dg2/agenda.png"><img class="scr" id="s_rappels" src="dg2/rappels.png">
+    <img class="scr" id="s_patient" src="dg2/patient.png"><img class="scr" id="s_chart" src="dg2/patient-chart.png">
+    <img class="scr" id="s_ordo" src="dg2/ordo.png"><img class="scr" id="s_pers" src="dg2/pers.png"><img class="scr" id="s_pers2" src="dg2/pers2.png">
+    <img class="scr" id="s_caisse" src="dg2/caisse.png">
+    <img class="full" id="s_reel" src="dg2/reel/curseur_0000.jpg">
+    <div class="ring" id="ring"></div>
+  </div></div>
+  <div id="wa"><div class="h"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg></i>Rappel WhatsApp · prêt à envoyer</div>Bonjour Karim, le cabinet Sourire Bab Ezzouar vous rappelle votre rendez-vous du mardi 17 novembre 2026 à 10:00. Merci de confirmer votre présence…</div>
+  <div class="stick" id="stR" style="left:50px;top:1360px"><small>Reste à encaisser</small><b>19 000 DA</b></div>
+  <div id="cap"></div>
+</div>
+<div class="L" id="cta">
+  <div id="ctaIcon"><img src="dg/icons/icon-512.png"></div>
+  <div id="ctaT">DentaGest <span class="dz">DZ</span></div>
+  <div id="ctaSub">GESTION DU CABINET DENTAIRE</div>
+  <div id="ctaChecks"><span>Agenda</span><span>Rappels WhatsApp</span><span>Patients</span><span>Ordonnances</span><span>Caisse</span><span>Reels</span></div>
+  <div id="trial">7 jours d’essai gratuit<small>puis 2 000 DA / mois ou 20 000 DA / an · sans engagement</small></div>
+  <div id="ctaBtn">Lien en bio 👇</div>
+  <div id="by">by <b>CH</b></div>
+</div>
+<div id="flash"></div>
+<script>
+const T=__TIMING__;      // {words:[{w,s,e}], anchors:{un,deux,trois,quatre,der,end}, vidEnd, total}
+const META=__META__;
+const K=446/390,SB=40;
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),P=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3),eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eb=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const lerp=(a,b,x)=>a+(b-a)*x;
+function st(el,o,tr){el.style.opacity=o;if(tr!==undefined)el.style.transform=tr}
+function win(t,a,b,fi=.25,fo=.2){return Math.max(0,Math.min(P(t,a,a+fi),1-P(t,b-fo,b)))}
+const px=r=>({x:r.x*K,y:SB+r.y*K,w:r.w*K,h:r.h*K});
+function ringAt(t,a,b,r,pad=5){const o=win(t,a,b,.15,.15);if(o<=0)return;const q=px(r),el=$('ring');el.style.left=(q.x-pad)+'px';el.style.top=(q.y-pad)+'px';el.style.width=(q.w+2*pad)+'px';el.style.height=(q.h+2*pad)+'px';el.style.opacity=o}
+
+// caption lines: group words into chunks of <= 4 words / 22 chars, break at punctuation
+const W=T.words;const lines=[];{let cur=[];for(const w of W){cur.push(w);const txt=cur.map(x=>x.w).join(' ');if(cur.length>=4||txt.length>20||/[.,:;!?…»]$/.test(w.w)){lines.push(cur);cur=[]}}if(cur.length)lines.push(cur)}
+let curLine=-1;
+function captions(t){
+  const cap=$('cap');let li=lines.findIndex(l=>t>=l[0].s-0.05&&t<(lines[lines.indexOf(l)+1]?lines[lines.indexOf(l)+1][0].s-0.05:l[l.length-1].e+0.4));
+  if(t>T.vidEnd) li=-1;
+  if(li!==curLine){curLine=li;cap.innerHTML=li<0?'':lines[li].map(w=>'<span>'+w.w.replace(/[«»]/g,'').trim()+'</span>').join(' ')}
+  if(li<0)return;
+  const sp=cap.querySelectorAll('span');lines[li].forEach((w,i)=>{sp[i].className=(t>=w.s-0.03?'on':'')+(t>=w.s-0.03&&t<w.e+0.02?' cur':'')});
+  const l0=lines[li][0].s;const pin=eb(P(t,l0-0.05,l0+0.12));cap.style.transform=`scale(${lerp(.88,1,pin)})`;
+  // captions move above phone while features show
+  cap.style.top=(featOn(t)?820:1500)+'px';
+}
+const A=T.anchors;
+const featOn=t=>t>=A.un-0.1&&t<T.vidEnd-0.2;
+const FEATS=[[A.un,'1','Agenda &amp; rappels WhatsApp'],[A.deux,'2','Dossier patient &amp; schéma dentaire'],[A.trois,'3','Ordonnance en un clic'],[A.quatre,'4','Caisse &amp; impayés'],[A.der,'5','Vidéos avant / après']];
+let curFeat=-1;
+const vid=$('vid');let curF=-1;
+const SCR=['s_agenda','s_rappels','s_patient','s_chart','s_ordo','s_pers','s_pers2','s_caisse','s_reel'];
+const reel=$('s_reel');let curR='';
+async function R(t){
+  // video frame (30fps extracted)
+  const f=Math.min(T.nFrames,Math.max(1,Math.floor(t*30)+1));
+  if(t<=T.vidEnd+0.5&&f!==curF){curF=f;vid.src='v3/frames/f'+String(f).padStart(5,'0')+'.jpg';await vid.decode().catch(()=>{})}
+  // subtle punch-ins on beats for energy
+  let z=1.0;for(const a of [0,A.un,A.deux,A.trois,A.quatre,A.der]){const k=P(t,a,a+.25);if(t>=a)z=1.0+(z-1)*0 ;}
+  const punch=[[0,1.06],[A.un,1.0],[A.deux,1.04],[A.trois,1.0],[A.quatre,1.04],[A.der,1.08]];let zz=1;for(const [a,v] of punch)if(t>=a)zz=v;
+  vid.style.transform=`scale(${zz})`;
+  // retention UI
+  const ui=P(t,0.2,0.6)*(1-P(t,T.vidEnd-0.1,T.vidEnd+0.2));
+  $('prog').style.opacity=ui;$('teaser').style.opacity=ui*(t<A.der?1:0);$('count').style.opacity=ui*(t>=A.un?1:0);
+  const bars=$('prog').querySelectorAll('b');const ks=[A.un,A.deux,A.trois,A.quatre,A.der,T.vidEnd];
+  bars.forEach((b,i)=>{b.style.transform=`scaleX(${eio(P(t,ks[i],ks[i+1]))})`});
+  let fi=-1;FEATS.forEach((f,i)=>{if(t>=f[0]-0.1)fi=i});
+  if(t>T.vidEnd-0.2)fi=-1;
+  $('count').textContent=(fi<0?1:fi+1)+'/5';
+  // hook title first ~2.2s
+  {const o=win(t,0.15,A.hookEnd,.2,.2),p=eb(P(t,.15,.5));st($('hookT'),o,`scale(${lerp(.6,1,p)}) rotate(${(1-p)*-4}deg)`)}
+  // feature label + phone
+  const on=fi>=0;
+  $('shadeBot').style.opacity=on?Math.min(1,P(t,A.un-0.2,A.un+0.2)):Math.max(0,1-P(t,T.vidEnd-0.2,T.vidEnd+0.2));
+  if(fi!==curFeat&&fi>=0){$('fn').textContent=FEATS[fi][1];$('ft').innerHTML=FEATS[fi][2]}
+  curFeat=fi;
+  {const a=fi>=0?FEATS[fi][0]-0.1:0,p=eb(P(t,a,a+.35));st($('feat'),on?P(t,a,a+.15):0,`translateX(${(1-p)*-80}px) scale(${lerp(.7,1,p)})`)}
+  const ph=$('phone');const pin=eb(P(t,A.un-0.15,A.un+0.45)),pout=P(t,T.vidEnd-0.3,T.vidEnd);
+  let bump=0;for(const a of [A.deux,A.trois,A.quatre,A.der]){const k=P(t,a-.15,a+.3);bump+=Math.sin(k*Math.PI)}
+  ph.style.opacity=t<A.un-0.15?0:(1-pout);ph.style.transform=`translateY(${(1-pin)*900+pout*900}px) rotate(${(1-pin)*8+bump*2-3}deg) scale(${1-bump*.03})`;
+  // screens
+  const show={};SCR.forEach(k=>show[k]=0);$('ring').style.opacity=0;
+  if(fi===0){const k=P(t,A.un+1.6,A.un+1.9);show.s_agenda=1-k;show.s_rappels=k;if(k>=1)ringAt(t,A.un+2.0,A.deux-0.1,META.rap_wa)}
+  else if(fi===1){const k=P(t,A.deux+1.7,A.deux+2.0);show.s_patient=1-k;show.s_chart=k;if(k<1)ringAt(t,A.deux+0.4,A.deux+1.6,{x:16,y:296,w:358,h:41},4)}
+  else if(fi===2){const k=P(t,A.trois+1.4,A.trois+1.7),k2=P(t,A.trois+2.4,A.trois+2.6);show.s_ordo=1-k;show.s_pers=k*(1-k2);show.s_pers2=k2}
+  else if(fi===3){show.s_caisse=1;ringAt(t,A.quatre+0.8,T.vidEnd,{x:16,y:291,w:176,h:84},4)}
+  else if(fi===4){show.s_reel=1;const rt=t-A.der;let src;
+    if(rt<2.6)src='dg2/reel/curseur_'+String(Math.min(143,Math.floor(rt*30)+30)).padStart(4,'0')+'.jpg';
+    else src='dg2/reel/neon_'+String(Math.min(89,Math.floor((rt-2.6)*30)+15)).padStart(4,'0')+'.jpg';
+    if(src!==curR){curR=src;reel.src=src;await reel.decode().catch(()=>{})}}
+  for(const k of SCR){$(k).style.opacity=show[k]}
+  $('screen').style.background=fi===4?'#000':'#fff';$('sbar').style.color=fi===4?'#fff':'#0A0A0A';
+  // extras
+  {const a=A.un+2.1,o=win(t,a,A.deux-0.05,.2,.2),p=eb(P(t,a,a+.4));st($('wa'),o,`translateY(${(1-p)*80}px) scale(${lerp(.85,1,p)})`)}
+  {const a=A.quatre+1.2,o=win(t,a,A.der-0.05,.2,.2),p=eb(P(t,a,a+.4));st($('stR'),o,`scale(${lerp(.4,1,p)}) rotate(-3deg)`)}
+  captions(t);
+  // end card
+  const E=T.vidEnd;
+  $('cta').style.opacity=P(t,E-0.05,E+0.3);
+  {const p=eb(P(t,E+.1,E+.7));st($('ctaIcon'),P(t,E+.1,E+.25),`scale(${lerp(.2,1,p)}) rotate(${(1-p)*-18}deg)`);
+   const a=eo(P(t,E+.35,E+.8));st($('ctaT'),a,`translateY(${(1-a)*50}px)`);
+   const b=eo(P(t,E+.5,E+.9));st($('ctaSub'),b);
+   const c=eo(P(t,E+.65,E+1.05));st($('ctaChecks'),c,`translateY(${(1-c)*30}px)`);
+   const d=eb(P(t,E+.9,E+1.4));st($('trial'),P(t,E+.9,E+1.05),`translateX(-50%) scale(${lerp(.5,1,d)})`);
+   const e=eb(P(t,E+1.3,E+1.75));st($('ctaBtn'),P(t,E+1.3,E+1.45),`translateX(-50%) scale(${lerp(.6,1,e)*(1+(t>E+1.9?Math.sin((t-E-1.9)*7)*.035:0))})`);
+   st($('by'),P(t,E+1.6,E+2))}
+  $('flash').style.opacity=Math.max(0,1-Math.abs(t-E)/.12)*.35;
+}
+window.R=R;
+</script></body></html>
