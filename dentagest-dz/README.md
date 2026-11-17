@@ -1,6 +1,19 @@
-# DentaGest DZ — import de patients depuis un autre logiciel
+# DentaGest DZ — site deployed on Cloudflare (Worker `dentagest-dz`)
 
-`index.html` is the live app's `index.html` (dentagest-dz.dentagestdz.workers.dev, downloaded 2026-11-17) with a new **Importer des patients** feature. Only this file changed: deploy it in place of the current `index.html` on the Worker, and keep the other files (sw.js, fonts, icons, vendor, manifest).
+This folder is the whole site at dentagest-dz.dentagestdz.workers.dev, live since 2026-11-17 with the **Importer des patients** feature.
+
+- `public/`: the site files (index.html = the app, sw.js, manifest, fonts, icons, vendor/jsPDF, installer-android.html, downloads/DentaGest-DZ.apk).
+- `worker.js`: serves `public/index.html` at `/` and `/index.html`; everything else is a static asset. `public/.assetsignore` keeps index.html out of the assets.
+- `wrangler.jsonc`: Worker config.
+
+## Deploy
+```
+npm i wrangler@4
+npx wrangler deploy
+```
+From a Claude cloud session, the Cloudflare token is stored on the environment and injected by its proxy: run with `CLOUDFLARE_API_TOKEN=proxy-injected` (plus `NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt`). There, only changes to `index.html` and `worker.js` can be deployed: uploading a new or changed static file (APK, icons...) is refused, because the proxy replaces Cloudflare's upload key with the token. Deploy such changes from a normal computer.
+
+Roll back: `npx wrangler rollback` (previous versions are kept by Cloudflare).
 
 ## What the dentist sees
 - **Patients › Importer**, or **Paramètres › Données › Importer des patients d’un autre logiciel**.

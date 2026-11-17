@@ -1,0 +1,9 @@
+{
+  "name": "dentagest-dz",
+  "main": "worker.js",
+  "compatibility_date": "2025-06-01",
+  "account_id": "e78b872a8a559dab72f13f4ad15100f5",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": { "directory": "public", "binding": "ASSETS", "not_found_handling": "none", "run_worker_first": ["/", "/index.html"] }
+}
