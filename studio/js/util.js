@@ -75,6 +75,19 @@ const ICONS = {
   crop: 'M6 2v14a2 2 0 0 0 2 2h14M18 22V8a2 2 0 0 0-2-2H2',
   rotate: 'M2.5 2v6h6M2.7 15.6A9 9 0 1 0 5 5.6L2.5 8',
   record: 'M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z',
+  sticker: 'M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h9.5L21 14.5V5a2 2 0 0 0-2-2zM14 21v-5a2 2 0 0 1 2-2h5M8.5 10h.01M15.5 10h.01M8 14.5s1.5 2 4 2',
+  flashoff: 'M13 2L3 14h9l-1 8 10-12h-9zM2 2l20 20',
+  chevdown: 'M6 9l6 6 6-6',
+  chevup: 'M18 15l-6-6-6 6',
+  next: 'M5 12h14M13 6l6 6-6 6',
+  more: 'M5 12h.01M12 12h.01M19 12h.01',
+  swap: 'M7 4L3 8l4 4M3 8h13a4 4 0 0 1 4 4M17 20l4-4-4-4M21 16H8a4 4 0 0 1-4-4',
+  volume: 'M11 5L6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14',
+  mute: 'M11 5L6 9H2v6h4l5 4zM23 9l-6 6M17 9l6 6',
+  share: 'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13',
+  gallery: 'M3 3h18v18H3zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM21 15l-5-5L5 21',
+  drafts: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  palette: 'M12 22a10 10 0 1 1 10-10c0 2.8-2.2 4-4 4h-2a2 2 0 0 0-1.5 3.3A2 2 0 0 1 12 22zM7.5 11.5h.01M10.5 7.5h.01M15.5 7.5h.01',
 };
 export function icon(name, size = 18) {
   const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

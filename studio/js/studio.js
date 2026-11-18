@@ -1,108 +1,23 @@
 // Video Studio: multi-track timeline editor (video, text, music), live preview, inspector.
 import { h, icon, $, clamp, fmtTime, debounce, toast, modal, busy, pickFiles, downloadBlob, uid } from './util.js';
-import { Engine, ASPECTS, TRANSITIONS, MOTIONS, TEXT_ANIMS, layoutTimeline } from './engine.js';
-import { allMedia, getMedia, addMedia, imageEl, saveProject, allProjects, deleteProject, db, getSettings } from './store.js';
-import { newProject, newClip, newText, TEXT_PRESETS, TEMPLATES, buildTemplate, beatSync, DEF_FILTER } from './project.js';
+import { Engine, ASPECTS, TRANSITIONS, MOTIONS, TEXT_ANIMS, layoutTimeline, TR_LABEL, MOTION_LABEL, LAYOUTS, ANIM_LABEL, FONTS } from './engine.js';
+import { allMedia, getMedia, addMedia, imageEl, saveProject, db, getSettings } from './store.js';
+import { newClip, newText, TEXT_PRESETS, beatSync, DEF_FILTER } from './project.js';
 import { tryAnalyze, autoEnhanceParams, decodeAudio, detectBeats, waveformPeaks, captionIdeas } from './ai.js';
 import { exportProject, exportFrame, pickMime, QUALITIES } from './exporter.js';
-import { range, num, select, color, toggle, text, seg, section, mediaThumb, pickMedia, emptyState } from './ui.js';
+import { range, num, select, color, toggle, text, seg, section, mediaThumb, pickMedia } from './ui.js';
 
-const TR_LABEL = { none: 'Cut', dissolve: 'Dissolve', fade: 'Fade black', flash: 'Flash', wipe: 'Wipe', slide: 'Slide', push: 'Push up', zoom: 'Zoom', circle: 'Circle', blur: 'Blur' };
-const MOTION_LABEL = { none: 'Static', zoomIn: 'Slow zoom in', zoomOut: 'Slow zoom out', smileZoom: 'AI smile zoom', panLeft: 'Pan left', panRight: 'Pan right' };
 
 let current = null; // active editor instance (to clean up on navigation)
 export function leaveStudio() { current?.destroy(); current = null; }
 
-// ================= project list =================
-export async function renderStudio(main, params = {}) {
+// ================= Pro timeline (advanced editor for an existing reel) =================
+export async function renderPro(main, id) {
   leaveStudio();
-  if (params.project) {
-    const p = await db.get('projects', params.project);
-    if (p) return openEditor(main, p);
-  }
-  const projects = await allProjects();
-  main.innerHTML = '';
-  main.append(
-    h('div.top', h('div', h('h1', 'Video Studio'), h('p.muted', 'Edit before/after reels with a multi-track timeline, transitions, text, music and AI tools.')),
-      h('div.actions',
-        h('button.btn', { onclick: async () => { const p = newProject(await getSettings()); await saveProject(p); location.hash = '#/studio/' + p.id; } }, icon('plus'), 'Blank project'),
-        h('button.btn.primary', { onclick: () => magicReel() }, icon('sparkles'), 'Magic Reel (AI)'))),
-    projects.length
-      ? h('div.grid.cards', ...projects.map(p => h('div.card.proj', { onclick: () => (location.hash = '#/studio/' + p.id) },
-          h('div.proj-ar', { style: { aspectRatio: p.aspect.replace(':', '/') } }, icon('film', 30)),
-          h('div.proj-b', h('b', p.name), h('span.muted', `${p.aspect} · ${p.clips.length} clips · ${fmtTime(layoutTimeline(p), false)}`),
-            h('span.muted.sm', new Date(p.updatedAt).toLocaleString())),
-          h('button.icon-btn.del', { title: 'Delete', onclick: async e => { e.stopPropagation(); if (confirm(`Delete "${p.name}"?`)) { await deleteProject(p.id); renderStudio(main); } } }, icon('trash')))))
-      : emptyState('film', 'No video projects yet', 'Let the AI build a reel from a before/after pair, or start from a blank timeline.',
-          h('button.btn.primary', { onclick: () => magicReel() }, icon('sparkles'), 'Magic Reel (AI)')));
-}
-
-// ================= Magic Reel wizard =================
-export async function magicReel(pre = {}) {
-  const settings = await getSettings();
-  const st = { before: pre.before || null, after: pre.after || null, extras: [], tpl: 'reveal', treatment: pre.treatment || '', music: null, enhance: true, sync: true };
-  const audios = (await allMedia()).filter(m => m.kind === 'audio');
-  const res = await modal('Magic Reel — AI auto-edit', close => {
-    const slot = (key, label) => {
-      const box = h('button.slot', { type: 'button' });
-      const draw = () => { box.innerHTML = ''; box.append(st[key] ? h('img', { src: st[key].thumb }) : icon('plus', 26), h('span', label)); };
-      box.onclick = async () => { const m = await pickMedia({ kinds: ['image'], title: `Choose the ${label.toLowerCase()} photo`, caseId: pre.caseId }); if (m) { st[key] = m; draw(); } };
-      draw();
-      return box;
-    };
-    const extrasLbl = h('span.muted');
-    const tpls = h('div.tpls', ...TEMPLATES.map(t => {
-      const c = h('button.tpl' + (t.id === st.tpl ? '.on' : ''), { type: 'button', onclick: () => { st.tpl = t.id; [...tpls.children].forEach(x => x.classList.toggle('on', x === c)); } },
-        h('div.tpl-ar', { style: { aspectRatio: t.aspect.replace(':', '/') } }), h('b', t.name), h('span', t.desc), h('span.muted.sm', `${t.aspect} · ${t.len}`));
-      return c;
-    }));
-    return [
-      h('div.slots', slot('before', 'Before'), h('div.slot-arrow', '→'), slot('after', 'After')),
-      h('div.row-btns', h('button.btn.sm', { type: 'button', onclick: async () => { const l = await pickMedia({ kinds: ['image', 'video'], multi: true, title: 'Extra shots (optional)', caseId: pre.caseId }); if (l) { st.extras = l; extrasLbl.textContent = `${l.length} extra shot(s)`; } } }, icon('plus'), 'Extra shots'), extrasLbl),
-      h('h4', 'Template'), tpls,
-      text('Treatment', st.treatment, v => (st.treatment = v), { placeholder: 'e.g. Veneers, Invisalign, Whitening' }),
-      select('Music', '', [['', audios.length ? 'No music' : 'No music (import audio in the studio)'], ...audios.map(a => [a.id, a.name])], v => (st.music = v || null)),
-      toggle('AI auto-enhance colours', st.enhance, v => (st.enhance = v)),
-      toggle('AI beat-sync cuts to the music', st.sync, v => (st.sync = v)),
-      h('div.modal-foot', h('button.btn.primary', { onclick: () => {
-        if (!st.before || !st.after) return toast('Choose a before and an after photo', 'err');
-        close(st);
-      } }, icon('sparkles'), 'Create my reel')),
-    ];
-  }, { wide: true });
-  if (!res) return;
-  const b = busy('AI is finding the smile in your photos…');
-  try {
-    await tryAnalyze(res.before); await tryAnalyze(res.after);
-    for (const m of res.extras) if (m.kind === 'image') await tryAnalyze(m);
-    b.set('Building the edit…');
-    const p = buildTemplate(res.tpl, { before: res.before, after: res.after, extras: res.extras, treatment: res.treatment, settings, musicId: res.music });
-    if (res.enhance) {
-      for (const c of p.clips) {
-        const m = c.mediaId && await getMedia(c.mediaId);
-        if (m?.kind === 'image') c.filter = autoEnhanceParams(await imageEl(m));
-        const m2 = c.mediaId2 && await getMedia(c.mediaId2);
-        if (m2?.kind === 'image') c.filter2 = autoEnhanceParams(await imageEl(m2));
-      }
-    }
-    if (res.music && res.sync) {
-      b.set('Listening to the music for beats…');
-      const am = await getMedia(res.music);
-      const buf = await decodeAudio(am.blob, am.id);
-      const { beats, period } = detectBeats(buf);
-      // keep texts glued to their clips while durations change
-      const before = layoutTimeline(p), starts = p.clips.map(c => c._start);
-      const owners = p.overlays.map(o => { const i = p.clips.findLastIndex(c => c._start <= o.start + 1e-3); return [i, o.start - starts[i]]; });
-      beatSync(p, beats, period * (period < 0.45 ? 2 : 1));
-      layoutTimeline(p);
-      p.overlays.forEach((o, k) => { const [i, off] = owners[k]; if (i >= 0) o.start = +(p.clips[i]._start + off).toFixed(2); o.duration = Math.min(o.duration, p.clips[i].duration - off + 0.01); });
-      void before;
-    }
-    await saveProject(p);
-    location.hash = '#/studio/' + p.id;
-    toast('Your reel is ready — tweak anything on the timeline ✨', 'ok');
-  } catch (e) { console.error(e); toast('Could not build the reel: ' + e.message, 'err'); }
-  finally { b.done(); }
+  const p = await db.get('projects', id);
+  if (!p) { location.hash = '#/drafts'; return; }
+  await openEditor(main, p);
+  return () => leaveStudio();
 }
 
 // ================= editor =================
@@ -128,7 +43,7 @@ async function openEditor(main, project) {
   const undoBtn = h('button.icon-btn', { title: 'Undo (Ctrl+Z)', onclick: () => undo() }, icon('undo'));
   const redoBtn = h('button.icon-btn', { title: 'Redo (Ctrl+Shift+Z)', onclick: () => redo() }, icon('redo'));
   const bar = h('div.sbar',
-    h('button.icon-btn', { title: 'All projects', onclick: () => (location.hash = '#/studio') }, icon('back')),
+    h('button.icon-btn', { title: 'Back to the reel editor', onclick: () => (location.hash = '#/edit/' + S.p.id) }, icon('back')),
     nameIn, undoBtn, redoBtn,
     h('div.sp'),
     h('button.btn.sm', { onclick: () => captionModal() }, icon('text'), h('span.hide-s', 'Captions')),
@@ -314,7 +229,7 @@ async function openEditor(main, project) {
       lanes[li] = o.start + o.duration;
       const sel = S.sel?.type === 'text' && S.sel.id === o.id;
       const el = h('div.ov' + (sel ? '.sel' : ''), { style: { left: X(o.start) + 'px', width: Math.max(10, X(o.duration)) + 'px', top: 4 + li * 26 + 'px' } },
-        h('span', o.text.replace(/\n/g, ' ') || 'Text'), h('div.hdl.l'), h('div.hdl.r'));
+        h('span', (o.text || '').replace(/\n/g, ' ') || ({ confetti: '🎉 Confetti', loading: '⏳ Loading bar', rating: '⭐ Rating', countdown: '3·2·1', cta: '📅 Book now', tag: '@ Tag', emoji: 'Emoji' }[o.kind] || 'Text')), h('div.hdl.l'), h('div.hdl.r'));
       el.addEventListener('pointerdown', e => ovDrag(e, o, el));
       tTrack.append(el);
     });
@@ -599,7 +514,7 @@ async function openEditor(main, project) {
             m2?.thumb ? h('img', { src: m2.thumb }) : icon('plus'), h('span', 'After')),
           c.layout !== 'single' && m2 && h('button.icon-btn', { title: 'Swap before / after', onclick: () => { E('', () => ([c.mediaId, c.mediaId2] = [c.mediaId2, c.mediaId]), true); drawInspector(); } }, icon('flip'))),
         !isVid && h('div.seg-wrap', h('span.row-l', 'Layout'),
-          seg(c.layout, [['single', 'Single'], ['wipe', 'Swipe'], ['split', 'Split']], v => { E('', () => { c.layout = v; if (v !== 'single' && c.motion === 'smileZoom') c.motion = 'none'; }, true); drawInspector(); })),
+          select('', c.layout, LAYOUTS, v => { E('', () => { c.layout = v; if (v !== 'single' && c.motion === 'smileZoom') c.motion = 'none'; }, true); drawInspector(); })),
         c.layout !== 'single' && toggle('AI auto-align smiles', c.align !== false, v => E('', () => (c.align = v))),
         c.layout !== 'single' && toggle('Before / After labels', c.labels !== false, v => E('', () => (c.labels = v))),
         m?.kind === 'image' && h('div.ai-line', icon('sparkles', 14), h('span', faceInfo(m) + (m2 ? ' · ' + faceInfo(m2) : '')),
@@ -651,14 +566,15 @@ async function openEditor(main, project) {
       section('Content', text('', o.text, v => { E('txt' + o.id, () => (o.text = v)); }, { area: true }),
         h('div.chips', ...TEXT_PRESETS.map(pr => h('button.chip', { onclick: () => { E('', () => Object.assign(o, pr.props, pr.props.bgColor === '#14b8a6' ? { bgColor: S.p.accent } : {})); drawInspector(); } }, pr.name)))),
       section('Style',
-        select('Font', o.font, [['Inter, system-ui, sans-serif', 'Sans (Inter)'], ['Georgia, "Times New Roman", serif', 'Serif'], ['"Trebuchet MS", sans-serif', 'Rounded'], ['"Courier New", monospace', 'Mono'], ['Impact, "Arial Black", sans-serif', 'Impact']], v => E('', () => (o.font = v))),
+        select('Font', o.font, Object.entries(FONTS).map(([k, f]) => [k, f.label]), v => E('', () => (o.font = v))),
+        select('Style', o.style || 'classic', [['classic', 'Classic'], ['highlight', 'Highlight'], ['neon', 'Neon'], ['outline', 'Outline']], v => E('', () => (o.style = v))),
         range('Size', o.size, 20, 220, 1, v => E('ts', () => (o.size = v)), v => v + 'px'),
         select('Weight', String(o.weight), [['400', 'Regular'], ['600', 'Semibold'], ['800', 'Bold'], ['900', 'Black']], v => E('', () => (o.weight = +v))),
         color('Colour', o.color, v => E('tc', () => (o.color = v))),
         select('Background', o.bg, [['none', 'None (shadow)'], ['box', 'Box'], ['pill', 'Pill']], v => { E('', () => (o.bg = v)); drawInspector(); }),
         o.bg !== 'none' && color('Box colour', o.bgColor, v => E('tbg', () => (o.bgColor = v)))),
       section('Animation & position',
-        select('Animation', o.anim, TEXT_ANIMS.map(a => [a, { fade: 'Fade', slideUp: 'Slide up', pop: 'Pop', typewriter: 'Typewriter', zoom: 'Zoom in', none: 'None' }[a]]), v => E('', () => (o.anim = v))),
+        select('Animation', o.anim, TEXT_ANIMS.map(a => [a, ANIM_LABEL[a]]), v => E('', () => (o.anim = v))),
         range('X', o.x, 0, 1, 0.005, v => E('tx', () => (o.x = v)), v => Math.round(v * 100) + '%'),
         range('Y', o.y, 0, 1, 0.005, v => E('ty', () => (o.y = v)), v => Math.round(v * 100) + '%'),
         num('Start', o.start, 0, 600, 0.1, v => E('', () => (o.start = v)), 's'),
