@@ -387,6 +387,48 @@ nav.tabs a .ind{position:absolute;top:-7px;left:50%;width:28px;height:4px;margin
 #toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:99px;font-size:13.5px;font-weight:700;z-index:40;max-width:90%;text-align:center}
 #toast[hidden]{display:none}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(16px)}to{transform:none}}}
+
+.pill.s-fauteuil{color:var(--accent)}
+.medbox{border:1px solid var(--warn);border-left-width:5px;border-radius:10px;padding:10px 12px;background:var(--surface);font-size:13.5px}
+.medbox.red{border-color:var(--crit)}
+.medbox>b{color:var(--warn)}.medbox.red>b{color:var(--crit)}
+.medbox ul{margin:6px 0 4px;padding-left:18px}.medbox li{margin:3px 0}.medbox small{color:var(--muted)}
+.dvl{display:grid;grid-template-columns:62px minmax(0,1fr) 104px 36px;gap:6px;align-items:center;margin-bottom:6px}
+.dvl input{min-width:0;width:100%}
+.dvh{font-size:11.5px;color:var(--muted);font-weight:700;margin:0 0 4px}
+@media (max-width:560px){.dvl:not(.dvh){grid-template-columns:62px minmax(0,1fr) 36px;row-gap:4px;padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:8px}.dvl:not(.dvh) [data-dv="acte"]{grid-column:1/-1;order:-1}.dvl.dvh:not(.tfl){display:none}}
+.tfl{display:grid;grid-template-columns:minmax(0,1fr) 110px 36px;gap:6px;align-items:center;margin-bottom:6px}
+.tfl input{min-width:0;width:100%}
+.dvtot{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-top:1px solid var(--line);margin-top:14px;padding-top:12px;font-weight:700}
+.dvtot small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.dvtot b{font:800 24px var(--f-display)}
+.kpi small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+.stk{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important}
+.stc svg{width:100%;height:auto;display:block}
+.stc .sg{stroke:var(--line);stroke-width:1}.stc .sa{stroke:var(--muted);stroke-width:1}
+.stc .sl{fill:var(--muted);font:12px var(--f-body)}
+.stc{max-width:680px}
+.stc .sb path{fill:var(--accent);opacity:.82}.stc .sb.cur path{opacity:1}
+.stc .sb:hover path,.stc .sb:focus path{opacity:1;stroke:var(--surface);stroke-width:2}
+.stc .sb{cursor:pointer;outline:none}
+.sttip{margin:8px 0 0;font-size:13px;color:var(--ink);min-height:18px}
+.stt{margin-top:10px;font-size:13.5px}.stt summary{cursor:pointer;color:var(--muted);font-weight:600}
+.stt table{width:100%;border-collapse:collapse;margin-top:8px}.stt th,.stt td{text-align:left;padding:6px 4px;border-top:1px solid var(--line)}.stt td.num,.stt th:not(:first-child){text-align:right}
+.hbar{display:grid;grid-template-columns:minmax(0,38%) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13.5px;padding:7px 0;border-top:1px solid var(--line)}
+.hbar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar i{display:block;height:10px;border-radius:0 4px 4px 0;background:var(--accent);opacity:.82}
+.attg{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.attlink{display:flex;align-items:center;justify-content:space-between;gap:10px;color:inherit;text-decoration:none}
+.attlink small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+#attv{position:fixed;inset:0;z-index:400;background:#0A0A0A;color:#F3F3F3;padding:4vh 5vw;overflow:auto;font-family:var(--f-display);cursor:pointer;display:flex;flex-direction:column}
+#attv .tvh{display:flex;justify-content:space-between;font-size:clamp(20px,3.4vw,44px);border-bottom:1px solid #333;padding-bottom:2vh}
+#attv .tvc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:5vw;flex:1;padding-top:4vh}
+#attv h3{font-size:clamp(14px,1.8vw,24px);color:#9C9C9C;text-transform:uppercase;letter-spacing:.08em;margin:0 0 2vh}
+#attv p{font-size:clamp(22px,3.6vw,52px);margin:0 0 1.6vh;display:flex;gap:.6em;align-items:baseline}
+#attv p.big{font-size:clamp(30px,5.4vw,80px);font-weight:800}
+#attv p i{font-style:normal;color:#9C9C9C;min-width:1.2em}
+#attv .mut{color:#666}
+#attv>small{color:#666;font-size:14px;text-align:center}
 </style>
 </head>
 <body>
@@ -541,6 +583,8 @@ const ICON={
  reel:'<rect x="6" y="3" width="12" height="18" rx="2.500"/><path d="M10.500 9.500v5l4-2.500z"/>',
  caisse:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.500"/><path d="M6.500 9.500v5M17.500 9.500v5"/>',
  parametres:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.600 5.600l2.100 2.100M16.300 16.300l2.100 2.100M5.600 18.400l2.100-2.100M16.300 7.700l2.100-2.100"/>',
+ stats:'<path d="M4 20h16"/><rect x="6" y="11" width="3" height="7" rx="1"/><rect x="11" y="6" width="3" height="12" rx="1"/><rect x="16" y="13" width="3" height="5" rx="1"/>',
+ attente:'<circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/>',
  plus:'<path d="M12 5v14M5 12h14"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',back:'<path d="M15 5l-7 7 7 7"/>',next:'<path d="M9 5l7 7-7 7"/>',
  copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
  dl:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',trash:'<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/>'
@@ -555,8 +599,8 @@ lookApply();
 let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2600)}
 
 /* ---------- Référentiels ---------- */
-const STATUTS={prevu:'Prévu',confirme:'Confirmé',salle:'En salle d’attente',termine:'Terminé',absent:'Absent'};
-const STAT_ORDER=['prevu','confirme','salle','termine','absent'];
+const STATUTS={prevu:'Prévu',confirme:'Confirmé',salle:'En salle d’attente',fauteuil:'Au fauteuil',termine:'Terminé',absent:'Absent'};
+const STAT_ORDER=['prevu','confirme','salle','fauteuil','termine','absent'];
 const MOTIFS=['Consultation','Contrôle','Urgence','Détartrage','Soin de carie','Dévitalisation','Extraction','Extraction dent de sagesse','Prothèse','Couronne','Orthodontie','Blanchiment','Pédodontie'];
 const ACTES=['Consultation','Détartrage','Obturation composite','Obturation amalgame','Traitement endodontique','Extraction simple','Extraction chirurgicale','Couronne céramo-métallique','Couronne zircone','Prothèse amovible','Blanchiment','Radiographie rétro-alvéolaire','Appareil orthodontique'];
 const ALLERGIES={penicilline:'Pénicillines',ains:'AINS / aspirine',macrolide:'Macrolides',opioide:'Codéine / tramadol',paracetamol:'Paracétamol',imidazole:'Métronidazole',chlorhexidine:'Chlorhexidine',anesthesique:'Anesthésiques locaux',latex:'Latex'};
@@ -752,10 +796,10 @@ const TEMPLATES=[
 ];
 
 /* ---------- État et stockage ---------- */
-const COLS=['patients','rdv','ordos','paiements','modeles','meds'];
+const COLS=['patients','rdv','ordos','paiements','modeles','meds','devis','certifs'];
 const DEF_CONFIG={cabinet:'',praticien:'',specialite:'Chirurgien-dentiste',mentions:'',ordre:'',adresse:'',tel:'',ville:'',modele:'entete',logo:'',logoR:2};
 const CFG_TXT=['cabinet','praticien','specialite','mentions','ordre','tel','adresse','ville'];
-const S={patients:[],rdv:[],ordos:[],paiements:[],modeles:[],meds:[],config:{...DEF_CONFIG}};
+const S={patients:[],rdv:[],ordos:[],paiements:[],modeles:[],meds:[],devis:[],certifs:[],config:{...DEF_CONFIG}};
 const ui={fmt:'a5',patient:null,day:today(),week:null,q:'',mq:'',mc:'',caisse:'tous',ready:false};
 const clone=o=>JSON.parse(JSON.stringify(o));
 /* Base IndexedDB : bien plus de place que le stockage local (limité à ~5 Mo) */
@@ -995,6 +1039,7 @@ function patientForm(p){
   {k:'nom',l:'Nom',v:p.nom,req:1},{k:'prenom',l:'Prénom',v:p.prenom,req:1},
   {k:'sexe',l:'Sexe',t:'select',v:p.sexe||'F',o:[['F','Femme'],['M','Homme']]},{k:'naissance',l:'Date de naissance',t:'date',v:p.naissance},
   {k:'tel',l:'Téléphone',t:'tel',v:p.tel},{k:'adresse',l:'Adresse',v:p.adresse},
+  {k:'medical',l:'Questionnaire médical : cochez ce qui concerne le patient',t:'checks',v:p.medical||medFromText(p.antecedents),o:Object.entries(MEDCOND)},
   {k:'antecedents',l:'Antécédents médicaux et traitements en cours',t:'textarea',v:p.antecedents,full:1},
   {k:'allergies',l:'Allergies',t:'checks',v:p.allergies||[],o:Object.entries(ALLERGIES)},
   {k:'allergiesAutres',l:'Autres allergies',v:p.allergiesAutres,full:1}
@@ -1016,9 +1061,14 @@ function payForm(x){
  if(!S.patients.length){toast('Ajoutez d’abord un patient');return patientForm()}
  openForm(x.id?'Modifier le paiement':'Nouvel acte à encaisser',[
   {k:'patientId',l:'Patient',t:'select',v:x.patientId||'',o:patOptions(),req:1,full:1},
-  {k:'acte',l:'Acte',v:x.acte,list:ACTES,req:1},{k:'date',l:'Date',t:'date',v:x.date||today(),req:1},
+  {k:'acte',l:'Acte',v:x.acte,list:actesList(),req:1},{k:'date',l:'Date',t:'date',v:x.date||today(),req:1},
   {k:'montant',l:'Montant total (DA)',t:'number',v:x.montant??'',req:1},{k:'verse',l:'Montant versé (DA)',t:'number',v:x.verse??''}
- ],o=>{Store.save('paiements',{...x,...o,id:x.id||newId(),num:x.num||nextNum('paiements')});closeSheet();render();toast('Paiement enregistré')});
+ ],o=>{
+  if(o.montant<0||o.verse<0){$('#form-err').innerHTML='<div class="alertbox">Les montants ne peuvent pas être négatifs.</div>';return}
+  if(o.verse>o.montant){$('#form-err').innerHTML='<div class="alertbox">Le montant versé ('+da(o.verse)+') dépasse le montant total ('+da(o.montant)+').</div>';return}
+  const y={...x,...o,id:x.id||newId(),num:x.num||nextNum('paiements')};y.versements=vers(x);y.verse=Number(x.verse)||0;setVerse(y,o.verse,x.id?today():o.date);
+  Store.save('paiements',y);closeSheet();render();toast('Paiement enregistré')});
+ if(x.id&&vers(x).length)$('#sheet-b').insertAdjacentHTML('beforeend','<div class="note" style="margin-top:12px"><b>Versements reçus</b><br>'+vers(x).map(v=>fr(v.date)+' : '+da(v.montant)).join('<br>')+'<br><small>Pour un nouveau versement, augmentez le montant versé : il sera daté d’aujourd’hui.</small></div>');
  if(x.id)$('.sheet-f').insertAdjacentHTML('afterbegin','<button class="btn danger" data-a="pay-del" data-id="'+x.id+'" style="margin-right:auto">Supprimer</button><button class="btn" data-a="pay-pdf" data-id="'+x.id+'">'+ic('dl')+'Reçu PDF</button>');
 }
 const nextNum=col=>S[col].reduce((m,x)=>Math.max(m,x.num||0),0)+1;
@@ -1045,7 +1095,7 @@ function drawEditor(){
   :'<button class="btn" data-a="tpl-save" style="margin-right:auto">Enregistrer comme modèle</button><button class="btn" data-a="close">Annuler</button><button class="btn pri" data-a="ordo-save">Enregistrer</button>');
  if(!M)drawAlerts();
 }
-function drawAlerts(){const el=$('#ed_alerts');if(!el||!D)return;const h=allergyHits(pat(D.patientId),D.lignes);el.innerHTML=h.map(x=>'<div class="alertbox" style="margin-bottom:6px">'+esc(x)+'</div>').join('')}
+function drawAlerts(){const el=$('#ed_alerts');if(!el||!D)return;const h=allergyHits(pat(D.patientId),D.lignes).concat(medHits(pat(D.patientId),D.lignes));el.innerHTML=h.map(x=>'<div class="alertbox" style="margin-bottom:6px">'+esc(x)+'</div>').join('')}
 function drawMedResults(q){
  const el=$('#ed_res');if(!el)return;const n=norm(q);
  if(n.length<2){el.innerHTML='';return}
@@ -2087,7 +2137,7 @@ async function saveFile(filename,make){
 }
 
 /* ---------- Vues ---------- */
-const NAV=[['accueil','Accueil'],['agenda','Agenda'],['patients','Patients'],['ordonnances','Ordonnances'],['modeles','Modèles',1],['medicaments','Médicaments',1],['caisse','Caisse',1],['reel','Avant/Après',1],['parametres','Paramètres',1]];
+const NAV=[['accueil','Accueil'],['agenda','Agenda'],['patients','Patients'],['ordonnances','Ordonnances'],['modeles','Modèles',1],['medicaments','Médicaments',1],['caisse','Caisse',1],['stats','Statistiques',1],['attente','Salle d’attente',1],['reel','Avant/Après',1],['parametres','Paramètres',1]];
 const route=()=>{const h=location.hash.slice(1);return NAV.some(n=>n[0]===h)?h:'accueil'};
 /* Change de page avec une transition : glisse vers la gauche ou la droite selon l'ordre des onglets */
 let lastRoute=null;const reduceMotion=()=>window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2102,7 +2152,7 @@ function drawNav(r){const a=NAV.map(n=>'<a href="#'+n[0]+'" class="'+(n[2]?'extr
 function createSheet(){
  const t=(a,ico,l,sub,ex)=>'<button class="item" '+a+'><span class="av" style="border-radius:12px;background:var(--surface2);color:var(--ink)">'+ic(ico)+'</span><span class="grow"><b>'+l+'</b><small>'+sub+'</small></span>'+ic('next')+'</button>';
  sheet('Créer','<button class="promo-one" data-a="rl-open" data-k="'+rlTpl().id+'" style="display:flex;align-items:center;gap:14px;background:#000;color:#fff;border-radius:18px;padding:16px;text-align:left"><span class="playc" style="position:static;margin:0;width:56px;height:56px;flex:none"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span><span><b style="font:700 18px var(--f-display);display:block">Vidéo avant/après</b><small style="color:#BDBDBD">'+RL_TPL.length+' modèles de reels verticaux</small></span></button>'+
- '<div class="list">'+t('data-a="rdv-new"','agenda','Rendez-vous','Planifier une consultation')+t('data-a="pat-new"','patients','Patient','Nouvelle fiche')+t('data-a="ordo-new"','ordonnances','Ordonnance','Rédiger et imprimer')+t('data-a="pers-open"','modeles','Ordonnance personnalisée','Style, couleurs et logo')+t('data-a="pay-new"','caisse','Paiement','Encaisser un acte')+t('data-a="go" data-h="caisse"','caisse','Caisse','Recettes et impayés')+t('data-a="go" data-h="parametres"','parametres','Paramètres','Cabinet, en-tête, données')+'</div>');
+ '<div class="list">'+t('data-a="rdv-new"','agenda','Rendez-vous','Planifier une consultation')+t('data-a="pat-new"','patients','Patient','Nouvelle fiche')+t('data-a="ordo-new"','ordonnances','Ordonnance','Rédiger et imprimer')+t('data-a="pers-open"','modeles','Ordonnance personnalisée','Style, couleurs et logo')+t('data-a="pay-new"','caisse','Paiement','Encaisser un acte')+t('data-a="dv-new"','caisse','Devis','Plan de traitement chiffré, en PDF')+t('data-a="cert-new"','ordonnances','Certificat','Arrêt de travail, présence, soins')+t('data-a="go" data-h="attente"','attente','Salle d’attente','Arrivées et patients au fauteuil')+t('data-a="go" data-h="stats"','stats','Statistiques','Recettes et activité du cabinet')+t('data-a="go" data-h="caisse"','caisse','Caisse','Recettes et impayés')+t('data-a="go" data-h="parametres"','parametres','Paramètres','Cabinet, en-tête, données')+'</div>');
 }
 const pill=s=>'<span class="pill s-'+s+'">'+esc(STATUTS[s]||s)+'</span>';
 function rdvRow(r,withDate){const p=pat(r.patientId);return '<div class="item"><span class="time num">'+esc(r.heure)+'</span><button class="grow" data-a="rdv-edit" data-id="'+r.id+'" style="text-align:left"><b>'+esc(pname(p))+'</b><small>'+(withDate?fr(r.date)+' · ':'')+esc(r.motif||'')+(r.duree?' · '+r.duree+' min':'')+(r.note?' · '+esc(r.note):'')+'</small></button><button data-a="rdv-cycle" data-id="'+r.id+'" aria-label="Changer le statut">'+pill(r.statut)+'</button></div>'}
@@ -2110,7 +2160,7 @@ const byTime=(a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure);
 
 function vAccueil(){
  const t=today(),rd=S.rdv.filter(r=>r.date===t).sort(byTime),mois=t.slice(0,7);
- const enc=S.paiements.filter(x=>x.date.slice(0,7)===mois).reduce((s,x)=>s+(Number(x.verse)||0),0);
+ const enc=encMois(mois);
  const du=S.paiements.reduce((s,x)=>s+reste(x),0);
  const impayes=S.paiements.filter(x=>reste(x)>0).sort((a,b)=>reste(b)-reste(a)).slice(0,5);
  const next=S.rdv.filter(r=>r.date>t).sort(byTime).slice(0,4);
@@ -2118,6 +2168,7 @@ function vAccueil(){
  h+='<div class="head"><div><h1>'+longDate(t)+'</h1><p>'+esc(S.config.praticien)+'</p></div><div class="row"><button class="btn pri" data-a="rdv-new">'+ic('plus')+'Rendez-vous</button><button class="btn" data-a="ordo-new">'+ic('plus')+'Ordonnance</button></div></div>';
  if(!S.patients.length)h+='<div class="card"><h2>Bienvenue dans votre cabinet</h2><p style="margin:0 0 12px;color:var(--muted)">Ajoutez votre premier patient, ou chargez quelques fiches fictives pour découvrir l’application. Les '+TEMPLATES.length+' modèles d’ordonnance sont déjà prêts.</p><div class="row"><button class="btn pri" data-a="pat-new">'+ic('plus')+'Ajouter un patient</button><button class="btn" data-a="demo-load">Charger des exemples</button></div></div>';
  h+='<div class="kpis"><div class="kpi"><span>Rendez-vous aujourd’hui</span><b class="num">'+rd.length+'</b></div><div class="kpi"><span>Patients</span><b class="num">'+S.patients.length+'</b></div><div class="kpi"><span>Encaissé en '+MOIS[Number(mois.slice(5))-1]+'</span><b class="num">'+da(enc)+'</b></div><div class="kpi'+(du>0?' alert':'')+'"><span>Reste à encaisser</span><b class="num">'+da(du)+'</b></div></div>';
+ {const w=rd.filter(r=>r.statut==='salle').length,f=rd.filter(r=>r.statut==='fauteuil').length;if(rd.length)h+='<a class="card attlink" href="#attente"><span><b>Salle d’attente</b><small>'+w+' en attente · '+f+' au fauteuil</small></span>'+ic('next')+'</a>'}
  const dm=addDays(t,1),rp=aRappeler(dm),rest=rp.filter(r=>!r.rappel).length;
  if(rp.length)h+='<div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><b>Demain : '+rp.length+' rendez-vous</b><br><small style="color:var(--muted)">'+(rest?rest+' patient'+(rest>1?'s':'')+' à rappeler':'Tous les patients ont été rappelés')+'</small></div><button class="btn'+(rest?' pri':'')+'" data-a="rappels" data-d="'+dm+'">Rappels</button></div>';
  h+='<a class="shead" href="#reel" data-a="rl-back"><h2>Modèles vidéo</h2>'+ic('next')+'</a><div class="tgrid">'+RL_TPL.slice(0,4).map(rlCard).join('')+'</div>';
@@ -2131,7 +2182,7 @@ function vAgenda(){
  const t=today();let days='';
  for(let i=0;i<7;i++){const s=addDays(ui.week,i),d=new Date(s+'T12:00:00'),has=S.rdv.some(r=>r.date===s);days+='<button class="day'+(s===ui.day?' on':'')+(s===t?' today':'')+(has?' has':'')+'" data-a="day" data-d="'+s+'" aria-label="'+longDate(s)+'">'+JOURS[d.getDay()]+'<b class="num">'+d.getDate()+'</b><i></i></button>'}
  const list=S.rdv.filter(r=>r.date===ui.day).sort(byTime);
- return '<div class="head"><div><h1>Agenda</h1><p>'+longDate(ui.day)+' · '+list.length+' rendez-vous</p></div><div class="row"><button class="btn sm" data-a="day" data-d="'+t+'">Aujourd’hui</button><button class="btn sm" data-a="rappels" data-d="'+ui.day+'">Rappels</button><button class="btn pri" data-a="rdv-new">'+ic('plus')+'Rendez-vous</button></div></div>'+
+ return '<div class="head"><div><h1>Agenda</h1><p>'+longDate(ui.day)+' · '+list.length+' rendez-vous</p></div><div class="row"><button class="btn sm" data-a="day" data-d="'+t+'">Aujourd’hui</button><a class="btn sm" href="#attente">Salle d’attente</a><button class="btn sm" data-a="rappels" data-d="'+ui.day+'">Rappels</button><button class="btn pri" data-a="rdv-new">'+ic('plus')+'Rendez-vous</button></div></div>'+
  '<div class="days"><button class="iconbtn" data-a="week" data-n="-7" aria-label="Semaine précédente">'+ic('back')+'</button>'+days+'<button class="iconbtn" data-a="week" data-n="7" aria-label="Semaine suivante">'+ic('next')+'</button></div>'+
  '<div class="card"><div class="list">'+(list.map(r=>rdvRow(r)).join('')||'<div class="empty">Aucun rendez-vous ce jour. Touchez « Rendez-vous » pour en ajouter un.</div>')+'</div><p style="margin:10px 0 0;font-size:12.500px;color:var(--muted)">Touchez la pastille de statut pour passer au statut suivant.</p></div>';
 }
@@ -2139,7 +2190,7 @@ const PAGE=60;
 const moreBtn=(k,shown,total)=>total>shown?'<button class="btn sm" data-a="more" data-k="'+k+'" style="margin:10px auto 0;display:flex">Afficher plus ('+(total-shown)+' restant'+(total-shown>1?'s':'')+')</button>':'';
 function patListHTML(){
  const q=norm(ui.q),l=[...S.patients].filter(p=>!q||norm(pname(p)+' '+(p.tel||'')).includes(q)).sort((a,b)=>pname(a).localeCompare(pname(b),'fr'));
- const all=l,n=ui.patN||PAGE;return all.slice(0,n).map(p=>'<button class="item" data-a="pat-open" data-id="'+p.id+'"><span class="av">'+esc(initials(p))+'</span><span class="grow"><b>'+esc(pname(p))+'</b><small>'+[age(p.naissance),p.tel].filter(Boolean).map(esc).join(' · ')+'</small></span>'+(p.ex?'<span class="pill plain">Exemple</span>':'')+((p.allergies||[]).length||p.allergiesAutres?'<span class="pill crit">Allergie</span>':'')+'</button>').join('')+moreBtn('patN',n,all.length)||'<div class="empty">'+(S.patients.length?'Aucun patient ne correspond.':'Aucun patient pour le moment.')+'</div>';
+ const all=l,n=ui.patN||PAGE;return all.slice(0,n).map(p=>'<button class="item" data-a="pat-open" data-id="'+p.id+'"><span class="av">'+esc(initials(p))+'</span><span class="grow"><b>'+esc(pname(p))+'</b><small>'+[age(p.naissance),p.tel].filter(Boolean).map(esc).join(' · ')+'</small></span>'+(p.ex?'<span class="pill plain">Exemple</span>':'')+((p.allergies||[]).length||p.allergiesAutres?'<span class="pill crit">Allergie</span>':'')+((p.medical||[]).some(k=>MED_RED.has(k))?'<span class="pill warn">À risque</span>':'')+'</button>').join('')+moreBtn('patN',n,all.length)||'<div class="empty">'+(S.patients.length?'Aucun patient ne correspond.':'Aucun patient pour le moment.')+'</div>';
 }
 function vPatients(){
  const p=ui.patient&&pat(ui.patient);
@@ -2150,10 +2201,12 @@ function vPatients(){
 function vPatient(p){
  const rd=S.rdv.filter(r=>r.patientId===p.id).sort(byTime).reverse(),or=S.ordos.filter(o=>o.patientId===p.id).sort((a,b)=>b.date.localeCompare(a.date)),pa=S.paiements.filter(x=>x.patientId===p.id).sort((a,b)=>b.date.localeCompare(a.date));
  const solde=pa.reduce((s,x)=>s+reste(x),0),al=(p.allergies||[]).map(a=>ALLERGIES[a]).concat(p.allergiesAutres?[p.allergiesAutres]:[]);
- return '<div class="head"><div class="row"><button class="iconbtn" data-a="pat-back" aria-label="Retour à la liste">'+ic('back')+'</button><div><h1>'+esc(pname(p))+'</h1><p>'+[p.sexe==='M'?'Homme':p.sexe==='F'?'Femme':'',age(p.naissance),p.tel].filter(Boolean).map(esc).join(' · ')+'</p></div></div><div class="row"><button class="btn sm" data-a="pat-edit">Modifier</button><button class="btn sm pri" data-a="ordo-new">'+ic('plus')+'Ordonnance</button><button class="btn sm" data-a="rdv-new">'+ic('plus')+'RDV</button><button class="btn sm" data-a="pay-new">'+ic('plus')+'Paiement</button></div></div>'+
- (al.length?'<div class="alertbox">Allergies : '+esc(al.join(', '))+'</div>':'')+
+ return '<div class="head"><div class="row"><button class="iconbtn" data-a="pat-back" aria-label="Retour à la liste">'+ic('back')+'</button><div><h1>'+esc(pname(p))+'</h1><p>'+[p.sexe==='M'?'Homme':p.sexe==='F'?'Femme':'',age(p.naissance),p.tel].filter(Boolean).map(esc).join(' · ')+'</p></div></div><div class="row"><button class="btn sm" data-a="pat-edit">Modifier</button><button class="btn sm pri" data-a="ordo-new">'+ic('plus')+'Ordonnance</button><button class="btn sm" data-a="rdv-new">'+ic('plus')+'RDV</button><button class="btn sm" data-a="pay-new">'+ic('plus')+'Paiement</button><button class="btn sm" data-a="dv-new">'+ic('plus')+'Devis</button><button class="btn sm" data-a="cert-new">'+ic('plus')+'Certificat</button></div></div>'+
+ (al.length?'<div class="alertbox">Allergies : '+esc(al.join(', '))+'</div>':'')+medBanner(p)+
  '<div class="grid2"><div class="card"><h2>Dossier</h2><dl class="kv"><dt>Naissance</dt><dd>'+(fr(p.naissance)||'—')+'</dd><dt>Adresse</dt><dd>'+(esc(p.adresse)||'—')+'</dd><dt>Antécédents</dt><dd>'+(esc(p.antecedents)||'Aucun signalé')+'</dd><dt>Solde</dt><dd>'+(solde>0?'<span class="pill crit num">'+da(solde)+' à payer</span>':'<span class="pill ok">À jour</span>')+'</dd></dl></div>'+
  '</div>'+chartCard(p)+
+ '<div class="grid2"><div class="card"><h2>Devis <button class="btn sm" data-a="dv-new">'+ic('plus')+'Devis</button></h2><div class="list">'+(S.devis.filter(v=>v.patientId===p.id).sort((a,b)=>b.date.localeCompare(a.date)).map(devisRow).join('')||'<div class="empty">Aucun devis. Marquez les soins « à faire » sur le schéma : le devis se remplit tout seul.</div>')+'</div></div>'+
+ '<div class="card"><h2>Certificats <button class="btn sm" data-a="cert-new">'+ic('plus')+'Certificat</button></h2><div class="list">'+(S.certifs.filter(c=>c.patientId===p.id).sort((a,b)=>b.date.localeCompare(a.date)).map(certRow).join('')||'<div class="empty">Aucun certificat.</div>')+'</div></div></div>'+
  '<div class="grid2"><div class="card"><h2>Ordonnances</h2><div class="list">'+(or.map(ordoRow).join('')||'<div class="empty">Aucune ordonnance.</div>')+'</div></div>'+
  '<div class="card"><h2>Rendez-vous</h2><div class="list">'+(rd.slice(0,8).map(r=>rdvRow(r,1)).join('')||'<div class="empty">Aucun rendez-vous.</div>')+'</div></div></div>'+
  '<div class="card"><h2>Actes et paiements</h2><div class="list">'+(pa.map(payRow).join('')||'<div class="empty">Aucun acte enregistré.</div>')+'</div></div>'+
@@ -2206,10 +2259,11 @@ function medForm(m){
  if(m.own)$('.sheet-f').insertAdjacentHTML('afterbegin','<button class="btn danger" data-a="med-del" data-id="'+m.id+'" style="margin-right:auto">Supprimer</button>');
 }
 function vCaisse(){
- const mois=today().slice(0,7),enc=S.paiements.filter(x=>x.date.slice(0,7)===mois).reduce((s,x)=>s+(Number(x.verse)||0),0),du=S.paiements.reduce((s,x)=>s+reste(x),0),fact=S.paiements.filter(x=>x.date.slice(0,7)===mois).reduce((s,x)=>s+(Number(x.montant)||0),0);
+ const mois=today().slice(0,7),enc=encMois(mois),du=S.paiements.reduce((s,x)=>s+reste(x),0),fact=S.paiements.filter(x=>x.date.slice(0,7)===mois).reduce((s,x)=>s+(Number(x.montant)||0),0);
  const l=[...S.paiements].filter(x=>ui.caisse==='tous'||reste(x)>0).sort((a,b)=>b.date.localeCompare(a.date));
- return '<div class="head"><div><h1>Caisse</h1><p>Actes, versements et reçus</p></div><button class="btn pri" data-a="pay-new">'+ic('plus')+'Acte</button></div>'+
+ return '<div class="head"><div><h1>Caisse</h1><p>Actes, versements et reçus</p></div><div class="row"><a class="btn" href="#stats">Statistiques</a><button class="btn" data-a="dv-new">'+ic('plus')+'Devis</button><button class="btn pri" data-a="pay-new">'+ic('plus')+'Acte</button></div></div>'+
  '<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"><div class="kpi"><span>Facturé ce mois</span><b class="num">'+da(fact)+'</b></div><div class="kpi"><span>Encaissé ce mois</span><b class="num">'+da(enc)+'</b></div><div class="kpi'+(du>0?' alert':'')+'"><span>Reste à encaisser</span><b class="num">'+da(du)+'</b></div></div>'+
+ (()=>{const w=S.devis.filter(v=>(v.statut||'attente')==='attente').sort((a,b)=>b.date.localeCompare(a.date));return w.length?'<div class="card"><h2>Devis en attente <span class="pill warn num">'+da(w.reduce((s,v)=>s+dvNet(v),0))+'</span></h2><div class="list">'+w.slice(0,6).map(devisRow).join('')+'</div></div>':''})()+
  '<div class="seg" style="align-self:flex-start"><button data-a="caisse" data-f="tous" class="'+(ui.caisse==='tous'?'on':'')+'">Tous</button><button data-a="caisse" data-f="impayes" class="'+(ui.caisse==='impayes'?'on':'')+'">Impayés</button></div>'+
  '<div class="card"><div class="list">'+(l.slice(0,ui.payN||PAGE).map(payRow).join('')||'<div class="empty">Aucun acte à afficher.</div>')+'</div>'+moreBtn('payN',ui.payN||PAGE,l.length)+'</div>';
 }
@@ -2230,6 +2284,7 @@ function vParams(){
  '<label class="f full">Logo du cabinet (image)<input type="file" id="c_logo" accept="image/*"></label><div class="row full"><button class="btn sm pri" data-a="lg-open">✦ Créer un logo</button><button class="btn sm" data-a="pers-open">Personnaliser l’ordonnance</button></div></div>'+
  (c.logo?'<div class="row" style="margin-top:10px"><img src="'+esc(c.logo)+'" alt="Logo actuel" style="max-height:48px;background:#fff;border-radius:6px;padding:4px"><button class="btn sm danger" data-a="logo-del">Retirer le logo</button></div>':'')+
  '<div class="row" style="margin-top:12px"><button class="btn pri" data-a="cfg-save">Enregistrer</button><button class="btn" data-a="cfg-preview">Aperçu de l’ordonnance</button><button class="btn" data-a="tpl-edit">Modifier la mise en page</button></div></div>'+
+ '<div class="card"><h2>Tarifs des actes <button class="btn sm" data-a="tarif-open">Modifier</button></h2><p style="margin:0;color:var(--muted)">'+tarifs().length+' actes avec leur prix. Ils remplissent automatiquement les devis et la Caisse.</p></div>'+
  '<div class="card"><h2>Données</h2><p style="margin:0 0 12px;color:var(--muted)">'+mode+'</p><div class="row"><button class="btn" data-a="backup">'+ic('dl')+'Exporter une sauvegarde</button><button class="btn" data-a="imp-open">Importer des patients d’un autre logiciel</button>'+(S.config.lastImp&&S.patients.some(p=>p.imp===S.config.lastImp.id)?'<button class="btn danger" data-a="imp-undo">Annuler l’import du '+fr(S.config.lastImp.date)+'</button>':'')+(nbEx?'<button class="btn danger" data-a="demo-clear">Supprimer les '+nbEx+' fiches d’exemple</button>':'<button class="btn" data-a="demo-load">Charger des exemples</button>')+'</div></div>';
 }
 function render(){
@@ -2238,7 +2293,7 @@ function render(){
  const s=$('#sync');s.textContent={cloud:'Synchronisé',local:'Sur cet appareil',memoire:'Non enregistré'}[Store.mode];s.className='sync'+(Store.mode==='cloud'?' ok':'');
  if(!ui.ready){$('#view').innerHTML='<div class="empty">Chargement de vos données…</div>';return}
  if(RL.raf||RL.rec)rlStop();
- $('#view').innerHTML={accueil:vAccueil,agenda:vAgenda,patients:vPatients,ordonnances:vOrdos,modeles:vModeles,medicaments:vMeds,caisse:vCaisse,reel:vReel,parametres:vParams}[r]();
+ $('#view').innerHTML={accueil:vAccueil,agenda:vAgenda,patients:vPatients,ordonnances:vOrdos,modeles:vModeles,medicaments:vMeds,caisse:vCaisse,stats:vStats,attente:vAttente,reel:vReel,parametres:vParams}[r]();
  if(r==='reel'&&RL.view==='editor')rlAnalyse();
  else if(document.querySelector('canvas[data-th]'))rlThumbs();
 }
@@ -2257,16 +2312,17 @@ function rappels(day){
 
 /* ---------- Exemples ---------- */
 function demoLoad(){
- const t=today(),mk=(nom,prenom,sexe,naissance,tel,ant,all)=>{const p={id:newId(),nom,prenom,sexe,naissance,tel,adresse:'Baraki, Alger',antecedents:ant,allergies:all,allergiesAutres:'',dents:{},cree:t,ex:true};Store.save('patients',p);return p};
+ const t=today(),mk=(nom,prenom,sexe,naissance,tel,ant,all)=>{const p={id:newId(),nom,prenom,sexe,naissance,tel,adresse:'Baraki, Alger',antecedents:ant,allergies:all,allergiesAutres:'',medical:medFromText(ant),dents:{},cree:t,ex:true};Store.save('patients',p);return p};
  const a=mk('BENALI','Yasmine','F','1992-04-18','0550 12 34 56','',['penicilline']),b=mk('MANSOURI','Karim','M','1978-11-02','0661 22 33 44','Diabète de type 2, metformine',[]),c=mk('HADDAD','Lina','F','2015-06-09','0770 98 76 54','',[]),d=mk('ZERROUKI','Mohamed','M','1960-01-25','0555 44 55 66','Hypertension, aspirine 100 mg',['ains']);
  const E=(dent,kind,x)=>({id:newId(),dent,kind,date:t,...x});a.chart=[E(16,'resto',{faces:['O'],mat:'Amalgame',statut:'existant'}),E(26,'carie',{faces:['M','O','D']}),E(26,'resto',{faces:['M','O','D'],mat:'Composite',statut:'afaire'}),E(44,'surveiller',{faces:['V']}),E(38,'extraire',{})];b.chart=[E(46,'devit',{statut:'existant'}),E(36,'couronne',{mat:'Céramo-métallique',statut:'existant'}),E(18,'absente',{}),E(28,'absente',{}),E(17,'resto',{faces:['O','L'],mat:'Composite',statut:'existant'})];Store.save('patients',a);Store.save('patients',b);
  [[a,t,'09:00','Soin de carie','termine'],[b,t,'10:00','Couronne','salle'],[c,t,'11:30','Pédodontie','confirme'],[d,t,'14:00','Extraction','prevu'],[a,addDays(t,2),'09:30','Contrôle','prevu'],[b,addDays(t,5),'15:00','Prothèse','prevu']].forEach(r=>Store.save('rdv',{id:newId(),patientId:r[0].id,date:r[1],heure:r[2],motif:r[3],statut:r[4],duree:30,note:'',ex:true}));
  [[a,'Obturation composite',6000,6000,t],[b,'Couronne céramo-métallique',25000,10000,addDays(t,-6)],[d,'Détartrage',4000,0,addDays(t,-2)]].forEach((x,i)=>Store.save('paiements',{id:newId(),patientId:x[0].id,acte:x[1],montant:x[2],verse:x[3],date:x[4],num:nextNum('paiements'),ex:true}));
  const tp=TEMPLATES[1];Store.save('ordos',{id:newId(),patientId:a.id,date:t,lignes:clone(tp.lignes),conseils:tp.conseils,num:nextNum('ordos'),ex:true});
+ const dl=devisFromChart(a);if(dl.length)Store.save('devis',{id:newId(),num:nextNum('devis'),patientId:a.id,date:t,lignes:dl.map(({autoPrix,...l})=>l),remise:0,validite:30,note:'',statut:'attente',ex:true});
  render();toast('Fiches d’exemple chargées');
 }
 function demoClear(){
- ['rdv','ordos','paiements','patients'].forEach(c=>S[c].filter(x=>x.ex).map(x=>x.id).forEach(id=>Store.del(c,id)));
+ ['rdv','ordos','paiements','devis','certifs','patients'].forEach(c=>S[c].filter(x=>x.ex).map(x=>x.id).forEach(id=>Store.del(c,id)));
  ui.patient=null;render();toast('Exemples supprimés');
 }
 
@@ -2461,7 +2517,7 @@ function impRow(r){
  const p={id:newId(),nom:impUp(nom),prenom:impCap(prenom),sexe,naissance,tel:t1.txt||t2.txt,adresse:[many('adresse',', '),many('ville',', ')].filter(Boolean).join(', '),
   antecedents:[many('antecedents'),notes?'Notes : '+notes:''].filter(Boolean).join('\n'),allergies,allergiesAutres:alTxt,dents:{},cree:(g.cree&&impDate(g.cree[0]))||today(),imp:IMP.batch};
  if(t1.txt&&t2.txt&&t2.key!==t1.key)p.tel2=t2.txt;
- if(one('ref'))p.ref=one('ref');
+ p.medical=medFromText(p.antecedents);if(one('ref'))p.ref=one('ref');
  p._k=t1.key||t2.key;return p;
 }
 function impBuild(){
@@ -2529,9 +2585,9 @@ async function impJson(f){
  if(!o||!Array.isArray(o.patients)){toast('Ce fichier n’est pas une sauvegarde DentaGest.');return}
  const batch='imp-'+newId(),add={};let n=0;
  COLS.forEach(c=>{const have=new Set(S[c].map(x=>x.id));add[c]=(Array.isArray(o[c])?o[c]:[]).filter(x=>x&&x.id&&!x.ex&&!have.has(x.id));n+=add[c].length});
- const np=add.patients.length,lab={patients:'patient',rdv:'rendez-vous',ordos:'ordonnance',paiements:'acte',modeles:'modèle',meds:'médicament'};
+ const np=add.patients.length,lab={patients:'patient',rdv:'rendez-vous',ordos:'ordonnance',paiements:'acte',modeles:'modèle',meds:'médicament',devis:'devis',certifs:'certificat'};
  if(!n){toast('Tout le contenu de cette sauvegarde est déjà dans DentaGest.');return}
- const det=COLS.filter(c=>add[c].length).map(c=>add[c].length+' '+lab[c]+(add[c].length>1&&c!=='rdv'?'s':'')).join(', ');
+ const det=COLS.filter(c=>add[c].length).map(c=>add[c].length+' '+lab[c]+(add[c].length>1&&c!=='rdv'&&c!=='devis'?'s':'')).join(', ');
  ask('Sauvegarde du '+(o.date?fr(o.date):'?')+' : ajouter '+det+' ? Rien de ce qui est déjà dans DentaGest ne sera modifié.','Importer',()=>{
   add.patients.forEach(p=>{p.imp=batch});COLS.forEach(c=>add[c].forEach(x=>Store.save(c,x)));
   let cfg=false;if(o.config)Object.keys(DEF_CONFIG).forEach(k=>{const v=o.config[k],cur=S.config[k];if(v!=null&&v!==''&&(cur==null||cur===''||cur===DEF_CONFIG[k])&&v!==cur){S.config[k]=v;cfg=true}});
@@ -2583,12 +2639,326 @@ function impRun(){
 }
 function impUndo(){
  const L=S.config.lastImp;if(!L)return;const ids=new Set(S.patients.filter(p=>p.imp===L.id).map(p=>p.id));
- ['rdv','ordos','paiements'].forEach(c=>S[c].filter(x=>ids.has(x.patientId)).map(x=>x.id).forEach(i=>Store.del(c,i)));
+ ['rdv','ordos','paiements','devis','certifs'].forEach(c=>S[c].filter(x=>ids.has(x.patientId)).map(x=>x.id).forEach(i=>Store.del(c,i)));
  ids.forEach(id=>Store.del('patients',id));delete S.config.lastImp;Store.saveConfig();ui.patient=null;render();toast('Import annulé');
 }
 function impModel(){
  const rows=[['Nom','Prénom','Sexe (H/F)','Date de naissance (jj/mm/aaaa)','Téléphone','Adresse','Antécédents médicaux','Allergies','N° de dossier'],['BENALI','Yasmine','F','18/04/1992','0550 12 34 56','Bab Ezzouar, Alger','Aucun','Pénicilline','125']];
  saveFile('modele-patients-dentagest.csv',()=>new Blob(['﻿'+rows.map(r=>r.map(c=>/[;"\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c).join(';')).join('\r\n')+'\r\n'],{type:'text/csv'}));
+}
+
+/* =====================================================================
+   Questionnaire médical : antécédents à risque, précautions, alertes sur l'ordonnance
+   ===================================================================== */
+const MEDCOND={cardio:'Maladie cardiaque, valve ou prothèse valvulaire',hta:'Hypertension artérielle',diabete:'Diabète',anticoag:'Anticoagulant ou antiagrégant (Sintrom, Previscan, aspirine, Plavix…)',hemo:'Trouble de la coagulation (hémophilie…)',asthme:'Asthme',epilepsie:'Épilepsie',rein:'Insuffisance rénale',foie:'Maladie du foie, hépatite',ulcere:'Ulcère de l’estomac',grossesse:'Grossesse',allaitement:'Allaitement',biphos:'Bisphosphonates (ostéoporose, cancer)',radio:'Radiothérapie de la tête ou du cou',immuno:'Immunodépression (chimiothérapie, corticoïdes au long cours, VIH)',thyroide:'Maladie de la thyroïde',fumeur:'Fumeur'};
+const MEDCOND_SHORT={cardio:'Cardiopathie',hta:'Hypertension',diabete:'Diabète',anticoag:'Anticoagulant / antiagrégant',hemo:'Trouble de la coagulation',asthme:'Asthme',epilepsie:'Épilepsie',rein:'Insuffisance rénale',foie:'Maladie du foie',ulcere:'Ulcère gastrique',grossesse:'Grossesse',allaitement:'Allaitement',biphos:'Bisphosphonates',radio:'Radiothérapie tête et cou',immuno:'Immunodépression',thyroide:'Thyroïde',fumeur:'Fumeur'};
+const MEDCOND_TIP={
+ cardio:'avis du cardiologue si besoin ; antibioprophylaxie en cas de prothèse valvulaire ou d’antécédent d’endocardite.',
+ hta:'contrôler la tension avant l’acte ; limiter les vasoconstricteurs.',
+ diabete:'risque infectieux et retard de cicatrisation ; rendez-vous de préférence le matin, après le repas.',
+ anticoag:'risque hémorragique : INR récent avant un acte sanglant ; hémostase locale ; éviter AINS et aspirine.',
+ hemo:'avis de l’hématologue avant tout acte sanglant.',
+ asthme:'éviter AINS et aspirine (risque de crise) ; garder son inhalateur à portée de main.',
+ epilepsie:'séances courtes ; prudence avec le tramadol.',
+ rein:'adapter les doses ; éviter les AINS.',
+ foie:'paracétamol 2 g par jour au maximum ; prudence avec le métronidazole.',
+ ulcere:'éviter AINS et aspirine.',
+ grossesse:'soins de préférence au 2e trimestre ; pas d’AINS ni de tétracyclines ; radiographie seulement si nécessaire.',
+ allaitement:'vérifier que chaque médicament est compatible avec l’allaitement.',
+ biphos:'risque d’ostéonécrose des mâchoires : éviter si possible extractions et chirurgie.',
+ radio:'risque d’ostéoradionécrose : avis spécialisé avant toute extraction.',
+ immuno:'risque infectieux : antibioprophylaxie à discuter.',
+ thyroide:'hyperthyroïdie non équilibrée : limiter les vasoconstricteurs.',
+ fumeur:'cicatrisation plus lente ; conseiller l’arrêt avant chirurgie ou implant.'
+};
+const MED_RED=new Set(['cardio','anticoag','hemo','biphos','radio','immuno','grossesse']);
+const MED_TXT={cardio:/cardi|valv|endocard|infarctus|angor|pacemaker|stimulateur/,hta:/\bhta\b|hypertens/,diabete:/diab/,anticoag:/anticoag|antiagreg|sintrom|previscan|coumadin|xarelto|eliquis|pradaxa|plavix|clopidogrel|kardegic|aspegic|aspirin/,hemo:/hemophil|trouble de la coagulation|willebrand/,asthme:/asthm/,epilepsie:/epilep|convuls/,rein:/insuffisance renale|dialys/,foie:/hepatit|cirrho|foie/,ulcere:/ulcere|gastrit/,grossesse:/enceinte|grossesse/,allaitement:/allait/,biphos:/biphosph|alendron|zoledron|fosamax|aclasta/,radio:/radiother/,immuno:/immunodep|chimiother|\bvih\b|greffe/,thyroide:/thyro|levothyr/,fumeur:/fumeu|tabac|cigarett/};
+const medFromText=s=>{const t=norm(s||'');return Object.keys(MED_TXT).filter(k=>MED_TXT[k].test(t))};
+const RX_CORT=/prednis|solupred|cortanc|dexameth|betameth|celesten|methylpred|medrol|hydrocortis/,RX_AVK=/miconaz|daktarin|metronidaz|flagyl|rodogyl|erythromy|clarithromy|fluconaz|triflucan/,RX_TETRA=/tetracycl|doxycycl|minocycl|vibramycin/;
+function medHits(p,lignes){
+ const c=new Set(p&&p.medical||[]);if(!c.size)return [];const out=[];
+ lignes.forEach(l=>{if(!l.med)return;const t=norm(l.med),n=l.med.split(',')[0];
+  if(ALLERGY_RX.ains.test(t)){const w=['anticoag','hemo','ulcere','rein','asthme','grossesse'].filter(k=>c.has(k));if(w.length)out.push(n+' : AINS déconseillé ('+w.map(k=>MEDCOND_SHORT[k].toLowerCase()).join(', ')+')')}
+  if(c.has('anticoag')&&RX_AVK.test(t))out.push(n+' : interaction avec les anticoagulants, risque de saignement (surveiller l’INR)');
+  if(c.has('grossesse')&&RX_TETRA.test(t))out.push(n+' : contre-indiqué pendant la grossesse');
+  if((c.has('grossesse')||c.has('allaitement'))&&/codein|tramadol/.test(t))out.push(n+' : à éviter pendant la grossesse et l’allaitement');
+  if(c.has('foie')&&ALLERGY_RX.paracetamol.test(t))out.push(n+' : maladie du foie, pas plus de 2 g de paracétamol par jour');
+  if(c.has('epilepsie')&&/tramadol/.test(t))out.push(n+' : le tramadol peut favoriser les crises d’épilepsie');
+  if(c.has('diabete')&&RX_CORT.test(t))out.push(n+' : corticoïde, surveiller la glycémie (diabète)');
+ });
+ return [...new Set(out)];
+}
+function medBanner(p){
+ const c=(p.medical||[]).filter(k=>MEDCOND[k]);if(!c.length)return '';const red=c.some(k=>MED_RED.has(k));
+ return '<div class="medbox'+(red?' red':'')+'"><b>Questionnaire médical</b><ul>'+c.map(k=>'<li><b>'+esc(MEDCOND_SHORT[k])+'</b>'+(MEDCOND_TIP[k]?' : '+esc(MEDCOND_TIP[k]):'')+'</li>').join('')+'</ul><small>Précautions indicatives, à adapter à chaque patient.</small></div>';
+}
+
+/* =====================================================================
+   Paiements datés : chaque versement garde sa date (recettes du mois exactes)
+   ===================================================================== */
+const vers=x=>Array.isArray(x.versements)&&x.versements.length?x.versements:(Number(x.verse)>0?[{date:x.date,montant:Number(x.verse)}]:[]);
+const encaisse=(a,b)=>S.paiements.reduce((s,x)=>s+vers(x).filter(v=>v.date>=a&&v.date<=b).reduce((t,v)=>t+(Number(v.montant)||0),0),0);
+const encMois=m=>encaisse(m+'-01',m+'-31');
+function setVerse(x,total,date){
+ const L=vers(x).map(v=>({...v}));let cur=L.reduce((s,v)=>s+(Number(v.montant)||0),0);total=Math.max(0,Number(total)||0);
+ if(total>cur)L.push({date,montant:total-cur});
+ else while(cur>total&&L.length){const v=L[L.length-1],cut=Math.min(v.montant,cur-total);v.montant-=cut;cur-=cut;if(!v.montant)L.pop()}
+ x.versements=L;x.verse=total;return x;
+}
+
+/* =====================================================================
+   PDF commun : en-tête du cabinet (même style que l'ordonnance)
+   ===================================================================== */
+function docPDF(fmt,title,date,p,body){
+ const A4=fmt==='a4',d=new window.jspdf.jsPDF({unit:'mm',format:fmt}),W=A4?210:148,H=A4?297:210,k=A4?1.15:1,M=A4?18:12,cw=W-2*M,c=S.config;p=p||{};
+ const navy=()=>d.setTextColor(31,58,110),ink=()=>d.setTextColor(30,30,30),F=(st,sz)=>{d.setFont('times',st);d.setFontSize(sz*k)},lh=sz=>sz*k*0.41;
+ const y0=M+5*k,lw=cw*0.36;
+ F('bold',15);navy();let t=d.splitTextToSize(pdfTxt(c.praticien),lw);d.text(t,M,y0);let yl=y0+t.length*lh(15);
+ F('italic',8.5);ink();t=d.splitTextToSize(pdfTxt(c.mentions||c.specialite||''),lw);d.text(t,M,yl);yl+=t.length*lh(8.5)+1;
+ if(c.ordre){F('bold',9);navy();d.text(pdfTxt("N° D'ordre."+c.ordre),M,yl);yl+=lh(9)}
+ const cx=M+cw*0.52,mw=cw*0.24,mh=14*k;let done=false;
+ if(c.logo){try{const r=c.logoR||2,w=Math.min(mw,mh*r),h=w/r;d.addImage(c.logo,'JPEG',cx-w/2,M,w,h);done=true}catch(e){}}
+ if(!done){F('bold',11);d.setTextColor(180,134,28);d.text(d.splitTextToSize(pdfTxt(c.cabinet),mw),cx,y0,{align:'center'})}
+ const rx=M+cw*0.68,lab=19*k;let yr=y0-1;
+ [[(c.ville||'').toUpperCase()+' LE',fr(date)],['NOM',p.nom||''],['PRÉNOM',p.prenom||''],['ÂGE',age(p.naissance)]].forEach(r=>{
+  F('bold',8);navy();d.text(pdfTxt(r[0]),rx,yr);F('normal',9);ink();d.text(pdfTxt(r[1]),rx+lab+1,yr-0.3);
+  d.setDrawColor(90,90,90);d.setLineWidth(0.15);d.setLineDashPattern([0.3,0.5],0);d.line(rx+lab,yr+0.9,W-M,yr+0.9);d.setLineDashPattern([],0);yr+=6.5*k;
+ });
+ let y=Math.max(yl,yr,M+16*k)+9*k,ts=A4?20:17;const tt=pdfTxt(title);
+ F('bold',ts);while(d.getTextWidth(tt)>cw-12&&ts>11){ts--;F('bold',ts)}navy();d.text(tt,W/2,y,{align:'center'});const tw=d.getTextWidth(tt);
+ d.setDrawColor(31,58,110);d.setLineWidth(0.5);d.line(W/2-tw/2-5,y+3*k,W/2+tw/2+5,y+3*k);y+=14*k;
+ body({d,W,H,M,k,cw,F,lh,navy,ink,y,bottom:H-M-16*k,newPage(){d.addPage();return M+8*k}});
+ const n=d.getNumberOfPages();
+ for(let i=1;i<=n;i++){
+  d.setPage(i);const fy=H-M-9*k;
+  d.setDrawColor(31,58,110);d.setLineWidth(0.5);d.line(M,fy,W-M,fy);
+  F('bold',7.5);navy();d.text(d.splitTextToSize(pdfTxt((c.adresse||'').toUpperCase()),cw*0.3),M,fy+5*k);
+  d.line(W/2-cw*0.13,fy+4*k,W/2+cw*0.13,fy+4*k);d.text('Signature et cachet',W/2,fy+8*k,{align:'center'});
+  if(c.tel)d.text(pdfTxt('TEL '+c.tel),W-M,fy+8*k,{align:'right'});
+ }
+ return d.output('arraybuffer');
+}
+function pickPatient(title,cb){
+ if(!S.patients.length){toast('Ajoutez d’abord un patient');return patientForm()}
+ if(route()==='patients'&&ui.patient&&pat(ui.patient))return cb(ui.patient);
+ openForm(title,[{k:'patientId',l:'Patient',t:'select',o:patOptions(),req:1,full:1}],o=>{closeSheet();cb(o.patientId)},'Continuer');
+}
+
+/* =====================================================================
+   Tarifs et devis
+   ===================================================================== */
+const TARIFS_DEF=[['Consultation',1000],['Détartrage',3000],['Obturation composite',4000],['Obturation amalgame',2500],['Obturation verre ionomère',2500],['Inlay / onlay',15000],['Facette',20000],['Scellement de sillons',1500],['Traitement endodontique',8000],['Extraction simple',2000],['Extraction chirurgicale',6000],['Couronne céramo-métallique',18000],['Couronne zircone',30000],['Couronne céramique',30000],['Couronne métallique',10000],['Couronne provisoire',3000],['Implant',80000],['Prothèse amovible partielle',30000],['Prothèse complète',45000],['Blanchiment',25000],['Radiographie rétro-alvéolaire',500]];
+const tarifs=()=>Array.isArray(S.config.tarifs)&&S.config.tarifs.length?S.config.tarifs:TARIFS_DEF;
+const tarifOf=a=>{const n=norm(a||'').trim();if(!n)return null;const t=tarifs().find(x=>norm(x[0]).trim()===n);return t?Number(t[1])||0:null};
+const actesList=()=>[...new Set([...ACTES,...tarifs().map(t=>t[0])])];
+function chartActe(e){
+ if(e.kind==='carie')return 'Obturation composite';
+ if(e.kind==='resto'){const m=e.mat||'Composite';return /inlay|onlay/i.test(m)?'Inlay / onlay':/facette/i.test(m)?'Facette':/scellement/i.test(m)?'Scellement de sillons':'Obturation '+m.toLowerCase()}
+ if(e.kind==='couronne')return 'Couronne '+(e.mat||'Céramo-métallique').toLowerCase();
+ if(e.kind==='devit')return 'Traitement endodontique';
+ if(e.kind==='implant')return 'Implant';
+ if(e.kind==='extraire')return 'Extraction simple';
+ return null;
+}
+function devisFromChart(p){
+ const E=chartOf(p).filter(e=>entStatus(e)==='afaire'),resto=new Set(E.filter(e=>e.kind==='resto').map(e=>e.dent)),seen=new Set(),out=[];
+ E.forEach(e=>{if(e.kind==='carie'&&resto.has(e.dent))return;const a=chartActe(e);if(!a)return;const key=e.dent+'|'+a;if(seen.has(key))return;seen.add(key);out.push({dent:String(e.dent),acte:a,prix:tarifOf(a)??0,autoPrix:1})});
+ return out.sort((a,b)=>Number(a.dent)-Number(b.dent));
+}
+const dvTotal=v=>v.lignes.reduce((s,l)=>s+(Number(l.prix)||0),0);
+const dvNet=v=>Math.max(0,dvTotal(v)-(Number(v.remise)||0));
+const DV_ST={attente:['En attente','warn'],accepte:['Accepté','ok'],refuse:['Refusé','plain']};
+const devisRow=v=>'<button class="item" data-a="dv-open" data-id="'+v.id+'"><span class="grow"><b>Devis N° '+v.num+' · '+da(dvNet(v))+'</b><small>'+(route()==='patients'?'':esc(pname(pat(v.patientId)))+' · ')+fr(v.date)+' · '+v.lignes.length+' acte'+(v.lignes.length>1?'s':'')+'</small></span><span class="pill '+DV_ST[v.statut||'attente'][1]+'">'+DV_ST[v.statut||'attente'][0]+'</span></button>';
+let DV=null;
+function devisOpen(id,patientId){
+ if(id){const v=S.devis.find(x=>x.id===id);if(!v)return;DV=clone(v)}
+ else{const L=devisFromChart(pat(patientId));DV={patientId,date:today(),lignes:L.length?L:[{dent:'',acte:'',prix:0}],remise:0,validite:30,note:'',statut:'attente',fromChart:L.length>0}}
+ devisSheet();
+}
+function devisSheet(){
+ const p=pat(DV.patientId),ro=DV.statut==='accepte',dis=ro?' disabled':'',st=DV_ST[DV.statut||'attente'];
+ const rows=DV.lignes.map((l,i)=>'<div class="dvl"><input type="text" inputmode="numeric" data-dv="dent" data-i="'+i+'" value="'+esc(l.dent)+'" placeholder="Dent" aria-label="Dent"'+dis+'><input type="text" list="dv_actes" data-dv="acte" data-i="'+i+'" value="'+esc(l.acte)+'" placeholder="Acte" aria-label="Acte"'+dis+'><input type="number" class="num" min="0" inputmode="numeric" data-dv="prix" data-i="'+i+'" value="'+esc(l.prix)+'" aria-label="Prix en DA"'+dis+'>'+(ro?'<span></span>':'<button class="iconbtn" data-a="dv-rm" data-i="'+i+'" aria-label="Retirer la ligne">'+ic('trash')+'</button>')+'</div>').join('');
+ sheet((DV.num?'Devis N° '+DV.num:'Nouveau devis')+' · '+pname(p),
+  (DV.id?'<div class="row" style="justify-content:space-between;margin-bottom:12px"><span class="pill '+st[1]+'">'+st[0]+(DV.accepte?' le '+fr(DV.accepte):'')+'</span>'+(DV.statut==='attente'?'<span class="row" style="gap:6px"><button class="btn sm" data-a="dv-refuse">Refusé</button><button class="btn sm pri" data-a="dv-accept">Le patient accepte</button></span>':'')+'</div>':'')+
+  (DV.fromChart&&!DV.id?'<div class="note" style="margin-bottom:12px">Lignes reprises du schéma dentaire (soins « à faire »), avec les prix de vos tarifs. Modifiez-les librement.</div>':'')+
+  (ro?'<div class="note" style="margin-bottom:12px">Devis accepté : ses actes sont dans la Caisse, où vous enregistrez les versements.</div>':'')+
+  '<div class="dvl dvh"><span>Dent</span><span>Acte</span><span>Prix (DA)</span><span></span></div>'+rows+
+  (ro?'':'<button class="btn sm" data-a="dv-add" style="margin-top:4px">'+ic('plus')+'Ajouter une ligne</button>')+
+  '<datalist id="dv_actes">'+tarifs().map(t=>'<option value="'+esc(t[0])+'">').join('')+'</datalist>'+
+  '<div class="form two" style="margin-top:14px"><label class="f">Remise (DA)<input type="number" min="0" inputmode="numeric" data-dv="remise" value="'+esc(DV.remise||'')+'"'+dis+'></label><label class="f">Validité (jours)<input type="number" min="1" inputmode="numeric" data-dv="validite" value="'+esc(DV.validite||30)+'"'+dis+'></label><label class="f full">Note pour le patient (facultatif)<textarea data-dv="note"'+dis+'>'+esc(DV.note||'')+'</textarea></label></div>'+
+  '<div class="dvtot"><span>Total<small id="dv_sub"></small></span><b class="num" id="dv_tot"></b></div>',
+  (DV.id&&!ro?'<button class="btn danger" data-a="dv-del" style="margin-right:auto">Supprimer</button>':'')+'<button class="btn" data-a="dv-pdf">'+ic('dl')+'PDF</button>'+(ro?'<button class="btn pri" data-a="close">Fermer</button>':'<button class="btn pri" data-a="dv-save">Enregistrer</button>'));
+ dvTotals();
+}
+function dvTotals(){const a=$('#dv_tot'),b=$('#dv_sub');if(!a||!DV)return;a.textContent=da(dvNet(DV));b.textContent=Number(DV.remise)>0?' (avant remise : '+da(dvTotal(DV))+')':''}
+function dvInput(t){
+ const k=t.dataset.dv,i=t.dataset.i;
+ if(i!=null){const l=DV.lignes[+i];if(!l)return;
+  if(k==='prix'){l.prix=Number(t.value)||0;delete l.autoPrix}
+  else if(k==='dent')l.dent=t.value.trim();
+  else{l.acte=t.value;const tp=tarifOf(l.acte);if(tp!=null&&(!Number(l.prix)||l.autoPrix)){l.prix=tp;l.autoPrix=1;const pe=document.querySelector('[data-dv="prix"][data-i="'+i+'"]');if(pe)pe.value=tp}}
+ }else DV[k]=k==='note'?t.value:Number(t.value)||0;
+ dvTotals();
+}
+function devisSave(){
+ const L=DV.lignes.filter(l=>String(l.acte||'').trim());if(!L.length){toast('Ajoutez au moins un acte');return false}
+ DV.lignes=L.map(l=>({dent:String(l.dent||'').trim(),acte:l.acte.trim(),prix:Math.max(0,Number(l.prix)||0)}));
+ DV.remise=Math.min(Math.max(0,Number(DV.remise)||0),dvTotal(DV));DV.validite=Math.max(1,Math.round(Number(DV.validite)||30));delete DV.fromChart;
+ if(!DV.id){DV.id=newId();DV.num=nextNum('devis')}
+ Store.save('devis',clone(DV));return true;
+}
+function devisAccept(){
+ const v=DV;if(!v)return;const sub=dvTotal(v),rem=Math.min(Number(v.remise)||0,sub);let left=rem;
+ v.lignes.forEach((l,i)=>{let m=Number(l.prix)||0;if(rem&&sub){const cut=i===v.lignes.length-1?left:Math.round(rem*m/sub);m-=cut;left-=cut}
+  Store.save('paiements',{id:newId(),patientId:v.patientId,acte:(l.dent?'Dent '+l.dent+' · ':'')+l.acte,date:today(),montant:Math.max(0,m),verse:0,versements:[],num:nextNum('paiements'),devisId:v.id})});
+ v.statut='accepte';v.accepte=today();Store.save('devis',clone(v));DV=null;render();
+ toast('Devis accepté : '+v.lignes.length+' acte'+(v.lignes.length>1?'s ajoutés':' ajouté')+' à la Caisse');
+}
+function devisPDF(v){
+ const p=pat(v.patientId)||{};
+ return docPDF('a4','DEVIS N° '+v.num,v.date,p,X=>{
+  const {d,W,M,k,F,lh,navy,ink}=X,xP=W-M,xA=M+18*k;let y=X.y;
+  const hdr=()=>{F('bold',10);navy();d.text('Dent',M,y);d.text('Acte',xA,y);d.text('Montant (DA)',xP,y,{align:'right'});y+=2;d.setDrawColor(31,58,110);d.setLineWidth(0.4);d.line(M,y,xP,y);y+=6*k};
+  hdr();
+  v.lignes.forEach(l=>{F('normal',10.5);ink();const t=d.splitTextToSize(pdfTxt(l.acte),xP-xA-38);
+   if(y+t.length*lh(10.5)>X.bottom-34){y=X.newPage();hdr()}
+   d.text(pdfTxt(l.dent||''),M,y);d.text(t,xA,y);d.text(pdfTxt(da(l.prix)),xP,y,{align:'right'});
+   y+=(t.length-1)*lh(10.5)+3*k;d.setDrawColor(215,215,215);d.setLineWidth(0.1);d.line(M,y,xP,y);y+=5*k});
+  const sub=dvTotal(v),rem=Number(v.remise)||0;y+=2*k;
+  const tl=(a,b,bold)=>{F(bold?'bold':'normal',bold?12.5:10.5);(bold?navy:ink)();d.text(pdfTxt(a),xP-62*k,y);d.text(pdfTxt(b),xP,y,{align:'right'});y+=lh(bold?12.5:10.5)+2.5*k};
+  if(rem){tl('Sous-total',da(sub));tl('Remise','- '+da(rem))}tl('TOTAL',da(Math.max(0,sub-rem)),1);
+  y+=6*k;F('italic',9.5);ink();
+  const n=d.splitTextToSize(pdfTxt('Devis valable '+(v.validite||30)+' jours, jusqu’au '+fr(addDays(v.date,Number(v.validite)||30))+'. Les montants sont donnés à titre estimatif et peuvent évoluer selon les constatations en cours de traitement.'+(v.note?'\n'+v.note:'')),X.cw);
+  if(y+n.length*lh(9.5)>X.bottom-16)y=X.newPage();d.text(n,M,y);y+=n.length*lh(9.5)+10*k;
+  if(y>X.bottom-10)y=X.newPage();F('bold',9.5);navy();d.text(pdfTxt('Bon pour accord, date et signature du patient :'),M,y);
+ });
+}
+
+/* =====================================================================
+   Certificats
+   ===================================================================== */
+const CERTS={soins:'Certificat médical',arret:'Arrêt de travail',presence:'Certificat de présence',scolaire:'Justificatif d’absence scolaire'};
+const CERT_SUB={soins:'Examen et soins dentaires nécessaires',arret:'Nombre de jours, à partir d’une date',presence:'Présence au cabinet, avec les heures',scolaire:'Absence d’un élève ou d’un étudiant'};
+const certFile=c=>fileName(CERTS[c.type])+'-'+fileName(pname(pat(c.patientId)))+'-'+c.date+'.pdf';
+const certRow=c=>'<button class="item" data-a="cert-pdf" data-id="'+c.id+'"><span class="grow"><b>'+esc(CERTS[c.type])+'</b><small>'+fr(c.date)+(c.jours&&(c.type==='arret'||c.type==='scolaire')?' · '+c.jours+' jour'+(c.jours>1?'s':''):'')+'</small></span>'+ic('dl')+'</button>';
+function certOpen(pid){
+ sheet('Certificat · '+pname(pat(pid)),'<div class="list">'+Object.keys(CERTS).map(k=>'<button class="item" data-a="cert-type" data-k="'+k+'" data-p="'+pid+'"><span class="grow"><b>'+esc(CERTS[k])+'</b><small>'+esc(CERT_SUB[k])+'</small></span>'+ic('next')+'</button>').join('')+'</div>');
+}
+function certForm(k,pid){
+ const t=today(),h=hm(),r=S.rdv.find(x=>x.patientId===pid&&x.date===t),de=(r&&(r.arrivee||r.heure))||h,mot={k:'motif',l:'Observations (facultatif)',t:'textarea',full:1};
+ const F={soins:[{k:'date',l:'Date',t:'date',v:t,req:1},mot],
+  arret:[{k:'jours',l:'Nombre de jours',t:'number',v:3,req:1},{k:'du',l:'À partir du',t:'date',v:t,req:1},{k:'date',l:'Date du certificat',t:'date',v:t,req:1},mot],
+  presence:[{k:'date',l:'Date',t:'date',v:t,req:1},{k:'de',l:'Arrivée',t:'time',v:de,req:1},{k:'a',l:'Départ',t:'time',v:(r&&r.fin)||(toMin(h)>=toMin(de)?h:de),req:1}],
+  scolaire:[{k:'jours',l:'Jours d’absence',t:'number',v:1,req:1},{k:'du',l:'À partir du',t:'date',v:t,req:1},{k:'date',l:'Date du certificat',t:'date',v:t,req:1}]}[k];
+ openForm(CERTS[k]+' · '+pname(pat(pid)),F,o=>{
+  if(o.jours!=null&&o.jours<1){$('#form-err').innerHTML='<div class="alertbox">Indiquez au moins 1 jour.</div>';return}
+  if(o.de&&o.a&&toMin(o.a)<toMin(o.de)){$('#form-err').innerHTML='<div class="alertbox">L’heure de départ est avant l’heure d’arrivée.</div>';return}
+  const c={id:newId(),num:nextNum('certifs'),patientId:pid,type:k,...o};Store.save('certifs',c);closeSheet();render();
+  saveFile(certFile(c),()=>certPDF(c));
+ },'Créer le PDF');
+}
+function certPDF(c){
+ const p=pat(c.patientId)||{},C=S.config,f=p.sexe==='F',a=age(p.naissance),kid=p.naissance&&parseInt(a,10)<16,e=f?'e':'';
+ const who=(kid?'l’enfant':f?'Mme':'M.')+' '+pname(p)+(a?', âgé'+e+' de '+a:'');
+ const me='Je soussigné(e), '+(C.praticien||'')+', '+(C.specialite||'chirurgien-dentiste').toLowerCase()+',';
+ const n=Number(c.jours)||1,j=n+' jour'+(n>1?'s':''),fin=c.du?fr(addDays(c.du,n-1)):'';
+ const T={soins:me+' certifie avoir examiné ce jour '+who+', et que son état de santé bucco-dentaire nécessite des soins.',
+  arret:me+' certifie que l’état de santé de '+who+', nécessite un arrêt de travail de '+j+', du '+fr(c.du)+' au '+fin+' inclus, sauf complications.',
+  presence:me+' certifie que '+who+', s’est présenté'+e+' à mon cabinet le '+fr(c.date)+(c.de?' de '+c.de.replace(':','h')+(c.a?' à '+c.a.replace(':','h'):''):'')+' pour des soins dentaires.',
+  scolaire:me+' certifie avoir reçu en consultation '+who+', le '+fr(c.date)+', et que son état de santé nécessite une absence scolaire de '+j+', du '+fr(c.du)+' au '+fin+' inclus.'}[c.type];
+ return docPDF('a5',CERTS[c.type].toUpperCase(),c.date,p,X=>{
+  const {d,M,cw,F,ink}=X;let y=X.y+2;F('normal',11.5);ink();d.setLineHeightFactor(1.45);
+  const paras=[T];if(c.motif)paras.push('Observations : '+c.motif);paras.push('Certificat délivré à la demande de l’intéressé'+e+' et remis en main propre pour servir et valoir ce que de droit.');
+  paras.forEach(t=>{const L=d.splitTextToSize(pdfTxt(t),cw),hh=L.length*11.5*0.3528*1.45;if(y+hh>X.bottom)y=X.newPage();d.text(L,M,y);y+=hh+5});
+  d.setLineHeightFactor(1.15);
+ });
+}
+
+/* =====================================================================
+   Statistiques
+   ===================================================================== */
+function monthsBetween(a,b){const out=[];let y=+a.slice(0,4),m=+a.slice(5,7);const ey=+b.slice(0,4),em=+b.slice(5,7);while(y<ey||(y===ey&&m<=em)){out.push(y+'-'+String(m).padStart(2,'0'));if(++m>12){m=1;y++}}return out}
+function last12(){const d=new Date(today()+'T12:00:00');d.setDate(1);d.setMonth(d.getMonth()-11);return iso(d)}
+function statRange(){
+ const t=today(),y=+t.slice(0,4),k=ui.stp||'12m';
+ if(k==='mois')return [t.slice(0,8)+'01',t];if(k==='annee')return [y+'-01-01',t];if(k==='anneeP')return [(y-1)+'-01-01',(y-1)+'-12-31'];
+ return [last12(),t];
+}
+const kDA=v=>v>=1e6?(Math.round(v/1e5)/10).toString().replace('.',',')+' M':v>=1000?(Math.round(v/100)/10).toString().replace('.',',')+' k':String(Math.round(v));
+function niceMax(v){const p=Math.pow(10,Math.floor(Math.log10(v))),f=v/p;return ([1,2,4,6,8,10].find(x=>x>=f)||10)*p}
+function barSVG(rows){
+ const W=440,H=210,L=40,B=24,T=10,n=rows.length,max=niceMax(Math.max(1,...rows.map(r=>r[1]))),cw=(W-L-6)/n,gap=Math.max(3,Math.min(14,cw*0.3)),ph=H-T-B;
+ let g='';for(let i=0;i<=4;i++){const v=max*i/4,y=H-B-ph*i/4;g+='<line x1="'+L+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" class="sg"/><text x="'+(L-6)+'" y="'+(y+4)+'" text-anchor="end" class="sl">'+kDA(v)+'</text>'}
+ const bars=rows.map((r,i)=>{const x=L+i*cw+gap/2,w=cw-gap,h=r[1]>0?Math.max(2,ph*r[1]/max):0,y=H-B-h,rr=Math.min(4,w/2,h);
+  const path=h?'M'+x+','+(H-B)+'V'+(y+rr)+'Q'+x+','+y+' '+(x+rr)+','+y+'H'+(x+w-rr)+'Q'+(x+w)+','+y+' '+(x+w)+','+(y+rr)+'V'+(H-B)+'Z':'';
+  return '<g class="sb'+(r[3]?' cur':'')+'" data-tip="'+esc(r[2])+'" tabindex="0"><rect x="'+(L+i*cw)+'" y="'+T+'" width="'+cw+'" height="'+(ph+B)+'" fill="transparent"/>'+(path?'<path d="'+path+'"/>':'')+(n<=12||i%2===0?'<text x="'+(x+w/2)+'" y="'+(H-8)+'" text-anchor="middle" class="sl">'+esc(r[0])+'</text>':'')+'<title>'+esc(r[2])+'</title></g>'}).join('');
+ return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Encaissé par mois">'+g+'<line x1="'+L+'" x2="'+W+'" y1="'+(H-B)+'" y2="'+(H-B)+'" class="sa"/>'+bars+'</svg>';
+}
+function vStats(){
+ const t=today(),y=+t.slice(0,4),[a,b]=statRange(),inR=d=>!!d&&d>=a&&d<=b;
+ const acts=S.paiements.filter(x=>inR(x.date)),fact=acts.reduce((s,x)=>s+(Number(x.montant)||0),0),enc=encaisse(a,b),du=S.paiements.reduce((s,x)=>s+reste(x),0);
+ const np=S.patients.filter(p=>inR(p.cree)).length,rv=S.rdv.filter(r=>inR(r.date)&&r.date<=t),abs=rv.filter(r=>r.statut==='absent').length;
+ const dv=S.devis.filter(v=>inR(v.date)),dvA=dv.filter(v=>v.statut==='accepte'),dvW=S.devis.filter(v=>(v.statut||'attente')==='attente');
+ const months=monthsBetween((ui.stp||'12m')==='mois'?last12():a,b),cur=t.slice(0,7);
+ const rows=months.map(m=>{const v=encMois(m),lab=MOIS[+m.slice(5)-1];return [lab.slice(0,3)+(months.length>12||m.slice(0,4)!==String(y)&&(ui.stp||'12m')==='12m'&&m.slice(5)==='01'?' '+m.slice(2,4):''),v,lab+' '+m.slice(0,4)+' : '+da(v)+' encaissés',m===cur]});
+ const by={};acts.forEach(x=>{const k=String(x.acte||'Autre').replace(/^Dent \d+ · /,'');by[k]=(by[k]||0)+(Number(x.montant)||0)});
+ const top=Object.entries(by).sort((p,q)=>q[1]-p[1]).slice(0,6),tmax=top.length?top[0][1]:1;
+ const K=(l,v,s,alert)=>'<div class="kpi'+(alert?' alert':'')+'"><span>'+l+'</span><b class="num">'+v+'</b>'+(s?'<small>'+s+'</small>':'')+'</div>';
+ const per=[['mois','Ce mois'],['12m','12 mois'],['annee',String(y)],['anneeP',String(y-1)]];
+ return '<div class="head"><div><h1>Statistiques</h1><p>Du '+fr(a)+' au '+fr(b)+'</p></div><div class="seg">'+per.map(p=>'<button data-a="stp" data-k="'+p[0]+'" class="'+((ui.stp||'12m')===p[0]?'on':'')+'">'+p[1]+'</button>').join('')+'</div></div>'+
+ '<div class="kpis stk">'+K('Encaissé',da(enc),'versements reçus sur la période')+K('Facturé',da(fact),acts.length+' acte'+(acts.length>1?'s':'')+(acts.length?' · moyenne '+da(fact/acts.length):''))+K('Reste à encaisser',da(du),'toutes périodes',du>0)+K('Nouveaux patients',np,S.patients.length+' au total')+
+ K('Rendez-vous',rv.length,rv.length?abs+' absent'+(abs>1?'s':'')+' ('+Math.round(abs*100/rv.length)+' %)':'')+K('Devis acceptés',dvA.length+' / '+dv.length,dvA.length?da(dvA.reduce((s,v)=>s+dvNet(v),0)):'')+K('Devis en attente',dvW.length,dvW.length?da(dvW.reduce((s,v)=>s+dvNet(v),0)):'')+'</div>'+
+ '<div class="card"><h2>Encaissé par mois</h2><div class="stc">'+barSVG(rows)+'</div><p class="sttip" id="st_tip">Touchez une barre pour voir le montant.</p>'+
+ '<details class="stt"><summary>Voir le tableau</summary><table><thead><tr><th>Mois</th><th>Encaissé</th><th>Facturé</th></tr></thead><tbody>'+months.slice().reverse().map(m=>'<tr><td>'+MOIS[+m.slice(5)-1]+' '+m.slice(0,4)+'</td><td class="num">'+da(encMois(m))+'</td><td class="num">'+da(S.paiements.filter(x=>x.date.slice(0,7)===m).reduce((s,x)=>s+(Number(x.montant)||0),0))+'</td></tr>').join('')+'</tbody></table></details></div>'+
+ '<div class="card"><h2>Actes les plus facturés</h2>'+(top.length?top.map(([k,v])=>'<div class="hbar"><span>'+esc(k)+'</span><i style="width:'+Math.max(2,Math.round(v*100/tmax))+'%"></i><b class="num">'+da(v)+'</b></div>').join(''):'<div class="empty">Aucun acte sur cette période.</div>')+'</div>';
+}
+
+/* =====================================================================
+   Salle d'attente
+   ===================================================================== */
+const hm=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+const toMin=h=>{const m=/^(\d{1,2}):(\d{2})/.exec(h||'');return m?(+m[1])*60+(+m[2]):null};
+const minsSince=h=>{const a=toMin(h);if(a==null)return null;const d=new Date();return Math.max(0,d.getHours()*60+d.getMinutes()-a)};
+const dur=m=>m==null?'':m<60?m+' min':Math.floor(m/60)+' h '+String(m%60).padStart(2,'0');
+function setStatut(r,s){
+ r.statut=s;if(r.date===today()){const h=hm();if(s==='salle'&&!r.arrivee)r.arrivee=h;if(s==='fauteuil'){r.debut=h;if(!r.arrivee)r.arrivee=h}if(s==='termine'&&!r.fin)r.fin=h}
+ Store.save('rdv',r,700);
+}
+function vAttente(){
+ const t=today(),L=S.rdv.filter(r=>r.date===t).sort(byTime),G=k=>L.filter(r=>k.includes(r.statut||'prevu'));
+ const venir=G(['prevu','confirme']),salle=G(['salle']).sort((x,y)=>(x.arrivee||x.heure||'').localeCompare(y.arrivee||y.heure||'')),fau=G(['fauteuil']),fin=G(['termine']),abs=G(['absent']);
+ const waits=salle.map(r=>minsSince(r.arrivee)).filter(x=>x!=null),avg=waits.length?Math.round(waits.reduce((s,x)=>s+x,0)/waits.length):null;
+ const B=(r,s,l,pri)=>'<button class="btn sm'+(pri?' pri':'')+'" data-a="att" data-id="'+r.id+'" data-s="'+s+'">'+l+'</button>';
+ const row=(r,extra,btns,warn)=>'<div class="item"><span class="time num">'+esc(r.heure||'')+'</span><span class="grow"><b>'+esc(pname(pat(r.patientId)))+'</b><small'+(warn?' style="color:var(--warn);font-weight:700"':'')+'>'+[r.motif,extra].filter(Boolean).map(esc).join(' · ')+'</small></span><span class="row" style="gap:6px;flex-wrap:nowrap">'+btns+'</span></div>';
+ const col=(title,n,body,empty)=>'<div class="card"><h2>'+title+' <span class="pill plain num">'+n+'</span></h2><div class="list">'+(body||'<div class="empty">'+empty+'</div>')+'</div></div>';
+ return '<div class="head"><div><h1>Salle d’attente</h1><p>'+longDate(t)+'</p></div><div class="row"><button class="btn sm" data-a="att-tv">Grand écran</button><button class="btn pri" data-a="att-walkin">'+ic('plus')+'Patient sans RDV</button></div></div>'+
+ '<div class="kpis">'+'<div class="kpi"><span>En attente</span><b class="num">'+salle.length+'</b></div><div class="kpi'+(avg!=null&&avg>=30?' alert':'')+'"><span>Attente moyenne</span><b class="num">'+(avg==null?'—':dur(avg))+'</b></div><div class="kpi"><span>Au fauteuil</span><b class="num">'+fau.length+'</b></div><div class="kpi"><span>Reste à venir</span><b class="num">'+venir.length+'</b></div></div>'+
+ '<div class="attg">'+
+ col('En salle d’attente',salle.length,salle.map(r=>{const m=minsSince(r.arrivee);return row(r,r.arrivee?'arrivé à '+r.arrivee+' · attend depuis '+dur(m):'',B(r,'fauteuil','Au fauteuil',1),m!=null&&m>=30)}).join(''),'Personne n’attend.')+
+ col('Au fauteuil',fau.length,fau.map(r=>row(r,r.debut?'depuis '+dur(minsSince(r.debut)):'',B(r,'termine','Terminé',1))).join(''),'Fauteuil libre.')+
+ col('À venir',venir.length,venir.map(r=>row(r,STATUTS[r.statut||'prevu'],B(r,'salle','Arrivé',1)+B(r,'absent','Absent'))).join(''),'Plus de rendez-vous prévus aujourd’hui.')+
+ col('Terminés',fin.length,fin.map(r=>{const a=toMin(r.debut),b=toMin(r.fin);return row(r,a!=null&&b!=null&&b>=a?'au fauteuil '+dur(b-a):(r.fin?'terminé à '+r.fin:''),'')}).join(''),'Aucun pour le moment.')+
+ '</div>'+(abs.length?'<div class="card"><h2>Absents <span class="pill plain num">'+abs.length+'</span></h2><div class="list">'+abs.map(r=>row(r,'',B(r,'salle','Finalement arrivé'))).join('')+'</div></div>':'')+
+ '<p style="margin:0;font-size:12.5px;color:var(--muted)">Les heures d’arrivée et de passage au fauteuil sont notées automatiquement. La page se met à jour toute seule.</p>';
+}
+let ATV=false;
+function attTV(){
+ let el=$('#attv');if(!ATV){if(el)el.remove();return}
+ if(!el){el=document.createElement('div');el.id='attv';el.dataset.a='att-tvclose';el.setAttribute('role','dialog');el.setAttribute('aria-label','Salle d’attente, grand écran');document.body.appendChild(el)}
+ const L=S.rdv.filter(r=>r.date===today()),sh=p=>p?((p.nom||'')+' '+(p.prenom||'').charAt(0)+(p.prenom?'.':'')).trim():'—';
+ const salle=L.filter(r=>r.statut==='salle').sort((x,y)=>(x.arrivee||x.heure||'').localeCompare(y.arrivee||y.heure||'')),fau=L.filter(r=>r.statut==='fauteuil');
+ el.innerHTML='<div class="tvh"><b>'+esc(S.config.cabinet||'Salle d’attente')+'</b><span class="num">'+hm()+'</span></div><div class="tvc"><section><h3>Au fauteuil</h3>'+(fau.map(r=>'<p class="big">'+esc(sh(pat(r.patientId)))+'</p>').join('')||'<p class="mut">—</p>')+'</section><section><h3>Ordre de passage</h3>'+(salle.map((r,i)=>'<p><i>'+(i+1)+'</i>'+esc(sh(pat(r.patientId)))+'</p>').join('')||'<p class="mut">Personne en attente</p>')+'</section></div><small>Touchez l’écran pour revenir</small>';
+}
+setInterval(()=>{if(!ui.ready||document.hidden)return;if(ATV)attTV();if(route()==='attente'&&!$('#modal').innerHTML)render()},30000);
+document.addEventListener('pointerover',e=>{const g=e.target.closest&&e.target.closest('.sb[data-tip]'),tip=$('#st_tip');if(g&&tip)tip.textContent=g.dataset.tip});
+document.addEventListener('focusin',e=>{const g=e.target.closest&&e.target.closest('.sb[data-tip]'),tip=$('#st_tip');if(g&&tip)tip.textContent=g.dataset.tip});
+
+/* ---------- Tarifs (Paramètres) ---------- */
+let TF=null;
+function tarifSheet(){
+ if(!TF)TF=clone(tarifs());
+ sheet('Tarifs des actes','<div class="note" style="margin-bottom:12px">Ces prix remplissent automatiquement les devis et la Caisse. Adaptez-les à votre cabinet.</div><div class="dvl dvh tfl"><span>Acte</span><span>Prix (DA)</span><span></span></div>'+TF.map((t,i)=>'<div class="tfl"><input type="text" data-tf="n" data-i="'+i+'" value="'+esc(t[0])+'" aria-label="Acte"><input type="number" class="num" min="0" inputmode="numeric" data-tf="p" data-i="'+i+'" value="'+esc(t[1])+'" aria-label="Prix en DA"><button class="iconbtn" data-a="tf-rm" data-i="'+i+'" aria-label="Retirer">'+ic('trash')+'</button></div>').join('')+'<button class="btn sm" data-a="tf-add" style="margin-top:4px">'+ic('plus')+'Ajouter un acte</button>',
+ '<button class="btn" data-a="close">Annuler</button><button class="btn pri" data-a="tarif-save">Enregistrer</button>');
 }
 
 const A={
@@ -2599,7 +2969,7 @@ const A={
  'pat-new'(){patientForm()},'pat-edit'(){patientForm(pat(ui.patient))},
  'pat-open'(d){ui.patient=d.id;render();$('main').scrollTop=0},
  'pat-back'(){ui.patient=null;render()},
- 'pat-del'(){const id=ui.patient;ask('Supprimer ce dossier, avec ses rendez-vous, ordonnances et paiements ? Cette action est définitive.','Supprimer',()=>{['rdv','ordos','paiements'].forEach(c=>S[c].filter(x=>x.patientId===id).map(x=>x.id).forEach(i=>Store.del(c,i)));Store.del('patients',id);ui.patient=null;render();toast('Dossier supprimé')})},
+ 'pat-del'(){const id=ui.patient;ask('Supprimer ce dossier, avec ses rendez-vous, ordonnances et paiements ? Cette action est définitive.','Supprimer',()=>{['rdv','ordos','paiements','devis','certifs'].forEach(c=>S[c].filter(x=>x.patientId===id).map(x=>x.id).forEach(i=>Store.del(c,i)));Store.del('patients',id);ui.patient=null;render();toast('Dossier supprimé')})},
  tooth(d){TS={dent:Number(d.n),kind:'carie',faces:[],statut:'existant',mat:''};toothSheet()},
  't-kind'(d){TS.kind=d.k;TS.mat=MATS[d.k]?MATS[d.k][0]:'';toothSheet()},
  't-face'(d){const i=TS.faces.indexOf(d.k);if(i<0)TS.faces.push(d.k);else TS.faces.splice(i,1);toothSheet()},
@@ -2617,7 +2987,7 @@ const A={
  'rdv-new'(){rdvForm(route()==='patients'&&ui.patient?{patientId:ui.patient,date:today()}:null)},
  'rdv-edit'(d){rdvForm(S.rdv.find(r=>r.id===d.id))},
  'rdv-del'(d){Store.del('rdv',d.id);closeSheet();render();toast('Rendez-vous supprimé')},
- 'rdv-cycle'(d){const r=S.rdv.find(x=>x.id===d.id);r.statut=STAT_ORDER[(STAT_ORDER.indexOf(r.statut)+1)%STAT_ORDER.length];Store.save('rdv',r,700);render()},
+ 'rdv-cycle'(d){const r=S.rdv.find(x=>x.id===d.id);setStatut(r,STAT_ORDER[(STAT_ORDER.indexOf(r.statut)+1)%STAT_ORDER.length]);render()},
  day(d){ui.day=d.d;ui.week=null;render()},
  week(d){ui.week=addDays(ui.week,Number(d.n));ui.day=addDays(ui.day,Number(d.n));render()},
  'pay-new'(){payForm(route()==='patients'&&ui.patient?{patientId:ui.patient}:null)},
@@ -2711,14 +3081,38 @@ const A={
  'rap-copy'(d){const r=S.rdv.find(x=>x.id===d.id);try{navigator.clipboard.writeText(rappelMsg(r)).then(()=>toast('Message copié'),()=>toast('Copie impossible'))}catch(e){toast('Copie impossible')}},
  backup(){saveFile('dentagest-sauvegarde-'+today()+'.json',()=>JSON.stringify({date:today(),...S},null,1))},
  'demo-load'(){demoLoad()},
+ 'dv-new'(){pickPatient('Nouveau devis',id=>devisOpen(null,id))},
+ 'dv-open'(d){devisOpen(d.id)},
+ 'dv-add'(){DV.lignes.push({dent:'',acte:'',prix:0});devisSheet();const r=document.querySelectorAll('[data-dv="dent"]');if(r.length)r[r.length-1].focus()},
+ 'dv-rm'(d){DV.lignes.splice(+d.i,1);if(!DV.lignes.length)DV.lignes.push({dent:'',acte:'',prix:0});devisSheet()},
+ 'dv-save'(){if(devisSave()){devisSheet();render();toast('Devis enregistré')}},
+ 'dv-pdf'(){if(DV.statut!=='accepte'){if(!devisSave())return;devisSheet();render()}const v=clone(DV);saveFile('devis-'+v.num+'-'+fileName(pname(pat(v.patientId)))+'.pdf',()=>devisPDF(v))},
+ 'dv-accept'(){if(!devisSave())return;render();ask('Le patient accepte ce devis ? Ses '+DV.lignes.length+' acte'+(DV.lignes.length>1?'s seront ajoutés':' sera ajouté')+' à la Caisse pour '+da(dvNet(DV))+'.','Accepter',devisAccept)},
+ 'dv-refuse'(){DV.statut='refuse';if(devisSave()){devisSheet();render()}},
+ 'dv-del'(){const id=DV.id;ask('Supprimer ce devis ?','Supprimer',()=>{Store.del('devis',id);DV=null;render();toast('Devis supprimé')})},
+ 'cert-new'(){pickPatient('Nouveau certificat',id=>certOpen(id))},
+ 'cert-type'(d){certForm(d.k,d.p)},
+ 'cert-pdf'(d){const c=S.certifs.find(x=>x.id===d.id);if(c)saveFile(certFile(c),()=>certPDF(c))},
+ stp(d){ui.stp=d.k;render()},
+ att(d){const r=S.rdv.find(x=>x.id===d.id);if(r){setStatut(r,d.s);render()}},
+ 'att-walkin'(){if(!S.patients.length){toast('Ajoutez d’abord un patient');return patientForm()}openForm('Patient sans rendez-vous',[{k:'patientId',l:'Patient',t:'select',o:patOptions(),req:1,full:1},{k:'motif',l:'Motif',v:'Urgence',list:MOTIFS}],o=>{const h=hm();Store.save('rdv',{id:newId(),patientId:o.patientId,date:today(),heure:h,motif:o.motif,statut:'salle',arrivee:h,duree:30,note:'Sans rendez-vous'});closeSheet();render();toast('Patient ajouté à la salle d’attente')},'Ajouter à la salle d’attente')},
+ 'att-tv'(){ATV=true;attTV();try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}},
+ 'att-tvclose'(){ATV=false;attTV();try{document.fullscreenElement&&document.exitFullscreen()}catch(e){}},
+ 'tarif-open'(){TF=null;tarifSheet()},
+ 'tf-add'(){TF.push(['',0]);tarifSheet();const r=document.querySelectorAll('[data-tf="n"]');if(r.length)r[r.length-1].focus()},
+ 'tf-rm'(d){TF.splice(+d.i,1);tarifSheet()},
+ 'tarif-save'(){S.config.tarifs=TF.filter(t=>String(t[0]).trim()).map(t=>[String(t[0]).trim(),Math.max(0,Number(t[1])||0)]);Store.saveConfig();TF=null;closeSheet();render();toast('Tarifs enregistrés')},
  'imp-open'(){impOpen()},'imp-run'(){impRun()},'imp-model'(){impModel()},
  'imp-undo'(){const L=S.config.lastImp;if(L)ask('Supprimer les patients importés le '+fr(L.date)+' depuis « '+L.file+' », avec leurs rendez-vous, ordonnances et paiements ?','Supprimer',impUndo)},
  'demo-clear'(){ask('Supprimer toutes les fiches d’exemple ?','Supprimer',demoClear)}
 };
-const LIC_WRITE=new Set(['submit','imp-open','imp-run','imp-undo','pat-new','pat-del','t-add','ch-del','rdv-new','rdv-del','rdv-cycle','pay-new','pay-del','ordo-new','ordo-save','ordo-del','ordo-edit','med-new','med-del','tpl-use','tpl-save','tpl-del','md-new','md-save','md-dup','md-custom','rl-rec','rap-done','demo-load','demo-clear','dictee-send']);
+const LIC_WRITE=new Set(['submit','dv-new','dv-save','dv-accept','dv-refuse','dv-del','cert-new','cert-type','att','att-walkin','tarif-save','imp-open','imp-run','imp-undo','pat-new','pat-del','t-add','ch-del','rdv-new','rdv-del','rdv-cycle','pay-new','pay-del','ordo-new','ordo-save','ordo-del','ordo-edit','med-new','med-del','tpl-use','tpl-save','tpl-del','md-new','md-save','md-dup','md-custom','rl-rec','rap-done','demo-load','demo-clear','dictee-send']);
 document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a;if(licLocked()&&LIC_WRITE.has(a)){e.preventDefault();payOpen(true);return}const fn=A[a];if(fn)fn(el.dataset,el,e)});
 document.addEventListener('input',e=>{
  const t=e.target;
+ if(DV&&t.dataset&&t.dataset.dv){dvInput(t);return}
+ if(TF&&t.dataset&&t.dataset.tf){const r=TF[+t.dataset.i];if(r){if(t.dataset.tf==='n')r[0]=t.value;else r[1]=Number(t.value)||0}return}
+ if(t.id==='f_acte'&&formCb){const m=$('#f_montant'),tp=tarifOf(t.value);if(m&&tp&&!m.value)m.value=tp;return}
  if(t.id&&t.id.indexOf('ob_')===0){onbPrev();return}
  if(ED&&edSel()&&(t.id==='e_txt'||t.id==='e_s'||t.id==='e_w'||t.id==='e_h')){const e=edSel();if(t.id==='e_txt')e.txt=t.value;else e[{e_s:'s',e_w:'w',e_h:'h'}[t.id]]=Number(t.value);edCanvas();return}
  if(OS&&t.id&&t.id.indexOf('os_')===0&&t.type!=='file'){OS.info[t.id.slice(3)]=t.value;osPrev();clearTimeout(OS.tm);OS.tm=setTimeout(osMinis,400);return}
