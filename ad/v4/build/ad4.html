@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><title>DentaGest DZ Reel FR</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--y:#FFD60A;--k:#0B0B0C}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--k);font-family:Outfit,"Noto Color Emoji",sans-serif;-webkit-font-smoothing:antialiased}
+.L{position:absolute;inset:0;overflow:hidden}
+#vid{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover;transform-origin:50% 40%}
+#shTop{position:absolute;left:0;right:0;top:0;height:640px;background:linear-gradient(180deg,rgba(0,0,0,.62),rgba(0,0,0,0))}
+#shBot{position:absolute;left:0;right:0;bottom:0;height:900px;background:linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,0))}
+.hl{background:var(--y);color:#0B0B0C;border-radius:16px;padding:0 14px;box-decoration-break:clone;-webkit-box-decoration-break:clone;text-shadow:none}
+.hlr{background:#EF4444;color:#fff;border-radius:16px;padding:0 14px;text-shadow:none}
+.head{position:absolute;left:60px;right:60px;text-align:center;color:#fff;font-weight:800;font-size:76px;line-height:1.22;letter-spacing:-1px;text-shadow:0 4px 0 rgba(0,0,0,.35),0 0 30px rgba(0,0,0,.55);opacity:0}
+#cap{position:absolute;left:60px;right:60px;top:1240px;text-align:center;font-weight:900;font-size:78px;line-height:1.15;color:#fff;letter-spacing:-1px;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:0 6px 0 rgba(0,0,0,.6)}
+#cap span{opacity:0;display:inline-block}
+#cap span.on{opacity:1}
+#cap span.cur{color:var(--y)}
+/* hook extras */
+#circ{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:0}
+.stamp{position:absolute;font-weight:900;font-size:64px;letter-spacing:4px;padding:10px 30px;border:8px solid;border-radius:20px;opacity:0;white-space:nowrap}
+#stIll{left:310px;top:1500px;color:#EF4444;border-color:#EF4444;background:rgba(255,255,255,.12)}
+#stOk{left:330px;top:1380px;color:#16A34A;border-color:#16A34A;background:rgba(255,255,255,.88)}
+#qm{position:absolute;left:800px;top:640px;font-size:150px;font-weight:900;color:var(--y);-webkit-text-stroke:5px #000;paint-order:stroke fill;opacity:0}
+#calls{position:absolute;left:600px;top:760px;background:#EF4444;color:#fff;font-weight:800;font-size:48px;padding:12px 28px;border-radius:99px;box-shadow:0 14px 40px rgba(0,0,0,.45);opacity:0;white-space:nowrap}
+/* brand */
+#brand{opacity:0;background:radial-gradient(circle at 50% 42%,#2a2a2e 0%,#0B0B0C 62%)}
+#bIcon{position:absolute;left:50%;top:560px;width:300px;height:300px;margin-left:-150px;border-radius:76px;overflow:hidden;box-shadow:0 0 0 5px rgba(255,255,255,.12),0 40px 120px rgba(255,214,10,.18)}
+#bIcon img,#eIcon img,#cIcon img{width:100%;height:100%}
+#bName{position:absolute;left:0;right:0;top:920px;text-align:center;color:#fff;font-weight:800;font-size:120px;letter-spacing:-3px}
+#bName b{color:var(--y)}
+#bSub{position:absolute;left:60px;right:60px;top:1090px;text-align:center;color:#fff;font-weight:800;font-size:66px;line-height:1.25}
+/* features */
+#feat{opacity:0;background:radial-gradient(circle at 50% 70%,#2a2410 0%,#0B0B0C 60%)}
+#prog{position:absolute;left:60px;right:250px;top:84px;display:flex;gap:10px}
+#prog i{flex:1;height:10px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden;position:relative}
+#prog i b{position:absolute;inset:0;background:var(--y);transform-origin:left;transform:scaleX(0)}
+#cnt{position:absolute;right:60px;top:62px;background:var(--y);color:#0B0B0C;font-weight:900;font-size:40px;padding:4px 20px;border-radius:14px}
+#tease{position:absolute;right:60px;top:130px;color:#fff;font-weight:700;font-size:34px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.18);padding:6px 18px;border-radius:99px}
+#fH{top:200px;font-size:72px;opacity:1}
+#fS{position:absolute;left:60px;right:60px;top:400px;text-align:center;color:#A3A3A3;font-weight:600;font-size:36px;letter-spacing:.5px}
+#phone{position:absolute;left:230px;top:480px;width:620px;height:1314px;border-radius:84px;background:#18181b;padding:12px;box-shadow:0 0 0 4px #3f3f46,0 60px 140px rgba(0,0,0,.75);transform-origin:50% 0}
+#screen{position:relative;width:596px;height:1290px;border-radius:72px;overflow:hidden;background:#fff}
+.scr{position:absolute;left:0;top:58px;width:596px;height:1290px;opacity:0}
+#sbar{position:absolute;left:0;right:0;top:0;height:58px;display:flex;justify-content:space-between;align-items:center;padding:6px 56px 0 64px;font-weight:700;font-size:24px;z-index:3;color:#0B0B0C}
+#notch{position:absolute;left:50%;top:14px;width:170px;height:42px;border-radius:30px;background:#18181b;transform:translateX(-50%);z-index:4}
+.ring{position:absolute;border:7px solid var(--y);border-radius:20px;opacity:0;z-index:6;box-shadow:0 0 0 3px #0B0B0C,0 0 40px rgba(255,214,10,.7)}
+.stick{position:absolute;background:#fff;color:#0B0B0C;font-weight:800;font-size:44px;padding:16px 30px;border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,.6);opacity:0;white-space:nowrap;z-index:8}
+.stick small{display:block;font-size:24px;font-weight:700;color:#737373;letter-spacing:1px;text-transform:uppercase}
+#wa{position:absolute;left:70px;width:620px;top:1390px;background:#DCF8C6;color:#111;border-radius:30px 30px 30px 8px;padding:22px 28px 16px;font-family:"Open Sans",Outfit,sans-serif;font-weight:500;font-size:29px;line-height:1.36;box-shadow:0 26px 60px rgba(0,0,0,.6);opacity:0;z-index:8}
+#wa .h{display:flex;align-items:center;gap:12px;font-family:Outfit;font-weight:800;color:#075E54;font-size:28px;margin-bottom:6px}
+#wa .h i{width:38px;height:38px;border-radius:50%;background:#25D366;display:grid;place-items:center}
+/* CTA card over video */
+#card{position:absolute;left:60px;right:60px;top:1450px;background:#fff;border-radius:40px;padding:30px 34px;display:flex;gap:28px;align-items:center;box-shadow:0 30px 80px rgba(0,0,0,.5);opacity:0}
+#cIcon{width:132px;height:132px;border-radius:34px;overflow:hidden;flex:none}
+#card h3{font-weight:800;font-size:52px;color:#0B0B0C;letter-spacing:-1px;line-height:1}
+#card p{font-weight:700;font-size:31px;color:#0B0B0C;margin-top:10px}
+#card p.s{font-weight:600;font-size:25px;color:#737373;margin-top:6px}
+#btn{position:absolute;left:50%;top:1720px;transform:translateX(-50%);background:#0B0B0C;color:#fff;font-weight:800;font-size:46px;padding:22px 54px;border-radius:99px;border:3px solid rgba(255,255,255,.85);white-space:nowrap;opacity:0}
+/* end card */
+#end{opacity:0;background:radial-gradient(circle at 50% 36%,#2a2a2e 0%,#0B0B0C 62%)}
+#eIcon{position:absolute;left:50%;top:330px;width:270px;height:270px;margin-left:-135px;border-radius:68px;overflow:hidden;box-shadow:0 40px 120px rgba(255,214,10,.18)}
+#eName{position:absolute;left:0;right:0;top:650px;text-align:center;color:#fff;font-weight:800;font-size:116px;letter-spacing:-3px}
+#eName b{color:var(--y)}
+#eSub{position:absolute;left:0;right:0;top:800px;text-align:center;color:#A3A3A3;font-weight:600;font-size:32px;letter-spacing:7px}
+#eChips{position:absolute;left:70px;right:70px;top:890px;display:flex;justify-content:center;flex-wrap:wrap;gap:14px}
+#eChips span{border:2px solid rgba(255,255,255,.22);color:#e5e5e5;font-weight:700;font-size:29px;padding:9px 20px;border-radius:99px}
+#trial{position:absolute;left:50%;top:1250px;transform:translateX(-50%);background:var(--y);color:#0B0B0C;font-weight:900;font-size:68px;padding:28px 56px;border-radius:40px;white-space:nowrap;text-align:center;line-height:1.05}
+#trial small{display:block;font-size:31px;font-weight:700;color:#3f3a1f;margin-top:10px}
+#eBtn{position:absolute;left:50%;top:1540px;transform:translateX(-50%);border:4px solid #fff;color:#fff;font-weight:800;font-size:54px;padding:24px 60px;border-radius:99px;white-space:nowrap}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+</style></head><body>
+<!-- video scenes -->
+<div class="L" id="vs">
+  <img id="vid" src="hook/f00001.jpg">
+  <div id="shTop"></div><div id="shBot"></div>
+  <svg id="circ" viewBox="0 0 1080 1920"><ellipse id="ell" cx="560" cy="1560" rx="380" ry="230" fill="none" stroke="#EF4444" stroke-width="14" stroke-linecap="round" transform="rotate(-8 560 1560)" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg>
+  <div id="qm">?!</div>
+  <div class="stamp" id="stIll">ILLISIBLE</div>
+  <div class="stamp" id="stOk">LISIBLE ✓</div>
+  <div id="calls">📞 4 appels</div>
+  <div class="head" id="h1" style="top:170px">Le pharmacien m’a appelée <span class="hl">4 fois</span> cette semaine 😳</div>
+  <div class="head" id="h2" style="top:200px">Jusqu’à ce que je change… <span class="hl">une seule chose</span> 👇</div>
+  <div class="head" id="h3" style="top:200px">Claire. Nette. <span class="hl">Imprimée</span> ✅</div>
+  <div class="head" id="h4" style="top:200px"><span class="hl">Plus jamais</span> d’appels 🙌</div>
+  <div id="cap"></div>
+  <div id="card"><div id="cIcon"><img src="icon-512.png"></div><div><h3>DentaGest DZ</h3><p>7 jours gratuits · puis 2 000 DA/mois</p><p class="s">Hors connexion · Android · iPhone · PC</p></div></div>
+  <div id="btn">Essayer gratuitement →</div>
+</div>
+<!-- brand card -->
+<div class="L" id="brand">
+  <div id="bIcon"><img src="icon-512.png"></div>
+  <div id="bName">DentaGest <b>DZ</b></div>
+  <div id="bSub"><span class="hl">10 fonctions</span> qui font<br>le travail pour vous 👇</div>
+</div>
+<!-- features -->
+<div class="L" id="feat">
+  <div id="prog"></div><div id="cnt">1/10</div><div id="tease">attendez la n°10 👀</div>
+  <div class="head" id="fH"></div>
+  <div id="fS"></div>
+  <div id="phone"><div id="screen"><div id="sbar"><span>9:41</span><span>●●● ▮</span></div><div id="notch"></div><div class="ring" id="ring"></div></div></div>
+  <div id="wa"><div class="h"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg></i>Rappel prêt à envoyer</div>Bonjour Karim, le cabinet Sourire Bab Ezzouar vous rappelle votre rendez-vous de demain à 10:00. Merci de confirmer…</div>
+  <div class="stick" id="stA" style="left:560px;top:1000px"><small>Alerte</small><span style="color:#DC2626">⚠️ Allergie !</span></div>
+  <div class="stick" id="stR" style="left:600px;top:1110px"><small>Reste à encaisser</small><span style="color:#DC2626">19 000 DA</span></div>
+  <div class="stick" id="stD" style="left:600px;top:1240px"><small>Devis</small>6 000 DA · PDF</div>
+</div>
+<!-- end card -->
+<div class="L" id="end">
+  <div id="eIcon"><img src="icon-512.png"></div>
+  <div id="eName">DentaGest <b>DZ</b></div>
+  <div id="eSub">GESTION DU CABINET DENTAIRE</div>
+  <div id="eChips"><span>Dossiers</span><span>Questionnaire</span><span>Schéma dentaire</span><span>Agenda</span><span>Salle d’attente</span><span>WhatsApp</span><span>Ordonnances</span><span>Devis</span><span>Certificats</span><span>Caisse</span><span>Statistiques</span><span>Reels</span></div>
+  <div id="trial">7 jours d’essai gratuit<small>puis 2 000 DA / mois ou 20 000 DA / an</small></div>
+  <div id="eBtn">Lien en bio 👇</div>
+</div>
+<div id="flash"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),P=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3),eb=x=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const lerp=(a,b,x)=>a+(b-a)*x;
+const win=(t,a,b,fi=.2,fo=.15)=>Math.max(0,Math.min(P(t,a,a+fi),1-P(t,b-fo,b)));
+function pop(el,t,a,b,extra=''){const o=win(t,a,b,.12,.12),p=eb(P(t,a,a+.35));el.style.opacity=o;el.style.transform=`scale(${lerp(.55,1,p)}) ${extra}`}
+
+// timeline
+const BR=6.0, F0=7.2, FD=2.1, NF=10, FE=F0+NF*FD;      // features end 28.2
+const D0=FE, E0=30.4, END=33.1, TOTAL=35.0;
+const SEGS=[[0,BR,0],[D0,E0,10.0],[E0,END,12.3]];          // [start,end,clipStart]
+const K=596/390;                                             // css px -> phone screen px
+const FEATS=[
+ {h:'Le dossier complet de <span class="hl">chaque patient</span>',s:'Antécédents · allergies · solde',scr:['patient'],ring:[[0.5,1.9,[16,295,358,42]]]},
+ {h:'Questionnaire médical <span class="hl">en 1 minute</span>',s:'Précautions et alertes automatiques',scr:['questionnaire']},
+ {h:'Le schéma dentaire <span class="hl">dent par dent</span>',s:'Constats · soins à faire · notes',scr:['chart']},
+ {h:'Agenda + <span class="hl">salle d’attente</span>',s:'Arrivées, fauteuil, grand écran',scr:['agenda','attente']},
+ {h:'Rappels <span class="hl">WhatsApp</span> en un clic',s:'Le message est déjà écrit',scr:['rappels'],wa:1},
+ {h:'Ordonnance en un clic +<br><span class="hlr">alerte allergie</span>',s:'Modèles prêts · PDF A5 à votre en-tête',scr:['ordo-alert','ordo'],ring:[[0.35,1.15,[16,384,358,62]]],st:'stA',sw:[0.4,1.1]},
+ {h:'Devis & certificats <span class="hl">en PDF</span>',s:'Arrêt de travail · présence · scolaire',scr:['devis2','cert'],st:'stD',sw:[0.3,1.1]},
+ {h:'La caisse : <span class="hl">qui n’a pas payé</span>',s:'Encaissé · facturé · reste à encaisser',scr:['caisse'],ring:[[0.4,2.0,[12,358,184,72]]],st:'stR',sw:[0.6,2.1]},
+ {h:'Les statistiques <span class="hl">du cabinet</span>',s:'Encaissé · actes les plus faits · patients',scr:['stats']},
+ {h:'Vos photos avant/après <span class="hl">en vidéo</span> 🔥',s:'11 modèles de reels prêts à publier',scr:['reel']},
+];
+// build screen images + progress
+const scrEls={};
+for(const f of FEATS)for(const n of f.scr){if(scrEls[n])continue;const im=document.createElement('img');im.className='scr';im.src=n==='reel'?'scr/reel/curseur_0000.jpg':'scr/'+n+'.png';$('screen').insertBefore(im,$('ring'));scrEls[n]=im}
+$('prog').innerHTML='<i><b></b></i>'.repeat(NF);
+const bars=[...$('prog').querySelectorAll('b')];
+
+// captions (reel times)
+const WORDS=[['Docteur…',0.7,1.15],['ça,',1.8,1.95],['c’est',1.95,2.15],['un',2.15,2.3],['cinq',2.3,2.5],['ou',2.5,2.62],['un',2.62,2.75],['S ?',2.75,3.05],
+ ['Quatrième',4.6,4.95],['appel',4.95,5.15],['cette',5.15,5.35],['semaine…',5.35,5.75],
+ ['Ah…',28.5,29.0],['là,',29.45,29.7],['je',29.7,29.85],['lis',29.85,30.0],['tout !',30.0,30.35],
+ ['Trente',31.0,31.3],['secondes.',31.3,31.7],['Plus',32.05,32.3],['jamais',32.3,32.55],['d’appel.',32.55,32.95]];
+const LINES=[[0,1],[1,8],[8,12],[12,13],[13,17],[17,19],[19,22]];
+let curLine=-2;
+function captions(t){
+  let li=-1;LINES.forEach(([a,b],i)=>{const s=WORDS[a][1]-0.05,e=(LINES[i+1]&&WORDS[LINES[i+1][0]][1]-0.05<WORDS[b-1][2]+0.6)?WORDS[LINES[i+1][0]][1]-0.05:WORDS[b-1][2]+0.5;if(t>=s&&t<e)li=i});
+  if(t>=BR&&t<D0)li=-1;
+  const cap=$('cap');
+  if(li!==curLine){curLine=li;cap.innerHTML=li<0?'':WORDS.slice(LINES[li][0],LINES[li][1]).map(w=>'<span>'+w[0]+'</span>').join(' ')}
+  if(li<0)return;
+  const ws=WORDS.slice(LINES[li][0],LINES[li][1]);const sp=cap.querySelectorAll('span');
+  ws.forEach((w,i)=>{const on=t>=w[1]-0.03;sp[i].className=(on?'on':'')+(on&&t<w[2]+0.05?' cur':'');sp[i].style.transform=on?`scale(${lerp(.7,1,eb(P(t,w[1]-0.03,w[1]+0.15)))})`:''});
+  cap.style.top=(t>=E0?1200:1240)+'px';
+}
+const vid=$('vid');let curSrc='',curReel='';
+async function R(t){
+  // video scenes
+  let seg=SEGS.find(s=>t>=s[0]&&t<s[1]);
+  if(!seg&&t>=END)seg=[E0,END,12.3];
+  if(seg){const ct=Math.min(15.0,seg[2]+(Math.min(t,seg[1]-1/30)-seg[0]));const f=Math.min(451,Math.max(1,Math.floor(ct*30)+1));const src='hook/f'+String(f).padStart(5,'0')+'.jpg';
+    if(src!==curSrc){curSrc=src;vid.src=src;await vid.decode().catch(()=>{})}
+    const k=t-seg[0];vid.style.transform=`scale(${1.04+0.035*k/(seg[1]-seg[0])})`;}
+  $('vs').style.opacity=(t<BR||t>=D0)?1:0;
+  // hook overlays
+  {const o=win(t,0.05,3.0,.15,.15),p=eb(P(t,.05,.4));$('h1').style.opacity=o;$('h1').style.transform=`scale(${lerp(.6,1,p)})`}
+  {const o=win(t,3.05,BR,.15,.15),p=eb(P(t,3.05,3.4));$('h2').style.opacity=o;$('h2').style.transform=`scale(${lerp(.6,1,p)})`}
+  {const o=win(t,D0+0.05,E0,.15,.15),p=eb(P(t,D0+.05,D0+.4));$('h3').style.opacity=o;$('h3').style.transform=`scale(${lerp(.6,1,p)})`}
+  {const o=win(t,E0+0.05,END,.15,.1),p=eb(P(t,E0+.05,E0+.4));$('h4').style.opacity=o;$('h4').style.transform=`scale(${lerp(.6,1,p)})`}
+  $('circ').style.opacity=win(t,0.5,3.0,.05,.15);$('ell').style.strokeDashoffset=100*(1-eo(P(t,0.5,1.1)));
+  pop($('stIll'),t,1.2,3.0,'rotate(-12deg)');
+  pop($('qm'),t,2.4,3.0,'rotate(8deg)');
+  pop($('calls'),t,3.6,BR,'rotate(-5deg)');
+  pop($('stOk'),t,D0+0.9,E0,'rotate(-10deg)');
+  {const a=E0+0.5,o=win(t,a,END+0.4,.15,.1),p=eb(P(t,a,a+.45));$('card').style.opacity=o;$('card').style.transform=`translateY(${(1-p)*200}px)`}
+  {const a=E0+0.9,o=win(t,a,END+0.4,.15,.1),p=eb(P(t,a,a+.4)),pulse=t>a+.6?1+Math.sin((t-a)*8)*.03:1;$('btn').style.opacity=o;$('btn').style.transform=`translateX(-50%) scale(${lerp(.5,1,p)*pulse})`}
+  captions(t);
+  // brand card
+  {const o=t>=BR&&t<F0?1:0;$('brand').style.opacity=o;
+   const p=eb(P(t,BR,BR+.4));$('bIcon').style.transform=`scale(${lerp(.3,1,p)}) rotate(${(1-p)*-14}deg)`;
+   const q=eo(P(t,BR+.15,BR+.45));$('bName').style.opacity=q;$('bName').style.transform=`translateY(${(1-q)*40}px)`;
+   const r=eb(P(t,BR+.35,BR+.7));$('bSub').style.opacity=P(t,BR+.35,BR+.45);$('bSub').style.transform=`scale(${lerp(.6,1,r)})`}
+  // features
+  const inF=t>=F0&&t<FE;$('feat').style.opacity=inF?1:0;
+  if(inF){
+    const fi=Math.min(NF-1,Math.floor((t-F0)/FD)),lt=t-F0-fi*FD,f=FEATS[fi];
+    $('cnt').textContent=(fi+1)+'/'+NF;$('cnt').style.transform=`scale(${lerp(1.35,1,eb(P(lt,0,.3)))})`;
+    $('tease').style.opacity=fi<NF-1?1:0;
+    bars.forEach((b,i)=>b.style.transform=`scaleX(${i<fi?1:i>fi?0:eo(P(lt,0,FD))})`);
+    if($('fH').dataset.i!=fi){$('fH').dataset.i=fi;$('fH').innerHTML=f.h;$('fS').textContent=f.s}
+    const hp=eb(P(lt,0,.32));$('fH').style.transform=`scale(${lerp(.7,1,hp)})`;$('fH').style.opacity=P(lt,0,.1);
+    $('fS').style.opacity=P(lt,.15,.35);
+    // phone: slide in on first, small bump on change, slow push
+    const ph=$('phone');const pin=eb(P(t,F0,F0+.45));const bump=Math.sin(P(lt,0,.3)*Math.PI)*(fi>0?1:0);
+    ph.style.transform=`translateY(${(1-pin)*1300}px) scale(${(1+0.04*lt/FD)*(1-bump*.03)}) rotate(${bump*1.2}deg)`;
+    for(const n in scrEls)scrEls[n].style.opacity=0;
+    if(f.scr.length===1)scrEls[f.scr[0]].style.opacity=1;
+    else{const k=P(lt,1.0,1.2);scrEls[f.scr[0]].style.opacity=1;scrEls[f.scr[1]].style.opacity=k}
+    if(f.scr[0]==='reel'){let src;if(lt<1.2)src='scr/reel/curseur_'+String(Math.min(89,Math.floor(lt*30)+30)).padStart(4,'0')+'.jpg';else src='scr/reel/neon_'+String(Math.min(59,Math.floor((lt-1.2)*30)+10)).padStart(4,'0')+'.jpg';
+      if(src!==curReel){curReel=src;scrEls.reel.src=src;await scrEls.reel.decode().catch(()=>{})}}
+    $('screen').style.background=f.scr[0]==='reel'?'#000':'#fff';$('sbar').style.color=f.scr[0]==='reel'?'#fff':'#0B0B0C';
+    const rg=$('ring');rg.style.opacity=0;
+    for(const [a,b,r] of (f.ring||[])){const o=win(lt,a,b,.12,.12);if(o>0){const pd=6;rg.style.left=(r[0]*K-pd)+'px';rg.style.top=(58+r[1]*K-pd)+'px';rg.style.width=(r[2]*K+2*pd)+'px';rg.style.height=(r[3]*K+2*pd)+'px';rg.style.opacity=o;rg.style.transform=`scale(${lerp(1.15,1,eb(P(lt,a,a+.3)))})`}}
+    for(const s of ['stA','stR','stD']){const el=$(s);if(f.st===s)pop(el,lt,f.sw[0],f.sw[1],'rotate(-4deg)');else el.style.opacity=0}
+    {const el=$('wa');if(f.wa){const o=win(lt,.5,FD,.15,.1),p=eb(P(lt,.5,.9));el.style.opacity=o;el.style.transform=`translateY(${(1-p)*90}px) scale(${lerp(.85,1,p)})`}else el.style.opacity=0}
+  }
+  // end card
+  {const o=P(t,END,END+.25);$('end').style.opacity=o;const E=END;
+   const p=eb(P(t,E+.05,E+.5));$('eIcon').style.transform=`scale(${lerp(.3,1,p)}) rotate(${(1-p)*-14}deg)`;
+   const a=eo(P(t,E+.2,E+.5));$('eName').style.opacity=a;$('eName').style.transform=`translateY(${(1-a)*40}px)`;
+   $('eSub').style.opacity=eo(P(t,E+.3,E+.6));$('eChips').style.opacity=eo(P(t,E+.35,E+.75));
+   const d=eb(P(t,E+.5,E+.9));$('trial').style.opacity=P(t,E+.5,E+.6);$('trial').style.transform=`translateX(-50%) scale(${lerp(.5,1,d)})`;
+   const e=eb(P(t,E+.75,E+1.1));$('eBtn').style.opacity=P(t,E+.75,E+.85);$('eBtn').style.transform=`translateX(-50%) scale(${lerp(.6,1,e)*(t>E+1.2?1+Math.sin((t-E)*7)*.035:1)})`}
+  // flashes on hard transitions
+  let fl=0;for(const c of [BR,F0,D0,END])fl=Math.max(fl,1-Math.abs(t-c)/.1);$('flash').style.opacity=fl*.3;
+}
+window.R=R;window.TOTAL=TOTAL;
+</script></body></html>
