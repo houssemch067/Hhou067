@@ -426,14 +426,15 @@ nav.tabs a .ind{position:absolute;top:-7px;left:50%;width:28px;height:4px;margin
 
  <div class="cd" data-os="android"><div class="hd">
   <div class="ic"><svg viewBox="0 0 24 24"><path d="M17.6 9.48l1.84-3.18a.38.38 0 00-.66-.38l-1.86 3.22A11.4 11.4 0 0012 8.1c-1.77 0-3.43.38-4.92 1.04L5.22 5.92a.38.38 0 00-.66.38L6.4 9.48A10.8 10.8 0 001 18h22a10.8 10.8 0 00-5.4-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg></div>
-  <div><div class="t">Android</div><div class="d">Application à installer (APK, moins de 1 Mo)</div></div>
+  <div><div class="t">Android</div><div class="d">Installation en un clic depuis Chrome, sans fichier à télécharger</div></div>
  </div>
-  <a class="bt" href="downloads/DentaGest-DZ.apk" download="DentaGest-DZ.apk" data-steps="st-and">Télécharger l’APK</a>
+  <div class="warn" id="and-inapp">Vous êtes dans Facebook, Instagram ou une autre application : pour installer DentaGest, <a id="and-chrome" href="#" style="color:inherit;font-weight:800;text-decoration:underline">ouvrez ce site dans Chrome</a>.</div>
+  <button class="bt" id="dgi-and" data-steps="st-and">Installer l’application</button>
   <a class="bt g" href="installer-android">📖 Guide illustré pas à pas</a>
   <ol id="st-and">
-   <li>Ouvrez le fichier <b>DentaGest-DZ.apk</b> téléchargé (notification ou dossier Téléchargements).</li>
-   <li>Si Android le demande, autorisez <b>« Installer des applications inconnues »</b> pour votre navigateur.</li>
-   <li>Touchez <b>Installer</b> : l’icône DentaGest DZ apparaît avec vos applications.</li>
+   <li>Ouvrez ce site dans <b>Google Chrome</b>.</li>
+   <li>Touchez les <b>3 points ⋮</b> en haut à droite.</li>
+   <li>Touchez <b>« Installer l’application »</b> (ou « Ajouter à l’écran d’accueil »), puis <b>Installer</b> : l’icône DentaGest DZ apparaît avec vos applications.</li>
   </ol>
  </div>
 
@@ -478,12 +479,13 @@ nav.tabs a .ind{position:absolute;top:-7px;left:50%;width:28px;height:4px;margin
  var me=el.querySelector('.cd[data-os="'+os+'"]');
  if(me){me.classList.add('me');var tg=document.createElement('span');tg.className='tag';tg.textContent='Votre appareil';me.querySelector('.hd').appendChild(tg);me.parentNode.insertBefore(me,el.querySelector('.cd'))}
  if(ios&&/CriOS|FxiOS|EdgiOS|OPiOS|GSA\//.test(ua))document.getElementById('ios-safari').style.display='block';
+ if(os==='android'&&/FBAN|FBAV|FB_IAB|Instagram|Line\/|Snapchat|TikTok|musical_ly|; wv\)/i.test(ua)){document.getElementById('and-inapp').style.display='block';document.getElementById('and-chrome').href='intent://'+location.host+location.pathname+'#Intent;scheme=https;package=com.android.chrome;end'}
  var deferred=null;
  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e});
  window.addEventListener('appinstalled',hide);
  el.querySelectorAll('[data-steps]').forEach(function(b){b.addEventListener('click',function(ev){
   var ol=document.getElementById(b.getAttribute('data-steps'));
-  if(b.id==='dgi-pc'&&deferred){ev.preventDefault();deferred.prompt();deferred.userChoice.then(function(r){if(r.outcome==='accepted')hide()});deferred=null;return}
+  if((b.id==='dgi-pc'||b.id==='dgi-and')&&deferred){ev.preventDefault();deferred.prompt();deferred.userChoice.then(function(r){if(r.outcome==='accepted')hide()});deferred=null;return}
   ol.classList.add('on');if(b.tagName==='BUTTON')ev.preventDefault();
  })});
  function hide(){el.classList.remove('on');try{sessionStorage.setItem('dg_install_skip','1')}catch(e){}}
@@ -2475,8 +2477,8 @@ function impBuild(){
  });
  res.ok=ok;return res;
 }
-function impOpen(){IMP=null;sheet('Importer des patients','<div class="note">Dans votre ancien logiciel, exportez la liste des patients en <b>Excel (.xlsx)</b> ou <b>CSV</b>, puis choisissez le fichier ici. Les colonnes (nom, prénom, téléphone, date de naissance, sexe, adresse, antécédents, allergies) sont reconnues automatiquement et vous pourrez les vérifier avant l’import. Les patients déjà enregistrés ne sont pas ajoutés deux fois.</div>'+
- '<div class="row" style="margin-top:14px"><label class="btn pri" style="cursor:pointer">'+ic('plus')+'Choisir le fichier<input type="file" id="imp_file" accept=".xlsx,.csv,.txt,.tsv,text/csv,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none"></label></div>'+
+function impOpen(){IMP=null;sheet('Importer des patients','<div class="note">Dans votre ancien logiciel, exportez la liste des patients en <b>Excel (.xlsx)</b> ou <b>CSV</b>, puis choisissez le fichier ici. Les colonnes (nom, prénom, téléphone, date de naissance, sexe, adresse, antécédents, allergies) sont reconnues automatiquement et vous pourrez les vérifier avant l’import. Les patients déjà enregistrés ne sont pas ajoutés deux fois.<br><br>Vous passez de l’ancienne application (APK) ? Choisissez le fichier <b>dentagest-sauvegarde-….json</b> exporté depuis ses Paramètres : patients, rendez-vous, ordonnances et paiements sont repris.</div>'+
+ '<div class="row" style="margin-top:14px"><label class="btn pri" style="cursor:pointer">'+ic('plus')+'Choisir le fichier<input type="file" id="imp_file" accept=".xlsx,.csv,.txt,.tsv,.json,application/json,text/csv,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none"></label></div>'+
  '<p style="margin:18px 0 6px;color:var(--muted);font-size:13.5px">Fiches sur papier, ou logiciel sans export ? Remplissez ce modèle dans Excel, puis importez-le.</p><button class="btn sm" data-a="imp-model">'+ic('dl')+'Télécharger le modèle Excel (CSV)</button>','<button class="btn" data-a="close">Annuler</button>')}
 async function impUnzip(buf){
  const u=new Uint8Array(buf),dv=new DataView(buf);let e=u.length-22;
@@ -2522,8 +2524,24 @@ function impDecode(buf){
  if(u[0]===0xFE&&u[1]===0xFF)return new TextDecoder('utf-16be').decode(buf);
  try{return new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch(e){return new TextDecoder('windows-1252').decode(buf)}
 }
+async function impJson(f){
+ let o;try{o=JSON.parse(await f.text())}catch(e){toast('Fichier de sauvegarde illisible.');return}
+ if(!o||!Array.isArray(o.patients)){toast('Ce fichier n’est pas une sauvegarde DentaGest.');return}
+ const batch='imp-'+newId(),add={};let n=0;
+ COLS.forEach(c=>{const have=new Set(S[c].map(x=>x.id));add[c]=(Array.isArray(o[c])?o[c]:[]).filter(x=>x&&x.id&&!x.ex&&!have.has(x.id));n+=add[c].length});
+ const np=add.patients.length,lab={patients:'patient',rdv:'rendez-vous',ordos:'ordonnance',paiements:'acte',modeles:'modèle',meds:'médicament'};
+ if(!n){toast('Tout le contenu de cette sauvegarde est déjà dans DentaGest.');return}
+ const det=COLS.filter(c=>add[c].length).map(c=>add[c].length+' '+lab[c]+(add[c].length>1&&c!=='rdv'?'s':'')).join(', ');
+ ask('Sauvegarde du '+(o.date?fr(o.date):'?')+' : ajouter '+det+' ? Rien de ce qui est déjà dans DentaGest ne sera modifié.','Importer',()=>{
+  add.patients.forEach(p=>{p.imp=batch});COLS.forEach(c=>add[c].forEach(x=>Store.save(c,x)));
+  let cfg=false;if(o.config)Object.keys(DEF_CONFIG).forEach(k=>{const v=o.config[k],cur=S.config[k];if(v!=null&&v!==''&&(cur==null||cur===''||cur===DEF_CONFIG[k])&&v!==cur){S.config[k]=v;cfg=true}});
+  if(np)S.config.lastImp={id:batch,date:today(),n:np,file:f.name};if(np||cfg)Store.saveConfig();
+  ui.patient=null;if(location.hash!=='#patients')location.hash='patients';render();toast('Sauvegarde importée : '+det);
+ });
+}
 async function impRead(f){
  const ext=(f.name.split('.').pop()||'').toLowerCase();
+ if(ext==='json'||f.type==='application/json'){closeSheet();impJson(f);return}
  if(ext==='xls'||ext==='ods'||ext==='mdb'||ext==='accdb'||ext==='dbf'){toast('Ouvrez ce fichier dans Excel puis « Enregistrer sous » au format .xlsx ou CSV.');return}
  try{
   const buf=await f.arrayBuffer(),u=new Uint8Array(buf.slice(0,4)),zip=u[0]===0x50&&u[1]===0x4B;

@@ -6,6 +6,7 @@
 <title>Installer DentaGest DZ sur Android — guide pas à pas</title>
 <meta name="theme-color" content="#0A0A0A">
 <link rel="icon" type="image/png" href="icons/icon-32.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{--bg:#0A0A0A;--card:#141414;--line:#2A2A2A;--ink:#F3F3F3;--muted:#A8A8A8;--go:#22C55E;--hl:#FACC15}
@@ -61,6 +62,19 @@ h1{font:800 32px/1.15 'Outfit',system-ui,sans-serif;margin:6px 0 6px}
 .help{margin-top:26px;font-size:17px;line-height:1.55;color:#DADADA}
 .help h3{font:800 21px 'Outfit',system-ui,sans-serif;margin:0 0 8px;color:#fff}
 .help li{margin:8px 0}
+
+.dl{border:0;width:100%;cursor:pointer}
+.alt{display:none;background:#2a1d05;border:1px solid #6b4d0f;color:#FDE7A8;border-radius:16px;padding:14px 16px;font-size:17px;line-height:1.5;margin:18px 0}
+.alt a{display:block;text-align:center;margin-top:12px;padding:14px;border-radius:14px;background:#FACC15;color:#1a1300;font:800 19px 'Outfit',system-ui,sans-serif;text-decoration:none}
+.ok{display:none;background:#13241a;border:1px solid #1f4d2e;color:#BFF0CF;border-radius:16px;padding:14px 16px;font-size:17px;margin:18px 0}
+.cbar{display:flex;align-items:center;gap:6px;margin:6px 8px}
+.cbar .url{flex:1;margin:0}
+.dots{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:900 16px/1 Roboto,sans-serif;color:#333;background:#fff}
+.menu{position:absolute;right:8px;top:30px;width:172px;background:#fff;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.3);padding:6px 0;z-index:2;font-size:11px}
+.menu div{padding:7px 12px;color:#222}
+.menu .sep{height:1px;background:#e5e5e5;padding:0;margin:4px 0}
+.mig{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px 18px;margin-top:26px;font-size:17px;line-height:1.55;color:#DADADA}
+.mig h3{font:800 21px 'Outfit',system-ui,sans-serif;margin:0 0 8px;color:#fff}
 </style>
 </head>
 <body>
@@ -69,77 +83,57 @@ h1{font:800 32px/1.15 'Outfit',system-ui,sans-serif;margin:6px 0 6px}
 <div class="top"><img src="icons/icon-192.png" alt=""><div style="font:800 20px 'Outfit',system-ui,sans-serif">DentaGest DZ</div></div>
 <h1>Installer l’application sur un téléphone Android</h1>
 <p class="ar">طريقة تثبيت التطبيق على هاتف أندرويد، خطوة بخطوة</p>
-<p class="intro">Suivez les étapes une par une. Cela prend <b>2 minutes</b>. Le bouton à toucher est entouré en <b style="color:var(--hl)">jaune</b> avec une main 👆.</p>
-<div class="tip">💡 Astuce : demandez à un proche de rester à côté de vous la première fois. Vous ne pouvez rien casser : si vous vous trompez, recommencez simplement à l’étape 1.<div class="ar" style="color:#BFF0CF;margin-top:6px">لا تقلق، لا يمكنك إفساد أي شيء. إذا أخطأت، ابدأ من جديد من الخطوة 1.</div></div>
+<p class="intro">L’application s’installe directement depuis <b>Google Chrome</b>, sans fichier à télécharger. Cela prend <b>1 minute</b>. Le bouton à toucher est entouré en <b style="color:var(--hl)">jaune</b> avec une main 👆.</p>
 
-<a class="dl" href="downloads/DentaGest-DZ.apk" download="DentaGest-DZ.apk">⬇ Télécharger l’application</a>
-<p class="ar" style="text-align:center">اضغط هنا لتحميل التطبيق</p>
+<div class="alt" id="inapp">⚠️ Vous êtes dans Facebook, Instagram ou une autre application. Pour installer DentaGest, il faut l’ouvrir dans <b>Chrome</b>.<div class="ar" style="color:#FDE7A8;margin-top:6px">يجب فتح الموقع في متصفح Chrome لتثبيت التطبيق.</div><a id="open-chrome" href="intent://dentagest-dz.dentagestdz.workers.dev/installer-android#Intent;scheme=https;package=com.android.chrome;end">Ouvrir dans Chrome</a></div>
+<div class="ok" id="ok">✅ DentaGest DZ est déjà installé sur ce téléphone. Ouvrez-le depuis vos applications.</div>
+
+<button class="dl" id="go">📲 Installer l’application</button>
+<p class="ar" style="text-align:center">اضغط هنا لتثبيت التطبيق</p>
+<p class="small" id="nogo" style="display:none;text-align:center">Le bouton n’a rien fait ? Suivez simplement les étapes ci-dessous.</p>
+
+<div class="tip">💡 Vous ne pouvez rien casser : si vous vous trompez, recommencez simplement à l’étape 1.<div class="ar" style="color:#BFF0CF;margin-top:6px">لا تقلق، لا يمكنك إفساد أي شيء. إذا أخطأت، ابدأ من جديد من الخطوة 1.</div></div>
 
 <!-- 1 -->
-<div class="step"><div class="n"><b>1</b><h2>Touchez le bouton vert « Télécharger »</h2></div>
-<p class="txt">Touchez le grand bouton vert ci-dessus : <q>Télécharger l’application</q>.</p>
-<p class="ar">اضغط على الزر الأخضر « تحميل التطبيق ».</p>
-<div class="ph"><div class="sc"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div><div class="url">🔒 dentagest-dz…workers.dev</div>
- <div class="pg"><div style="font-weight:800;font-size:15px;margin:10px 0 4px">Installez DentaGest DZ</div><div style="font-size:10.5px;color:#666">Android · Application à installer</div>
- <div class="mk hl" style="background:#22C55E;color:#04140A;margin-top:16px">⬇ Télécharger l’application</div></div>
- <div class="hand" style="left:140px;top:175px">👆</div></div></div>
+<div class="step"><div class="n"><b>1</b><h2>Ouvrez DentaGest dans Chrome</h2></div>
+<p class="txt">Ouvrez l’application <q>Chrome</q> et allez sur <b>dentagest-dz.dentagestdz.workers.dev</b>. Vous y êtes déjà si vous lisez cette page dans Chrome.</p>
+<p class="ar">افتح متصفح Chrome وادخل إلى موقع DentaGest.</p>
+<div class="ph"><div class="sc"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div><div class="cbar"><div class="url hl">🔒 dentagest-dz…workers.dev</div><div class="dots">⋮</div></div><div class="pg"><div style="font-weight:800;font-size:15px;margin:10px 0 4px">Bonjour, Docteur</div><div style="font-size:10.5px;color:#666">DentaGest DZ</div><div class="mk">＋ Rendez-vous</div></div>
+ <div class="hand" style="left:90px;top:62px">👆</div></div></div>
+<p class="small">Vous avez ouvert le lien depuis <b>Facebook</b>, <b>Instagram</b> ou <b>WhatsApp</b> ? Touchez les <b>3 points</b> en haut, puis <b>« Ouvrir dans Chrome »</b> (ou « Ouvrir dans le navigateur »).</p>
 </div>
 
 <!-- 2 -->
-<div class="step"><div class="n"><b>2</b><h2>Si le téléphone vous prévient, touchez « Télécharger quand même »</h2></div>
-<p class="txt">Le navigateur affiche parfois : <q>Ce type de fichier peut être dangereux</q>. C’est un message normal pour toutes les applications installées hors du Play Store. Touchez <q>Télécharger quand même</q>.</p>
-<p class="ar">قد تظهر رسالة تحذير عادية. اضغط على « التنزيل على أي حال ».</p>
-<div class="ph"><div class="sc dim"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div>
- <div class="dlg b"><h4>Télécharger le fichier ?</h4><p>Ce type de fichier peut être dangereux. Voulez-vous quand même télécharger DentaGest-DZ.apk ?</p>
- <div class="btns"><span>Annuler</span><span class="hl">Télécharger quand même</span></div></div>
- <div class="hand" style="left:150px;top:395px">👆</div></div></div>
-<p class="small">Pas de message ? Parfait, passez directement à l’étape 3.</p>
+<div class="step"><div class="n"><b>2</b><h2>Touchez les 3 points ⋮ en haut à droite</h2></div>
+<p class="txt">En haut à droite de Chrome, touchez <q>⋮</q> pour ouvrir le menu.</p>
+<p class="ar">اضغط على النقاط الثلاث ⋮ في أعلى يمين الشاشة.</p>
+<div class="ph"><div class="sc"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div><div class="cbar"><div class="url">🔒 dentagest-dz…workers.dev</div><div class="dots hl">⋮</div></div><div class="pg"><div style="font-weight:800;font-size:15px;margin:10px 0 4px">Bonjour, Docteur</div><div style="font-size:10.5px;color:#666">DentaGest DZ</div><div class="mk">＋ Rendez-vous</div></div>
+ <div class="hand" style="left:196px;top:62px">👆</div></div></div>
 </div>
 
 <!-- 3 -->
-<div class="step"><div class="n"><b>3</b><h2>Quand c’est téléchargé, touchez « Ouvrir »</h2></div>
-<p class="txt">En bas de l’écran apparaît <q>DentaGest-DZ.apk</q> avec le mot <q>Ouvrir</q>. Touchez <q>Ouvrir</q>.</p>
-<p class="ar">بعد انتهاء التحميل، اضغط على « فتح » في أسفل الشاشة.</p>
-<div class="ph"><div class="sc"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div><div class="url">🔒 dentagest-dz…workers.dev</div>
- <div class="pg"><div style="font-weight:800;font-size:15px;margin:10px 0">Installez DentaGest DZ</div></div>
- <div class="snack">DentaGest-DZ.apk téléchargé<span class="hl" style="background:#4a4a2a">Ouvrir</span></div>
- <div class="hand" style="left:178px;top:392px">👆</div></div></div>
-<p class="small">Le message a disparu ? Ouvrez l’application <b>Fichiers</b> (ou <b>Mes fichiers</b>) › <b>Téléchargements</b> › touchez <b>DentaGest-DZ.apk</b>.</p>
+<div class="step"><div class="n"><b>3</b><h2>Touchez « Installer l’application »</h2></div>
+<p class="txt">Dans le menu, touchez <q>Installer l’application</q>. Sur certains téléphones, la ligne s’appelle <q>Ajouter à l’écran d’accueil</q>.</p>
+<p class="ar">اضغط على « تثبيت التطبيق » أو « إضافة إلى الشاشة الرئيسية ».</p>
+<div class="ph"><div class="sc dim"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div><div class="cbar"><div class="url">🔒 dentagest-dz…workers.dev</div><div class="dots">⋮</div></div>
+ <div class="menu"><div>Nouvel onglet</div><div>Historique</div><div>Téléchargements</div><div class="sep"></div><div>Partager…</div><div>Rechercher dans la page</div><div class="hl"><b>Installer l’application</b></div><div>Version pour ordinateur</div><div class="sep"></div><div>Paramètres</div></div>
+ <div class="hand" style="left:196px;top:204px">👆</div></div></div>
 </div>
 
 <!-- 4 -->
-<div class="step"><div class="n"><b>4</b><h2>Autorisez l’installation (une seule fois)</h2></div>
-<p class="txt">Le téléphone dit : <q>Pour votre sécurité, l’installation d’applications inconnues n’est pas autorisée</q>. Touchez <q>Paramètres</q>.</p>
-<p class="ar">إذا ظهرت رسالة « لأمانك… »، اضغط على « الإعدادات ».</p>
+<div class="step"><div class="n"><b>4</b><h2>Touchez « Installer »</h2></div>
+<p class="txt">Une fenêtre demande : <q>Installer l’application ?</q> Touchez <q>Installer</q>. Attendez quelques secondes.</p>
+<p class="ar">اضغط على « تثبيت » وانتظر بضع ثوانٍ.</p>
 <div class="ph"><div class="sc dim"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div>
- <div class="dlg m"><h4>Chrome</h4><p>Pour votre sécurité, votre téléphone n’est pas autorisé à installer des applications inconnues provenant de cette source.</p>
- <div class="btns"><span>Annuler</span><span class="hl">Paramètres</span></div></div>
- <div class="hand" style="left:168px;top:255px">👆</div></div></div>
-<p class="txt" style="margin-top:14px">Puis activez l’interrupteur <q>Autoriser cette source</q> (il devient bleu), et touchez la flèche <b>←</b> en haut pour revenir.</p>
-<p class="ar">فعّل الزر « السماح من هذا المصدر » ثم اضغط على السهم ← للرجوع.</p>
-<div class="ph"><div class="sc"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div>
- <div class="set"><div class="hdr"><span class="hl" style="padding:2px 6px">←</span>&nbsp; Installer des applis inconnues</div>
- <div class="row" style="border-top:0"><span>Chrome</span></div>
- <div class="row"><span><b>Autoriser cette source</b></span><span class="sw hl"></span></div></div>
- <div class="hand" style="left:186px;top:118px">👆</div><div class="hand" style="left:6px;top:42px;font-size:28px">👆</div></div></div>
-<p class="small">Cette étape n’est demandée que la première fois.</p>
+ <div class="dlg b"><div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><img src="icons/icon-192.png" style="width:30px;height:30px;border-radius:8px" alt=""><h4 style="margin:0">Installer l’application ?</h4></div><p>DentaGest DZ<br>dentagest-dz.dentagestdz.workers.dev</p>
+ <div class="btns"><span>Annuler</span><span class="hl">Installer</span></div></div>
+ <div class="hand" style="left:186px;top:395px">👆</div></div></div>
+<p class="small">Pas de message Play Protect, pas d’autorisation à donner : l’installation depuis Chrome est sûre.</p>
 </div>
 
 <!-- 5 -->
-<div class="step"><div class="n"><b>5</b><h2>Touchez « Installer »</h2></div>
-<p class="txt">Une fenêtre demande : <q>Voulez-vous installer cette application ?</q> Touchez <q>Installer</q>. Attendez quelques secondes.</p>
-<p class="ar">اضغط على « تثبيت » وانتظر بضع ثوانٍ.</p>
-<div class="ph"><div class="sc dim"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div>
- <div class="dlg b"><div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><img src="icons/icon-192.png" style="width:30px;height:30px;border-radius:8px" alt=""><h4 style="margin:0">DentaGest DZ</h4></div><p>Voulez-vous installer cette application ?</p>
- <div class="btns"><span>Annuler</span><span class="hl">Installer</span></div></div>
- <div class="hand" style="left:186px;top:395px">👆</div></div></div>
-<p class="small">Si un message <b>Play Protect</b> dit « Application non vérifiée » : touchez <b>Plus de détails</b>, puis <b>Installer quand même</b>. C’est normal pour une application qui ne vient pas du Play Store.</p>
-<p class="ar" style="font-size:16px">إذا ظهرت رسالة « Play Protect »، اضغط « مزيد من التفاصيل » ثم « التثبيت على أي حال ».</p>
-</div>
-
-<!-- 6 -->
-<div class="step"><div class="n"><b>6</b><h2>C’est installé ! Touchez « Ouvrir »</h2></div>
-<p class="txt">Touchez <q>Ouvrir</q>. Ensuite, l’icône <b>DentaGest DZ</b> (une dent blanche sur fond noir) est avec vos autres applications : touchez-la pour ouvrir DentaGest à tout moment.</p>
+<div class="step"><div class="n"><b>5</b><h2>C’est installé ! Ouvrez DentaGest</h2></div>
+<p class="txt">L’icône <b>DentaGest DZ</b> (une dent blanche sur fond noir) est maintenant avec vos autres applications. Touchez-la pour ouvrir DentaGest à tout moment, même sans internet.</p>
 <p class="ar">تم التثبيت! ستجد أيقونة DentaGest DZ (سنّ بيضاء على خلفية سوداء) مع تطبيقاتك.</p>
 <div class="ph"><div class="sc"><div class="home">
  <div class="app"><i></i>Photos</div><div class="app"><i></i>WhatsApp</div><div class="app"><i></i>Chrome</div><div class="app"><i></i>Appareil</div>
@@ -150,21 +144,45 @@ h1{font:800 32px/1.15 'Outfit',system-ui,sans-serif;margin:6px 0 6px}
 <div class="done">
  <div style="font-size:44px">🎉</div>
  <h2>Bravo, c’est terminé !</h2>
- <p class="txt">Ouvrez DentaGest DZ et remplissez le nom de votre cabinet. Vous avez <b>7 jours d’essai gratuit</b>.</p>
- <p class="ar">مبروك! افتح التطبيق وأدخل اسم عيادتك. لديك 7 أيام تجربة مجانية.</p>
+ <p class="txt">Ouvrez DentaGest DZ et remplissez le nom de votre cabinet. Vous avez <b>7 jours d’essai gratuit</b>. L’application se met à jour toute seule.</p>
+ <p class="ar">مبروك! افتح التطبيق وأدخل اسم عيادتك. لديك 7 أيام تجربة مجانية. يتم تحديث التطبيق تلقائيًا.</p>
+</div>
+
+<div class="mig">
+ <h3>Vous aviez l’ancienne application (fichier APK) ?</h3>
+ Vos patients sont enregistrés dans l’ancienne application. Pour les retrouver dans la nouvelle :
+ <ol style="margin:8px 0 0;padding-left:22px">
+  <li>Dans l’<b>ancienne</b> application : <b>Paramètres</b> › <b>Données</b> › <b>Exporter une sauvegarde</b>.</li>
+  <li>Dans la <b>nouvelle</b> : <b>Patients</b> › <b>Importer</b> › choisissez le fichier <b>dentagest-sauvegarde-….json</b> (dossier Téléchargements).</li>
+  <li>Vérifiez que vos patients sont bien là, puis vous pouvez désinstaller l’ancienne application.</li>
+ </ol>
+ <p class="ar" style="font-size:16px;margin-top:8px">إذا كان لديك التطبيق القديم: صدّر نسخة احتياطية منه (الإعدادات › البيانات)، ثم استوردها في التطبيق الجديد (المرضى › استيراد).</p>
 </div>
 
 <div class="help">
  <h3>Un problème ?</h3>
  <ul>
-  <li><b>« Application non installée »</b> : une ancienne version est peut-être déjà là. Désinstallez-la puis recommencez à l’étape 1.</li>
-  <li><b>Je ne trouve pas le fichier</b> : application <b>Fichiers</b> › <b>Téléchargements</b> › <b>DentaGest-DZ.apk</b>.</li>
-  <li><b>Pas de bouton « Paramètres »</b> : ouvrez <b>Paramètres</b> du téléphone › <b>Applications</b> › <b>Accès spécial</b> › <b>Installer des applis inconnues</b> › choisissez votre navigateur › <b>Autoriser</b>.</li>
+  <li><b>Pas de ligne « Installer l’application » dans le menu</b> : touchez <b>« Ajouter à l’écran d’accueil »</b>, puis <b>Installer</b>.</li>
+  <li><b>Navigateur Samsung Internet</b> : touchez le menu <b>≡</b> en bas › <b>Ajouter page à</b> › <b>Écran d’accueil</b>.</li>
+  <li><b>L’icône n’apparaît pas</b> : attendez quelques secondes, ou cherchez « DentaGest » dans la liste de vos applications.</li>
   <li>Les menus peuvent avoir des noms un peu différents selon la marque du téléphone (Samsung, Xiaomi, Oppo…), mais les étapes sont les mêmes.</li>
  </ul>
 </div>
-<a class="dl" href="downloads/DentaGest-DZ.apk" download="DentaGest-DZ.apk" style="margin-top:26px">⬇ Télécharger l’application</a>
 <a class="back" href="./" style="display:block;text-align:center;margin-top:10px">← Retour</a>
 </div>
+<script>
+(function(){
+ var ua=navigator.userAgent,go=document.getElementById('go'),deferred=null;
+ var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+ if(/FBAN|FBAV|FB_IAB|Instagram|Line\/|Snapchat|TikTok|musical_ly|; wv\)/i.test(ua)&&/Android/i.test(ua))document.getElementById('inapp').style.display='block';
+ if(standalone){document.getElementById('ok').style.display='block';go.style.display='none'}
+ window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e});
+ window.addEventListener('appinstalled',function(){document.getElementById('ok').style.display='block';go.style.display='none'});
+ go.addEventListener('click',function(){
+  if(deferred){deferred.prompt();deferred.userChoice.then(function(){deferred=null});return}
+  document.getElementById('nogo').style.display='block';document.querySelector('.step').scrollIntoView({behavior:'smooth'});
+ });
+})();
+</script>
 </body>
 </html>
