@@ -20,7 +20,7 @@ function buildNav() {
   side.innerHTML = '';
   side.append(h('div.brand', h('i', icon('tooth', 22)), h('div', 'DentaStudio', h('small', 'AI photo & reel studio'))));
   NAV.forEach(([k, l, ic]) => side.append(h('a.nav', { href: '#/' + k, 'data-k': k }, icon(ic, 19), h('span', l))));
-  side.append(h('div.foot', 'Photos stay on this device.', h('br'), h('a', { href: '../index.html' }, '← DentOrdo')));
+  side.append(h('div.foot', 'Photos stay on this device.'));
 }
 
 async function route() {
