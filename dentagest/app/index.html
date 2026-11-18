@@ -349,6 +349,17 @@ nav.tabs a .ind{position:absolute;top:-7px;left:50%;width:28px;height:4px;margin
 @media (min-width:900px){#licbar{order:1;width:100%}}
 .pay-st{border-radius:12px;padding:10px 12px;background:var(--surface2);font-size:13.5px}.pay-st.ok{color:var(--ok)}.pay-st.warn{border:1px solid var(--crit);color:var(--crit);background:var(--surface)}
 .pay-plans{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay-tier{display:flex;flex:none;margin:0 0 12px;width:100%}.pay-tier button{flex:1}
+.pay-pro{margin:0 0 12px;padding:10px 12px;border-radius:12px;background:var(--surface2);font-size:13px;line-height:1.5}
+.ia-ul{margin:0 0 12px;padding-left:18px;color:var(--muted);line-height:1.6}
+.ia-sw{display:flex;align-items:center;gap:10px;font-weight:700;margin-top:4px}.ia-sw input{width:20px;height:20px;accent-color:var(--ink)}
+.ia-step{border:1px dashed var(--line);border-radius:12px;padding:12px;margin:0 0 12px}.ia-step p{margin:4px 0 10px;color:var(--muted)}
+.ia-ok{margin:0 0 10px;color:var(--ok)}.ia-note{margin:12px 0 0;font-size:12.5px;color:var(--muted)}
+.ia-h .f{min-width:0}
+.ia-ban{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;color:inherit;font:inherit}.ia-ban small{display:block;color:var(--muted)}
+.ia-dot{width:10px;height:10px;border-radius:50%;background:var(--ok);flex:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 25%,transparent)}
+.ia-ban.urg .ia-dot{background:var(--crit);box-shadow:0 0 0 4px color-mix(in srgb,var(--crit) 25%,transparent)}
+.ia-it small{display:block}.ia-it.vu{opacity:.6}.ia-it .pill{margin-left:6px;font-size:11px}
 .pay-plans button{position:relative;display:grid;gap:2px;justify-items:center;padding:16px 8px 12px;border-radius:16px;border:2px solid var(--line);background:var(--surface)}
 .pay-plans button.on{border-color:var(--ink);background:var(--surface2)}.pay-plans b{font-family:var(--f-display)}.pay-plans span{font:800 20px var(--f-display)}.pay-plans small{color:var(--muted);font-size:12px}
 .pay-plans i{position:absolute;top:-9px;font:700 10.5px var(--f-display);font-style:normal;background:var(--ok);color:#fff;padding:2px 8px;border-radius:99px}
@@ -810,11 +821,13 @@ const Store={
    const go=()=>this.remote(()=>this.base.collection(col).doc(obj.id).set(clone(obj)));
    if(delay){clearTimeout(this.timers[obj.id]);this.timers[obj.id]=setTimeout(go,delay)}else go();
   }else this.persistLocal();
+  if(col==='rdv'&&typeof iaSoon==='function')iaSoon();
  },
  del(col,id){
   if(typeof licLocked==='function'&&licLocked()){toast('Lecture seule : abonnez-vous pour modifier.');return}
   S[col]=S[col].filter(x=>x.id!==id);
   if(this.mode==='cloud')this.remote(()=>this.base.collection(col).doc(id).delete());else this.persistLocal();
+  if(col==='rdv'&&typeof iaSoon==='function')iaSoon();
  },
  saveConfig(){if(this.mode==='cloud')this.remote(()=>this.base.collection('config').doc('cabinet').set(clone(S.config)));else this.persistLocal()}
 };
@@ -2115,7 +2128,7 @@ function vAccueil(){
  const impayes=S.paiements.filter(x=>reste(x)>0).sort((a,b)=>reste(b)-reste(a)).slice(0,5);
  const next=S.rdv.filter(r=>r.date>t).sort(byTime).slice(0,4);
  let h='<div class="promo"><a href="#reel" data-a="rl-open" data-k="neon"><canvas data-th="neon" data-t="11.4" width="360" height="640"></canvas><b>Vidéo avant/après du sourire<small>'+RL_TPL.length+' modèles de reels prêts à publier</small></b></a><a href="#ordonnances"><svg class="art" viewBox="0 0 330 300" aria-hidden="true"><defs><radialGradient id="mg" cx="62%" cy="50%" r="62%"><stop offset="0" stop-color="#0E5A4F"/><stop offset="1" stop-color="#000"/></radialGradient><linearGradient id="mb" x1="0" x2="1"><stop offset="0" stop-color="#D9DEE2"/><stop offset=".5" stop-color="#F7F9FA"/><stop offset="1" stop-color="#BFC6CC"/></linearGradient><linearGradient id="ma" x1="0" x2="1"><stop offset="0" stop-color="#8A4A12"/><stop offset=".45" stop-color="#D9821E"/><stop offset="1" stop-color="#7A3E0C"/></linearGradient><radialGradient id="mt" cx="35%" cy="30%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#D5D9DD"/></radialGradient></defs><rect width="330" height="300" fill="url(#mg)"/><g transform="rotate(-14 150 175)"><rect x="70" y="105" width="150" height="190" rx="14" fill="url(#mb)"/><ellipse cx="110" cy="140" rx="20" ry="13" fill="#fff" stroke="#B9C1C7" stroke-width="2"/><ellipse cx="110" cy="140" rx="13" ry="7" fill="#F4C7CF"/><ellipse cx="180" cy="140" rx="20" ry="13" fill="#fff" stroke="#B9C1C7" stroke-width="2"/><ellipse cx="180" cy="140" rx="13" ry="7" fill="#F4C7CF"/><ellipse cx="110" cy="180" rx="20" ry="13" fill="#fff" stroke="#B9C1C7" stroke-width="2"/><ellipse cx="110" cy="180" rx="13" ry="7" fill="#F4C7CF"/><ellipse cx="180" cy="180" rx="20" ry="13" fill="#fff" stroke="#B9C1C7" stroke-width="2"/><ellipse cx="180" cy="180" rx="13" ry="7" fill="#F4C7CF"/><ellipse cx="110" cy="220" rx="20" ry="13" fill="#fff" stroke="#B9C1C7" stroke-width="2"/><ellipse cx="110" cy="220" rx="13" ry="7" fill="#F4C7CF"/><ellipse cx="180" cy="220" rx="20" ry="13" fill="#fff" stroke="#B9C1C7" stroke-width="2"/><ellipse cx="180" cy="220" rx="13" ry="7" fill="#F4C7CF"/><ellipse cx="110" cy="260" rx="20" ry="13" fill="#fff" stroke="#B9C1C7" stroke-width="2"/><ellipse cx="110" cy="260" rx="13" ry="7" fill="#F4C7CF"/><ellipse cx="180" cy="260" rx="20" ry="13" fill="#fff" stroke="#B9C1C7" stroke-width="2"/><ellipse cx="180" cy="260" rx="13" ry="7" fill="#F4C7CF"/></g><g transform="rotate(8 250 150)"><rect x="205" y="70" width="92" height="150" rx="16" fill="url(#ma)"/><rect x="198" y="40" width="106" height="40" rx="8" fill="#F2F2F2"/><path d="M198 50h106M198 60h106M198 70h106" stroke="#CFCFCF" stroke-width="2"/><rect x="214" y="110" width="74" height="70" rx="6" fill="#FFFDF7"/><text x="251" y="152" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="30" fill="#0B7A6A">Rx</text><rect x="224" y="162" width="54" height="4" rx="2" fill="#C9C2B0"/><rect x="214" y="80" width="10" height="130" rx="5" fill="#fff" opacity=".22"/></g><g transform="rotate(35 115 70)"><rect x="80" y="55" width="70" height="30" rx="15" fill="#E53946"/><path d="M115 55h20a15 15 0 0 1 0 30h-20z" fill="#fff"/><rect x="86" y="60" width="50" height="5" rx="2.5" fill="#fff" opacity=".35"/></g><g transform="rotate(-25 170 268)"><rect x="140" y="255" width="62" height="26" rx="13" fill="#2F7DE1"/><path d="M171 255h18a13 13 0 0 1 0 26h-18z" fill="#F4D35E"/></g><circle cx="292" cy="250" r="17" fill="url(#mt)"/><path d="M276 250h32" stroke="#C6CBD0" stroke-width="2"/><circle cx="60" cy="230" r="13" fill="url(#mt)"/><circle cx="252" cy="275" r="10" fill="#F6E7C8"/></svg><b>Ordonnances en un clic<small>'+TEMPLATES.length+' modèles prêts</small></b></a><a href="#agenda"><svg class="art" viewBox="0 0 330 300" aria-hidden="true"><defs><radialGradient id="ag" cx="60%" cy="45%" r="65%"><stop offset="0" stop-color="#103B2A"/><stop offset="1" stop-color="#000"/></radialGradient></defs><rect width="330" height="300" fill="url(#ag)"/><g transform="rotate(-8 140 150)"><rect x="45" y="58" width="190" height="200" rx="18" fill="#fff"/><path d="M45 76a18 18 0 0 1 18-18h154a18 18 0 0 1 18 18v34H45z" fill="#E5484D"/><text x="140" y="96" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="20" letter-spacing="2" fill="#fff">NOVEMBRE</text><rect x="80" y="44" width="10" height="28" rx="5" fill="#4A4A4A"/><rect x="190" y="44" width="10" height="28" rx="5" fill="#4A4A4A"/><text x="72" y="151" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">1</text><text x="106" y="151" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">2</text><text x="140" y="151" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">3</text><text x="174" y="151" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">4</text><text x="208" y="151" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#9AA3A1">5</text><text x="72" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">6</text><text x="106" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">7</text><text x="140" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">8</text><text x="174" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">9</text><text x="208" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#9AA3A1">10</text><text x="72" y="211" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">11</text><circle cx="106" cy="206" r="13" fill="#0B7A6A"/><text x="106" y="211" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="13" fill="#fff">12</text><text x="140" y="211" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">13</text><text x="174" y="211" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">14</text><text x="208" y="211" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#9AA3A1">15</text><text x="72" y="241" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">16</text><text x="106" y="241" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">17</text><text x="140" y="241" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">18</text><text x="174" y="241" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#33403D">19</text><text x="208" y="241" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="13" fill="#9AA3A1">20</text><rect x="58" y="240" width="90" height="8" rx="4" fill="#DCF0EB"/></g><g transform="translate(228 168)"><circle r="54" fill="#000" opacity=".35" cx="3" cy="6"/><path d="M0-50a50 50 0 0 1 43 75.5L50 50 24.5 43.5A50 50 0 1 1 0-50z" fill="#25D366"/><path d="M0-40a40 40 0 0 1 34.3 60.6L38 38l-18.6-4.9A40 40 0 1 1 0-40z" fill="none" stroke="#fff" stroke-width="6"/><path d="M-14-18c2-3 5-3 6-1l5 10c1 2 0 4-2 6l-3 3c3 7 9 13 16 16l3-3c2-2 4-3 6-2l10 5c2 1 2 4-1 6-4 4-9 5-14 3-15-6-26-17-31-31-2-5-1-9 5-12z" fill="#fff"/><circle cx="38" cy="-40" r="14" fill="#E5484D" stroke="#0B1A14" stroke-width="3"/><text x="38" y="-35" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="15" fill="#fff">3</text></g></svg><b>Agenda et rappels WhatsApp<small>Ne manquez plus un rendez-vous</small></b></a></div>';
- h+='<div class="head"><div><h1>'+longDate(t)+'</h1><p>'+esc(S.config.praticien)+'</p></div><div class="row"><button class="btn pri" data-a="rdv-new">'+ic('plus')+'Rendez-vous</button><button class="btn" data-a="ordo-new">'+ic('plus')+'Ordonnance</button></div></div>';
+ h+='<div class="head"><div><h1>'+longDate(t)+'</h1><p>'+esc(S.config.praticien)+'</p></div><div class="row"><button class="btn pri" data-a="rdv-new">'+ic('plus')+'Rendez-vous</button><button class="btn" data-a="ordo-new">'+ic('plus')+'Ordonnance</button></div></div>'+iaBanner();
  if(!S.patients.length)h+='<div class="card"><h2>Bienvenue dans votre cabinet</h2><p style="margin:0 0 12px;color:var(--muted)">Ajoutez votre premier patient, ou chargez quelques fiches fictives pour découvrir l’application. Les '+TEMPLATES.length+' modèles d’ordonnance sont déjà prêts.</p><div class="row"><button class="btn pri" data-a="pat-new">'+ic('plus')+'Ajouter un patient</button><button class="btn" data-a="demo-load">Charger des exemples</button></div></div>';
  h+='<div class="kpis"><div class="kpi"><span>Rendez-vous aujourd’hui</span><b class="num">'+rd.length+'</b></div><div class="kpi"><span>Patients</span><b class="num">'+S.patients.length+'</b></div><div class="kpi"><span>Encaissé en '+MOIS[Number(mois.slice(5))-1]+'</span><b class="num">'+da(enc)+'</b></div><div class="kpi'+(du>0?' alert':'')+'"><span>Reste à encaisser</span><b class="num">'+da(du)+'</b></div></div>';
  const dm=addDays(t,1),rp=aRappeler(dm),rest=rp.filter(r=>!r.rappel).length;
@@ -2218,13 +2231,13 @@ function vParams(){
  const mode={cloud:'Vos données sont enregistrées dans votre espace privé et se retrouvent sur tous vos appareils.',local:'Vos données sont enregistrées sur cet appareil uniquement.',memoire:'Le stockage n’est pas disponible dans cette vue : les données saisies seront perdues à la fermeture.'}[Store.mode];
  const nbEx=S.patients.filter(p=>p.ex).length;
  const L=LIC,stl=L.status==='active'?'Actif jusqu’au '+fr(L.until):L.status==='trial'?'Essai gratuit : '+L.daysLeft+' jour'+(L.daysLeft>1?'s':'')+' restant'+(L.daysLeft>1?'s':''):'Expiré : lecture seule';
- const abo='<div class="card"><h2>Abonnement <span class="pill '+(L.status==='active'?'ok':L.status==='trial'?'warn':'crit')+'">'+esc(stl)+'</span></h2><p style="margin:0 0 12px;color:var(--muted)">'+fmtDA(PAY.prix.m)+' par mois ou '+fmtDA(PAY.prix.y)+' par an. Code de cet appareil : <b>'+esc(licDevice())+'</b></p><div class="row"><button class="btn pri" data-a="pay">'+(L.status==='active'?'Prolonger l’abonnement':'S’abonner')+'</button></div></div>';
+ const abo='<div class="card"><h2>Abonnement <span class="pill '+(L.status==='active'?'ok':L.status==='trial'?'warn':'crit')+'">'+esc(stl)+'</span></h2><p style="margin:0 0 12px;color:var(--muted)">'+(isPro()?'Formule Pro : '+fmtDA(PAY.prix.pm)+' par mois ou '+fmtDA(PAY.prix.py)+' par an':'Standard : '+fmtDA(PAY.prix.m)+' par mois ou '+fmtDA(PAY.prix.y)+' par an · Pro avec assistante IA : '+fmtDA(PAY.prix.pm)+' par mois')+'. Code de cet appareil : <b>'+esc(licDevice())+'</b></p><div class="row"><button class="btn pri" data-a="pay">'+(L.status==='active'?'Prolonger l’abonnement':'S’abonner')+'</button></div></div>';
  const lk=lookGet(),look='<div class="card"><h2>Apparence</h2><p class="lbl" style="margin:0 0 8px">Mode</p><div class="seg" style="margin-bottom:14px">'+[['auto','Auto'],['light','Clair'],['dark','Sombre']].map(([k,n])=>'<button data-a="look-mode" data-k="'+k+'" class="'+(lk.mode===k?'on':'')+'">'+n+'</button>').join('')+'</div>'+
   '<p class="lbl" style="margin:0 0 8px">Couleur de l’application</p><div class="looks">'+LOOKS.map(([k,n,a,d])=>'<button data-a="look-accent" data-k="'+k+'" class="'+(lk.accent===k?'on':'')+'"><i style="--a:'+a+';--d:'+d+'"></i>'+n+'</button>').join('')+'</div></div>';
  const oc=c.osCfg||{},ocol=oc.col||'#0B7A6A',oinfo=Object.fromEntries(OS_INFO.map(([k])=>[k,c[k]||''])),cur=c.modele==='libre'?oc.style:null;
  const gal='<div class="card"><h2>Modèle d’ordonnance</h2><p style="margin:0 0 6px;color:var(--muted)">Touchez un modèle pour l’appliquer à vos ordonnances.</p><div class="osgal">'+Object.entries(OS_STYLES).map(([k,n])=>'<button data-a="os-apply" data-k="'+k+'" class="'+(cur===k?'on':'')+'"><span class="mini">'+cvHTML(osEls({style:k,col:ocol,logo:oc.logo!==false,info:oinfo}),osSample(),SPAT,false)+'</span>'+n+'</button>').join('')+'</div>'+
   '<p class="lbl" style="margin:0 0 8px">Couleur de l’ordonnance</p><div class="chips" style="margin-bottom:12px">'+OS_COLS.map(x=>'<button data-a="os-col" data-v="'+x+'" class="sw'+(ocol===x?' on':'')+'" style="--sw:'+x+'" aria-label="Couleur '+x+'"></button>').join('')+'</div><div class="row"><button class="btn" data-a="pers-open">Personnaliser (logo, informations)</button></div></div>';
- return '<div class="head"><div><h1>Paramètres</h1><p>En-tête des ordonnances et données</p></div></div>'+abo+look+gal+
+ return '<div class="head"><div><h1>Paramètres</h1><p>En-tête des ordonnances et données</p></div></div>'+abo+iaCard()+look+gal+
  '<div class="card"><h2>Cabinet</h2><div class="form two">'+f('praticien','Praticien')+f('cabinet','Nom du cabinet')+f('specialite','Spécialité')+f('ordre','N° d’ordre')+'<label class="f full">Mentions sous le nom (soins proposés)<textarea id="c_mentions">'+esc(c.mentions)+'</textarea></label>'+f('adresse','Adresse (pied de page)')+f('tel','Téléphone')+f('ville','Ville (date des ordonnances)')+
  '<label class="f">Modèle d’ordonnance imprimée<select id="c_modele"><option value="entete"'+(c.modele==='entete'?' selected':'')+'>En-tête à trois colonnes avec logo</option><option value="classique"'+(c.modele==='classique'?' selected':'')+'>Classique centré</option><option value="libre"'+(c.modele==='libre'?' selected':'')+'>Personnalisé (éditeur visuel)</option></select></label>'+
  '<label class="f full">Logo du cabinet (image)<input type="file" id="c_logo" accept="image/*"></label><div class="row full"><button class="btn sm pri" data-a="lg-open">✦ Créer un logo</button><button class="btn sm" data-a="pers-open">Personnaliser l’ordonnance</button></div></div>'+
@@ -2278,10 +2291,10 @@ function demoClear(){
    titulaire: nom du titulaire du compte
    whatsapp : votre numéro WhatsApp au format international sans + (ex. 213555123456)
    ===================================================================== */
-const PAY={api:'https://dentagest-paiement.dentagestdz.workers.dev',rip:'00799999004107506043',titulaire:'',whatsapp:'213779950197',prix:{m:2000,y:20000},essai:7};
+const PAY={api:'https://dentagest-paiement.dentagestdz.workers.dev',rip:'00799999004107506043',titulaire:'',whatsapp:'213779950197',prix:{m:2000,y:20000,pm:4000,py:40000},essai:7};
 /* Clé publique de vérification des licences (la clé privée reste uniquement chez vous et sur le serveur) */
 const LIC_PUB={kty:'EC',crv:'P-256',x:'Pl0qnwdo2PmZfBRamaqjwgAqTcRP4Kjkg2vnYYVtx0w',y:'hWfg0GanEeVLa7y87Uy7Kakxggamx6YtGioXk8eIXSE'};
-const PLANS={m:{nom:'Mensuel',duree:'1 mois',unite:'mois'},y:{nom:'Annuel',duree:'12 mois',unite:'an',badge:'2 mois offerts'}};
+const PLANS={m:{nom:'Mensuel',duree:'1 mois',unite:'mois'},y:{nom:'Annuel',duree:'12 mois',unite:'an',badge:'2 mois offerts'},pm:{nom:'Pro mensuel',duree:'1 mois',unite:'mois',pro:1},py:{nom:'Pro annuel',duree:'12 mois',unite:'an',badge:'2 mois offerts',pro:1}};
 let LIC={status:'trial',daysLeft:PAY.essai},PAYSEL='y',PAYPOLL=0,PAYCARDS=null;
 async function payCards(){if(!PAY.api)return false;if(PAYCARDS!==null)return PAYCARDS;try{const r=await fetch(PAY.api.replace(/\/$/,'')+'/',{cache:'no-store'}),j=await r.json();PAYCARDS=!!j.cards}catch(e){return false}return PAYCARDS}
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
@@ -2346,16 +2359,18 @@ async function licStart(){
  if(!S.config.onboarded&&S.config.praticien===OLD_DEMO.praticien&&S.config.cabinet===OLD_DEMO.cabinet)['cabinet','praticien','mentions','ordre','adresse','tel','ville'].forEach(k=>S.config[k]='');
  if(!S.config.onboarded&&S.config.praticien&&S.config.cabinet){S.config.onboarded=true;if(!S.config.trialStart)S.config.trialStart=new Date().toISOString();Store.saveConfig()}
  if(S.config.onboarded){licDevice();if(!lsGet('dg_t0')&&S.config.trialStart)lsSet('dg_t0',S.config.trialStart)}
- await licRefresh();if(!S.config.onboarded)onbOpen();else setTimeout(trialPing,3000);render();
+ await licRefresh();if(!S.config.onboarded)onbOpen();else setTimeout(trialPing,3000);render();if(isPro()&&S.config.ia&&S.config.ia.enabled)iaStart();
  setInterval(licRefresh,3600e3);document.addEventListener('visibilitychange',()=>{if(!document.hidden){licRefresh();if(PAYPOLL)payCheck(true)}});
 }
 /* ---------- Abonnement : carte (Chargily) ou virement BaridiMob ---------- */
 function payOpen(why){
  const dev=licDevice(),st=LIC.status,p=PLANS[PAYSEL],price=PAY.prix[PAYSEL];
- const head=st==='active'?'<div class="pay-st ok">Abonnement actif jusqu’au <b>'+fr(LIC.until)+'</b>. Un nouveau paiement prolonge la période.</div>':
+ const head=st==='active'?'<div class="pay-st ok">Abonnement '+(isPro()?'Pro ':'')+'actif jusqu’au <b>'+fr(LIC.until)+'</b>. Un nouveau paiement de la même formule prolonge la période'+(isPro()?'':' ; le passage à Pro commence le jour du paiement')+'.</div>':
   st==='trial'?'<div class="pay-st">Essai gratuit : <b>'+LIC.daysLeft+' jour'+(LIC.daysLeft>1?'s':'')+'</b> restant'+(LIC.daysLeft>1?'s':'')+' (jusqu’au '+fr(LIC.until)+').</div>':
   '<div class="pay-st warn">'+(LIC.tamper?'La date du téléphone semble incorrecte : corrigez-la, ou activez un abonnement.':(why?'Cette action nécessite un abonnement. ':'')+'L’application est en <b>lecture seule</b> : vos patients et ordonnances restent consultables et exportables.')+'</div>';
- const plans='<div class="pay-plans">'+Object.entries(PLANS).map(([k,x])=>'<button data-a="pay-plan" data-k="'+k+'" class="'+(PAYSEL===k?'on':'')+'">'+(x.badge?'<i>'+x.badge+'</i>':'')+'<b>'+x.nom+'</b><span>'+fmtDA(PAY.prix[k])+'</span><small>par '+x.unite+'</small></button>').join('')+'</div>';
+ const pro=!!p.pro,tiers='<div class="seg pay-tier">'+[['y','Standard'],['py','Pro · assistante IA']].map(([k,n])=>'<button data-a="pay-plan" data-k="'+k+'" class="'+(!!PLANS[k].pro===pro?'on':'')+'">'+n+'</button>').join('')+'</div>'+
+  (pro?'<div class="pay-pro">Tout DentaGest, plus l’<b>assistante IA WhatsApp</b> : elle répond à vos patients 24 h/24 en français, arabe ou darija, prend les rendez-vous dans vos créneaux libres et vous signale les urgences.</div>':'');
+ const plans=tiers+'<div class="pay-plans">'+Object.entries(PLANS).filter(([,x])=>!!x.pro===pro).map(([k,x])=>'<button data-a="pay-plan" data-k="'+k+'" class="'+(PAYSEL===k?'on':'')+'">'+(x.badge?'<i>'+x.badge+'</i>':'')+'<b>'+x.nom+'</b><span>'+fmtDA(PAY.prix[k])+'</span><small>par '+x.unite+'</small></button>').join('')+'</div>';
 const card=PAYCARDS?'<button class="btn pri pay-card" data-a="pay-card">'+ic('caisse')+'Payer '+fmtDA(price)+' par carte</button><small class="pay-note">EDAHABIA (Algérie Poste) ou CIB, paiement sécurisé par Chargily. Activation automatique.</small><div id="pay_wait"></div>':
   '<button class="btn pay-card" disabled>'+ic('caisse')+'Paiement par carte bientôt disponible</button>';
  const ripOk=!!PAY.rip,msg='Bonjour, je souhaite activer DentaGest DZ — formule '+p.nom+' ('+fmtDA(price)+').\nCode appareil : '+dev+'\nCabinet : '+(S.config.cabinet||'')+' — '+(S.config.praticien||'')+'\nCi-joint le reçu du virement BaridiMob.';
@@ -2382,9 +2397,111 @@ async function payCheck(quiet){
 function payLoop(){if(!PAYPOLL)return;if(Date.now()-PAYPOLL>20*60e3){PAYPOLL=0;return}payCheck(true).then(ok=>{if(!ok&&PAYPOLL)setTimeout(payLoop,5000)})}
 async function payActivate(code,auto){
  const o=await licVerify(code);if(!o){if(!auto)toast('Code invalide pour cet appareil. Vérifiez qu’il a bien été copié en entier.');return false}
- const cur=S.config.licence?await licVerify(S.config.licence):null;if(cur&&cur.e>o.e){if(!auto)toast('Votre abonnement actuel va déjà plus loin (jusqu’au '+fr(cur.e)+').');return true}
- S.config.licence=code.trim();Store.saveConfig();await licRefresh();closeSheet();render();
- sheet('Merci !','<div class="pay-ok"><div class="logo"><svg class="i" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div><h2>Abonnement activé</h2><p>DentaGest DZ est actif jusqu’au <b>'+fr(o.e)+'</b>.</p></div>','<button class="btn pri" data-a="close">Continuer</button>');return true;
+ const cur=S.config.licence?await licVerify(S.config.licence):null;if(cur&&cur.e>o.e&&isProPlan(cur.p)===isProPlan(o.p)){if(!auto)toast('Votre abonnement actuel va déjà plus loin (jusqu’au '+fr(cur.e)+').');return true}
+ S.config.licence=code.trim();Store.saveConfig();await licRefresh();closeSheet();render();if(isPro()&&S.config.ia&&S.config.ia.enabled){iaStart();iaTick(true)}
+ sheet('Merci !','<div class="pay-ok"><div class="logo"><svg class="i" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div><h2>'+(isProPlan(o.p)?'DentaGest Pro activé':'Abonnement activé')+'</h2><p>DentaGest DZ est actif jusqu’au <b>'+fr(o.e)+'</b>.'+(isProPlan(o.p)?' Configurez votre assistante IA dans Paramètres.':'')+'</p></div>','<button class="btn pri" data-a="close">Continuer</button>');return true;
+}
+
+/* ---------- Formule Pro : assistante IA WhatsApp ----------
+   L'assistante répond aux patients sur le WhatsApp du cabinet, prend les rendez-vous dans les créneaux libres
+   et transmet les messages. Le serveur ne reçoit que la fiche du cabinet et les créneaux occupés (date, heure, durée),
+   jamais les noms ni les dossiers des patients. Les rendez-vous pris par l'assistante arrivent ici automatiquement. */
+const IA={api:'https://dentagest-assistant.dentagestdz.workers.dev',t:0,busy:false};
+const isProPlan=p=>p==='pm'||p==='py';
+const isPro=()=>LIC.status==='active'&&isProPlan(LIC.plan);
+const IA_JOURS=[[6,'Samedi'],[0,'Dimanche'],[1,'Lundi'],[2,'Mardi'],[3,'Mercredi'],[4,'Jeudi'],[5,'Vendredi']];
+const IA_KINDS={rdv:['Rendez-vous','ok'],annulation:['Annulation / report','warn'],urgence:['Urgence','crit'],message:['Message','plain']};
+function iaCfg(){
+ const c=S.config;if(!c.ia){const h=[['08:30','12:00'],['13:30','17:00']];c.ia={enabled:false,creneau:30,urgence:'',soins:'',infos:'',conges:[],horaires:{0:h,1:h,2:h,3:h,4:h,5:[],6:h},inbox:[]}}
+ if(!Array.isArray(c.ia.inbox))c.ia.inbox=[];return c.ia;
+}
+const iaRanges=s=>String(s||'').split(/[,;]/).map(x=>x.trim().match(/^(\d{1,2})[:h](\d{2})\s*[-–à]\s*(\d{1,2})[:h](\d{2})$/i)).filter(Boolean).map(m=>[m[1].padStart(2,'0')+':'+m[2],m[3].padStart(2,'0')+':'+m[4]]).filter(([a,b])=>a<b);
+const iaRangesTxt=r=>(r||[]).map(x=>x[0]+'-'+x[1]).join(', ');
+const iaDate=s=>{const m=String(s||'').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0'):''};
+const iaConges=s=>String(s||'').split('\n').map(l=>l.split(/\s+(?:-|–|au)\s+/).map(iaDate)).filter(x=>x[0]).map(x=>[x[0],x[1]||x[0]]).filter(x=>x[1]>=x[0]);
+const iaCongesTxt=c=>(c||[]).map(x=>fr(x[0])+(x[1]&&x[1]!==x[0]?' au '+fr(x[1]):'')).join('\n');
+const iaTel=s=>{let d=String(s||'').replace(/\D/g,'');if(d.startsWith('213'))d=d.slice(3);return d.replace(/^0/,'').slice(-9)};
+async function iaFetch(path,body){
+ const r=await fetch(IA.api+path,{method:body?'POST':'GET',cache:'no-store',headers:{'Content-Type':'application/json','X-DG-Licence':S.config.licence||''},body:body?JSON.stringify(body):undefined});
+ const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('HTTP '+r.status));return j;
+}
+/* envoie la fiche du cabinet et les créneaux occupés (sans aucun nom de patient) */
+async function iaSync(){
+ const ia=iaCfg(),c=S.config,t=today();
+ const busy=S.rdv.filter(r=>r.date>=t&&r.heure&&r.statut!=='absent').map(r=>({d:r.date,h:r.heure,m:Number(r.duree)||Number(ia.creneau)||30}));
+ const profile={cabinet:c.cabinet,praticien:c.praticien,specialite:c.specialite,adresse:c.adresse,ville:c.ville,tel:c.tel,urgence:ia.urgence,soins:ia.soins,infos:ia.infos,creneau:ia.creneau,conges:ia.conges,horaires:ia.horaires};
+ const j=await iaFetch('/api/sync',{enabled:!!ia.enabled,profile,busy});
+ ia.wa=j.whatsapp||{connected:false};ia.lastSync=Date.now();Store.saveConfig();return j;
+}
+/* récupère les demandes de l'assistante : les rendez-vous vont directement dans l'agenda */
+async function iaPull(){
+ const ia=iaCfg(),{requests}=await iaFetch('/api/requests');if(!requests||!requests.length)return 0;
+ const seen=new Set(ia.inbox.map(x=>x.id));
+ for(const q of requests){
+  if(seen.has(q.id))continue;
+  let rdvId=null;
+  if(q.kind==='rdv'&&q.date&&q.heure){
+   const k=iaTel(q.tel);let p=k&&S.patients.find(x=>iaTel(x.tel)===k);
+   if(!p){p={dents:{},nom:(q.nom||'Patient WhatsApp').trim(),prenom:'',sexe:'',tel:q.tel||'',cree:today(),id:newId(),ia:true};Store.save('patients',p)}
+   const r={id:newId(),patientId:p.id,date:q.date,heure:q.heure,duree:q.duree||Number(ia.creneau)||30,motif:q.motif||'Consultation',statut:'prevu',note:'Pris par l’assistante WhatsApp',ia:true};
+   Store.save('rdv',r);rdvId=r.id;
+  }
+  ia.inbox.unshift({id:q.id,kind:q.kind,nom:q.nom||'',tel:q.tel||'',date:q.date||'',heure:q.heure||'',motif:q.motif||'',note:q.note||'',at:q.created_at,rdvId,vu:false});
+ }
+ ia.inbox=ia.inbox.slice(0,200);Store.saveConfig();
+ await iaFetch('/api/requests/ack',{ids:requests.map(q=>q.id)});
+ return requests.length;
+}
+async function iaTick(force){
+ if(IA.busy||!isPro()||!iaCfg().enabled||(!force&&document.hidden))return;IA.busy=true;
+ try{const n=await iaPull();await iaSync();if(n){render();toast(n===1?'1 nouvelle demande de l’assistante IA':n+' nouvelles demandes de l’assistante IA')}}
+ catch(e){console.warn('assistante',e)}finally{IA.busy=false}
+}
+function iaStart(){if(IA.t)return;IA.t=setInterval(()=>iaTick(),120e3);setTimeout(()=>iaTick(),1500);document.addEventListener('visibilitychange',()=>{if(!document.hidden)iaTick()})}
+/* un rendez-vous ajouté ou déplacé à la main : on met à jour les créneaux occupés quelques secondes plus tard */
+const iaSoon=()=>{if(!isPro()||!iaCfg().enabled)return;clearTimeout(IA.st);IA.st=setTimeout(()=>{if(!IA.busy)iaSync().catch(e=>console.warn('assistante',e))},4000)};
+function iaRow(x){
+ const [l,cls]=IA_KINDS[x.kind]||IA_KINDS.message,wa=iaTel(x.tel)?'https://wa.me/213'+iaTel(x.tel):'';
+ return '<div class="item ia-it'+(x.vu?' vu':'')+'"><span class="grow"><b>'+esc(x.nom||'Patient')+' <span class="pill '+cls+'">'+l+'</span></b><small>'+
+  (x.kind==='rdv'?fr(x.date)+' à '+esc(x.heure)+(x.motif?' · '+esc(x.motif):'')+' · ajouté à l’agenda':esc(x.note))+'</small><small>'+esc(x.tel)+(x.at?' · reçu le '+new Date(x.at).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'')+'</small></span>'+
+  (wa?'<a class="btn sm" href="'+wa+'" target="_blank" rel="noopener">WhatsApp</a>':'')+(x.vu?'':'<button class="btn sm" data-a="ia-vu" data-id="'+esc(x.id)+'">Traité</button>')+'</div>';
+}
+function iaInboxSheet(){
+ const ia=iaCfg(),l=ia.inbox.slice(0,60);
+ sheet('Demandes de l’assistante IA',l.length?'<div class="list">'+l.map(iaRow).join('')+'</div>':'<div class="empty">Aucune demande pour le moment.</div>',(ia.inbox.some(x=>!x.vu)?'<button class="btn" data-a="ia-vu-all">Tout marquer comme traité</button>':'')+'<button class="btn pri" data-a="close">Fermer</button>');
+}
+function iaBanner(){
+ if(!isPro()||!S.config.ia||!S.config.ia.enabled)return '';const n=S.config.ia.inbox.filter(x=>!x.vu),u=n.some(x=>x.kind==='urgence');
+ return n.length?'<button class="card ia-ban'+(u?' urg':'')+'" data-a="ia-inbox"><span class="ia-dot"></span><span class="grow"><b>Assistante IA : '+n.length+' nouvelle'+(n.length>1?'s':'')+' demande'+(n.length>1?'s':'')+(u?' dont une urgence':'')+'</b><small>'+esc(n.slice(0,3).map(x=>(x.nom||'Patient')+' — '+(IA_KINDS[x.kind]||IA_KINDS.message)[0].toLowerCase()).join(' · '))+'</small></span>'+ic('next')+'</button>':'';
+}
+function iaCard(){
+ if(!isPro())return '<div class="card ia-card"><h2>Assistante IA WhatsApp <span class="pill plain">Pro</span></h2><p style="margin:0 0 10px;color:var(--muted)">Quand vous êtes au fauteuil, elle répond à vos patients sur WhatsApp, en français, en arabe ou en darija, 24 h/24 :</p><ul class="ia-ul"><li>elle donne vos horaires, votre adresse et vos tarifs ;</li><li>elle propose vos créneaux libres et prend le rendez-vous, qui arrive directement dans votre agenda ;</li><li>elle prend les messages et vous signale les urgences.</li></ul><div class="row"><button class="btn pri" data-a="pay-pro">Passer à DentaGest Pro · '+fmtDA(PAY.prix.pm)+' / mois</button></div></div>';
+ const ia=iaCfg(),wa=ia.wa||{},dev=licDevice();
+ const st=!ia.enabled?'<span class="pill plain">Désactivée</span>':wa.connected?'<span class="pill ok">Active</span>':'<span class="pill warn">En attente du numéro</span>';
+ const mise='Bonjour, je souhaite mettre en service l’assistante IA WhatsApp de DentaGest Pro.\nCode appareil : '+dev+'\nCabinet : '+(S.config.cabinet||'')+' — '+(S.config.praticien||'')+'\nNuméro WhatsApp du cabinet : ';
+ const waTxt=wa.connected?'<p class="ia-ok">Numéro WhatsApp relié : <b>'+esc(wa.numero||'oui')+'</b></p>':'<div class="ia-step"><b>Mise en service du numéro WhatsApp</b><p>Envoyez-nous le numéro WhatsApp du cabinet : nous le relions à l’assistante (une fois, environ 15 minutes, avec un code reçu par SMS).</p>'+(PAY.whatsapp?'<a class="btn sm pri" href="https://wa.me/'+esc(PAY.whatsapp)+'?text='+encodeURIComponent(mise)+'" target="_blank" rel="noopener">Demander la mise en service</a>':'')+'</div>';
+ const n=ia.inbox.filter(x=>!x.vu).length;
+ return '<div class="card ia-card"><h2>Assistante IA WhatsApp '+st+'</h2>'+waTxt+
+  '<label class="ia-sw"><input type="checkbox" id="ia_on"'+(ia.enabled?' checked':'')+'><span>L’assistante répond à mes patients</span></label>'+
+  '<p class="lbl" style="margin:14px 0 6px">Horaires d’ouverture <small>(ex. 08:30-12:00, 13:30-17:00 — vide = fermé)</small></p><div class="form two ia-h">'+IA_JOURS.map(([wd,n])=>'<label class="f">'+n+'<input type="text" id="ia_h'+wd+'" value="'+esc(iaRangesTxt(ia.horaires[wd]))+'" placeholder="Fermé" inputmode="numeric"></label>').join('')+'</div>'+
+  '<div class="form two" style="margin-top:10px"><label class="f">Durée d’un créneau<select id="ia_cr">'+[15,20,30,45,60].map(m=>'<option value="'+m+'"'+(Number(ia.creneau)===m?' selected':'')+'>'+m+' minutes</option>').join('')+'</select></label>'+
+  '<label class="f">Numéro pour les urgences<input type="tel" id="ia_urg" value="'+esc(ia.urgence)+'" placeholder="06 61 00 00 00"></label>'+
+  '<label class="f full">Soins et tarifs que l’assistante peut annoncer<textarea id="ia_soins" rows="4" placeholder="Consultation : 1 500 DA&#10;Détartrage : 3 000 DA&#10;Extraction simple : à partir de 2 500 DA">'+esc(ia.soins)+'</textarea></label>'+
+  '<label class="f full">Autres informations utiles<textarea id="ia_infos" rows="3" placeholder="Parking devant le cabinet · Paiement en espèces ou par carte EDAHABIA · Venir 10 minutes avant · Apporter les radios">'+esc(ia.infos)+'</textarea></label>'+
+  '<label class="f full">Fermetures exceptionnelles <small>(une par ligne : 20/12/2026 au 31/12/2026)</small><textarea id="ia_conges" rows="2">'+esc(iaCongesTxt(ia.conges))+'</textarea></label></div>'+
+  '<div class="row" style="margin-top:12px"><button class="btn pri" data-a="ia-save">Enregistrer et synchroniser</button><button class="btn" data-a="ia-inbox">Demandes reçues'+(n?' ('+n+')':'')+'</button></div>'+
+  '<p class="ia-note">L’assistante utilise les informations du cabinet ci-dessus et vos créneaux libres. Les noms et dossiers de vos patients restent sur cet appareil.'+(ia.lastSync?' Dernière synchronisation : '+new Date(ia.lastSync).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+'.':'')+'</p></div>';
+}
+async function iaSave(){
+ const ia=iaCfg(),bad=[];
+ IA_JOURS.forEach(([wd,n])=>{const v=$('#ia_h'+wd).value.trim(),r=iaRanges(v);if(v&&!r.length)bad.push(n);ia.horaires[wd]=r});
+ if(bad.length){toast('Horaires à corriger : '+bad.join(', ')+' (ex. 08:30-12:00, 13:30-17:00)');return}
+ Object.assign(ia,{enabled:$('#ia_on').checked,creneau:Number($('#ia_cr').value)||30,urgence:$('#ia_urg').value.trim(),soins:$('#ia_soins').value.trim(),infos:$('#ia_infos').value.trim(),conges:iaConges($('#ia_conges').value)});
+ if(ia.enabled&&!IA_JOURS.some(([wd])=>ia.horaires[wd].length)){toast('Indiquez au moins un jour d’ouverture.');return}
+ Store.saveConfig();const b=$('[data-a="ia-save"]');if(b){b.disabled=true;b.textContent='Synchronisation…'}
+ try{await iaPull();await iaSync();toast(ia.enabled?'Assistante enregistrée et synchronisée':'Assistante désactivée');if(ia.enabled)iaStart()}
+ catch(e){toast('Synchronisation impossible : '+(e.message||'vérifiez la connexion'))}
+ render();
 }
 
 /* ---------- Actions ---------- */
@@ -2665,6 +2782,11 @@ const A={
  'os-apply'(d){const c=S.config,oc=c.osCfg||{},st={style:d.k,col:oc.col||'#0B7A6A',logo:oc.logo!==false,info:Object.fromEntries(OS_INFO.map(([k])=>[k,c[k]||'']))};c.tpl=osEls(st);c.modele='libre';c.osCfg={style:d.k,col:st.col,logo:st.logo};Store.saveConfig();render();toast('Modèle « '+OS_STYLES[d.k]+' » appliqué')},
  'os-col'(d){const c=S.config,oc=c.osCfg||{};c.osCfg={style:oc.style||'moderne',col:d.v,logo:oc.logo!==false};if(c.modele==='libre')c.tpl=osEls({...c.osCfg,info:Object.fromEntries(OS_INFO.map(([k])=>[k,c[k]||'']))});Store.saveConfig();render()},
  'pay-plan'(d){PAYSEL=d.k;payOpen()},
+ 'pay-pro'(){PAYSEL='py';payOpen()},
+ 'ia-save'(){iaSave()},
+ 'ia-inbox'(){iaInboxSheet()},
+ 'ia-vu'(d){const x=iaCfg().inbox.find(i=>i.id===d.id);if(x){x.vu=true;Store.saveConfig();render();if($('#modal').innerHTML)iaInboxSheet()}},
+ 'ia-vu-all'(){iaCfg().inbox.forEach(x=>x.vu=true);Store.saveConfig();render();iaInboxSheet()},
  'pay-card'(){payCard()},
  'pay-check'(){payCheck()},
  'pay-act'(){payActivate(($('#pay_code')||{}).value||'')},

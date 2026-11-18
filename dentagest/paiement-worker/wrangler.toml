@@ -1,0 +1,12 @@
+name = "dentagest-paiement"
+main = "src/worker.js"
+compatibility_date = "2025-06-01"
+
+[vars]
+CHARGILY_MODE = "test"
+
+[[kv_namespaces]]
+binding = "LICENCES"
+id = "2ebeb173146c492a86a4bd390a57dfc0"
+
+# Secrets (wrangler secret put …) : CHARGILY_SECRET, LICENCE_PRIVATE_JWK, STATS_KEY

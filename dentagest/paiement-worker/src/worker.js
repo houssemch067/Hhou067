@@ -4,9 +4,26 @@
    GET  /licence?device=DG-XXXX-XXXX -> {code} quand le paiement est confirmé
    POST /trial      {device, date}  -> compte anonymement un nouvel essai (trial:<device>, une seule fois)
    GET/POST /stats  (clé secrète)   -> essais par jour, essais en cours, appareils payants
+   POST /admin/licence (Authorization: Bearer STATS_KEY) {device, plan} -> émet un code (paiements BaridiMob)
+   Formules : m/y = Standard, pm/py = Pro (avec l'assistante IA WhatsApp)
    Secrets : CHARGILY_SECRET (clé secrète Chargily), LICENCE_PRIVATE_JWK (contenu de cle-privee.json), STATS_KEY (accès à /stats)
    Variables : CHARGILY_MODE = "test" ou "live" ; stockage KV : LICENCES */
-const PRICES={m:{amount:2000,months:1,label:'Mensuel'},y:{amount:20000,months:12,label:'Annuel'}};
+const PRICES={m:{amount:2000,months:1,label:'Mensuel'},y:{amount:20000,months:12,label:'Annuel'},
+ pm:{amount:4000,months:1,label:'Pro mensuel'},py:{amount:40000,months:12,label:'Pro annuel'}};
+const tier=p=>p==='pm'||p==='py'?'pro':'std';
+const b64uJson=s=>{try{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(s),c=>c.charCodeAt(0))))}catch(e){return null}};
+/* émet et enregistre une licence. Prolonge à partir de la fin de l'abonnement en cours s'il est de la même formule ;
+   en passant de Standard à Pro (ou l'inverse), la nouvelle formule commence aujourd'hui. */
+async function issueLicence(env,device,plan){
+ const P=PRICES[plan],today=new Date();
+ const prev=await env.LICENCES.get('end:'+device),prevCode=await env.LICENCES.get('lic:'+device);
+ const prevPlan=prevCode?(b64uJson(prevCode.split('.')[0])||{}).p:null;
+ const same=!prevPlan||tier(prevPlan)===tier(plan);
+ const start=same&&prev&&new Date(prev+'T12:00:00Z')>today?new Date(prev+'T12:00:00Z'):today;
+ const payload={d:device,e:iso(addMonths(start,P.months)),p:plan,i:iso(today)},code=await signLicence(env,payload);
+ await env.LICENCES.put('lic:'+device,code);await env.LICENCES.put('end:'+device,payload.e,{metadata:{e:payload.e}});
+ return {code,payload};
+}
 const DEV=/^DG-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
 const cors={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type'};
 const json=(o,status=200)=>new Response(JSON.stringify(o),{status,headers:{'Content-Type':'application/json',...cors}});
@@ -70,11 +87,16 @@ export default{
     const co=ev.data||{};if(await env.LICENCES.get('done:'+co.id))return new Response('ok');
     const meta=JSON.parse(await env.LICENCES.get('co:'+co.id)||'null')||co.metadata||{};const P=PRICES[meta.plan];
     if(!P||!DEV.test(meta.device||'')||Number(co.amount)<P.amount)return new Response('ignored');
-    /* prolonge à partir de la fin de l'abonnement en cours s'il y en a un */
-    const prev=await env.LICENCES.get('end:'+meta.device),today=new Date(),start=prev&&new Date(prev+'T12:00:00Z')>today?new Date(prev+'T12:00:00Z'):today;
-    const payload={d:meta.device,e:iso(addMonths(start,P.months)),p:meta.plan,i:iso(today)},code=await signLicence(env,payload);
-    await env.LICENCES.put('lic:'+meta.device,code);await env.LICENCES.put('end:'+meta.device,payload.e,{metadata:{e:payload.e}});await env.LICENCES.put('done:'+co.id,iso(today));
+    await issueLicence(env,meta.device,meta.plan);await env.LICENCES.put('done:'+co.id,iso(new Date()));
     return new Response('ok');
+   }
+   /* code d'activation pour un paiement BaridiMob vérifié à la main (clé STATS_KEY) */
+   if(path==='/admin/licence'&&req.method==='POST'){
+    const auth=req.headers.get('Authorization')||'',key=auth.startsWith('Bearer ')?auth.slice(7).trim():'';
+    if(!env.STATS_KEY||!key||!safeEq(await hmacHex('k',key),await hmacHex('k',env.STATS_KEY)))return json({error:'Clé invalide'},403);
+    const {device,plan}=await req.json().catch(()=>({}));
+    if(!DEV.test(device||'')||!PRICES[plan])return json({error:'Demande invalide (device DG-XXXX-XXXX, plan m, y, pm ou py)'},400);
+    const {code,payload}=await issueLicence(env,device,plan);return json({code,fin:payload.e,formule:PRICES[plan].label});
    }
    if(path==='/licence'&&req.method==='GET'){
     const d=url.searchParams.get('device')||'';if(!DEV.test(d))return json({error:'Appareil invalide'},400);

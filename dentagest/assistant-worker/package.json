@@ -1,0 +1,20 @@
+{
+  "name": "dentagest-assistant",
+  "version": "1.0.0",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node --experimental-sqlite --test test/*.test.js",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.10.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.164.0"
+  },
+  "private": true,
+  "type": "module"
+}

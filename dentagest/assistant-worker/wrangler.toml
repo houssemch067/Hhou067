@@ -1,0 +1,21 @@
+name = "dentagest-assistant"
+main = "src/worker.js"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+CLAUDE_MODEL = "claude-opus-5-5"
+CLAUDE_EFFORT = "low"
+WA_GRAPH_VERSION = "v23.0"
+APP_ORIGIN = "https://dentagest-dz.dentagestdz.workers.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dentagest-assistant"
+database_id = "REMPLACER_PAR_L_ID_D1"
+
+[triggers]
+crons = ["17 3 * * *"]
+
+[observability]
+enabled = true
