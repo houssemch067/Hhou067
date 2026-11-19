@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node build.mjs",
     "dev": "node build.mjs && wrangler dev",
-    "deploy:test": "node build.mjs && wrangler deploy"
+    "deploy:test": "node build.mjs && wrangler deploy",
+    "deploy:prod": "ASSISTANT=0 node build.mjs && wrangler deploy --env production"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

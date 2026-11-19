@@ -3,8 +3,11 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, copyFile
 
 const dir = new URL(".", import.meta.url).pathname;
 let html = readFileSync(dir + "src/app.html", "utf8");
-const cloud = readFileSync(dir + "src/cloud.js", "utf8") + "\n" + readFileSync(dir + "src/wa.js", "utf8");
-const css = readFileSync(dir + "src/cloud.css", "utf8");
+// ASSISTANT=0 : version sans l'assistant WhatsApp (version en ligne tant qu'il n'est pas lancé)
+const ASSISTANT = process.env.ASSISTANT !== "0";
+const cloud = readFileSync(dir + "src/cloud.js", "utf8") + (ASSISTANT ? "\n" + readFileSync(dir + "src/wa.js", "utf8") : "");
+let css = readFileSync(dir + "src/cloud.css", "utf8");
+if (!ASSISTANT) css = css.split("/* ---------- Assistant WhatsApp")[0];
 
 const BOOT = "Store.init().then(()=>{ui.ready=true;render();licStart()});";
 if (html.split(BOOT).length !== 2) throw new Error("Point d'insertion introuvable dans app.html");
@@ -30,4 +33,4 @@ const name = (f, i) => "static/" + i + (/\.(png|woff2)$/.test(f) ? ".bin" : ".tx
 files.forEach((f, i) => copyFileSync(dir + "public/" + f, dir + "build/" + name(f, i)));
 writeFileSync(dir + "build/assets.js", files.map((f, i) => `import a${i} from "./${name(f, i)}";`).join("\n") +
   "\nexport default {\n" + files.map((f, i) => `  ${JSON.stringify("/" + f)}: a${i},`).join("\n") + "\n};\n");
-console.log("build/index.html", (html.length / 1024).toFixed(0) + " Ko");
+console.log("build/index.html", (html.length / 1024).toFixed(0) + " Ko", ASSISTANT ? "(avec assistant WhatsApp)" : "(sans assistant WhatsApp)");

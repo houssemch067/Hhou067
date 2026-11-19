@@ -1,4 +1,5 @@
-# Version de test : https://dentagest-dz-test.dentagestdz.workers.dev
+# Version de test : https://dentagest-dz-test.dentagestdz.workers.dev   (npm run deploy:test)
+# Version en ligne : https://dentagest-dz.dentagestdz.workers.dev       (npm run deploy:prod)
 name = "dentagest-dz-test"
 main = "src/worker.js"
 compatibility_date = "2025-06-01"
@@ -9,7 +10,23 @@ rules = [
   { type = "Data", globs = ["**/*.bin"], fallthrough = false },
 ]
 
+[vars]
+ASSISTANT = "1"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "dentagest-test"
 database_id = "02a19ecb-5557-48fb-bffc-cfb78900f4d3"
+
+# ---------- Version en ligne (assistant WhatsApp désactivé) ----------
+[env.production]
+name = "dentagest-dz"
+workers_dev = true
+
+[env.production.vars]
+ASSISTANT = "0"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "dentagest-prod"
+database_id = "45d65d60-25b3-48d1-a3bf-a57ead7b1f62"

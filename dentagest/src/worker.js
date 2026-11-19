@@ -305,7 +305,7 @@ async function api(req, env, ctx, path) {
     if (!b || typeof b !== "object") bad();
     if (ROUTES[path]) return json(await ROUTES[path](env, b));
     if (AUTHED[path]) { const u = await authed(req, env, ctx); return json(await AUTHED[path](env, u, b)); }
-    if (WA_ROUTES[path]) { const u = await authed(req, env, ctx); return json(await WA_ROUTES[path](env, u, b, req)); }
+    if (WA_ROUTES[path] && env.ASSISTANT === "1") { const u = await authed(req, env, ctx); return json(await WA_ROUTES[path](env, u, b, req)); }
     return fail(404, "Inconnu");
   } catch (e) {
     if (e instanceof HttpError) return fail(e.status, e.message, e.extra);
@@ -319,7 +319,7 @@ export default {
   async fetch(req, env, ctx) {
     const u = new URL(req.url);
     if (u.pathname.startsWith("/api/")) return api(req, env, ctx, u.pathname.replace(/\/+$/, ""));
-    if (u.pathname === "/wa/webhook") return webhook(req, env, ctx);
+    if (u.pathname === "/wa/webhook" && env.ASSISTANT === "1") return webhook(req, env, ctx);
     if (u.pathname.startsWith("/downloads/")) return Response.redirect(u.origin + "/installer-android", 302);
     const html = PAGES[u.pathname];
     if (html && (req.method === "GET" || req.method === "HEAD"))

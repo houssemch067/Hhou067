@@ -2,8 +2,9 @@
 
 Application DentaGest DZ (copie de la version en ligne) + synchronisation chiffrée de bout en bout et comptes d'équipe.
 
-- Version de test : https://dentagest-dz-test.dentagestdz.workers.dev (base D1 `dentagest-test`)
-- Version en ligne (non modifiée) : https://dentagest-dz.dentagestdz.workers.dev
+- Version en ligne : https://dentagest-dz.dentagestdz.workers.dev (base D1 `dentagest-prod`, **sans** l'assistant WhatsApp) : `npm run deploy:prod`
+- Version de test : https://dentagest-dz-test.dentagestdz.workers.dev (base D1 `dentagest-test`, avec l'assistant) : `npm run deploy:test`
+- Retour à l'ancienne version en ligne (avant le cloud) si besoin : `npx wrangler rollback 17e5a2f9-6eed-4626-b8e2-eb76346f4b48 --env production`
 
 ## Fonctionnement
 - **Hors connexion d'abord** : l'appli enregistre toujours sur l'appareil (IndexedDB). Les modifications partent dans une file d'attente envoyée dès que internet revient (toutes les 20 s, au retour en ligne, à l'ouverture).
@@ -29,7 +30,9 @@ BASE=http://127.0.0.1:8787/ node tests/e2e.cjs
 npm run deploy:test    # publie la version de test
 ```
 
-## Assistant WhatsApp (IA)
+## Assistant WhatsApp (IA) — en attente, pas encore lancé
+Activé seulement si `ASSISTANT=1` (variable du worker) et inclus dans l'appli seulement si la construction n'a pas `ASSISTANT=0`. La version en ligne est construite et déployée sans lui.
+
 - Répond aux patients sur WhatsApp avec **Claude Haiku 5.5** (`src/assistant.js`) : infos pratiques, tarifs, demandes de rendez-vous sur les créneaux libres, annulations, urgences. Aucun conseil médical.
 - L'application publie seulement les informations du cabinet et les **créneaux libres sans aucun nom** (`src/wa.js`). Les demandes sont chiffrées pour les appareils du cabinet (ECDH P-256 + AES-GCM). Les conversations sont effacées du serveur après 3 jours.
 - L'équipe traite les demandes dans l'appli (« Demandes WhatsApp ») : *Accepter* crée la fiche et le RDV puis envoie la confirmation WhatsApp.
