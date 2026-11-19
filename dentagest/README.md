@@ -28,3 +28,11 @@ npm run dev            # local : http://127.0.0.1:8787 (base locale : npx wrangl
 BASE=http://127.0.0.1:8787/ node tests/e2e.cjs
 npm run deploy:test    # publie la version de test
 ```
+
+## Assistant WhatsApp (IA)
+- Répond aux patients sur WhatsApp avec **Claude Haiku 5.5** (`src/assistant.js`) : infos pratiques, tarifs, demandes de rendez-vous sur les créneaux libres, annulations, urgences. Aucun conseil médical.
+- L'application publie seulement les informations du cabinet et les **créneaux libres sans aucun nom** (`src/wa.js`). Les demandes sont chiffrées pour les appareils du cabinet (ECDH P-256 + AES-GCM). Les conversations sont effacées du serveur après 3 jours.
+- L'équipe traite les demandes dans l'appli (« Demandes WhatsApp ») : *Accepter* crée la fiche et le RDV puis envoie la confirmation WhatsApp.
+- Limite mensuelle de conversations par cabinet (`wa_config.quota`, 500 par défaut) ; au-delà, message d'attente et transmission à l'équipe.
+- Secrets du worker : `ANTHROPIC_API_KEY` (clé Claude), `WA_APP_SECRET` (secret de l'application Meta), `WA_VERIFY_TOKEN` (jeton de vérification du webhook). Webhook : `/wa/webhook`.
+- Tests : `node tests/mock.cjs` (faux Claude + faux WhatsApp), `.dev.vars` local, puis `node tests/e2e-wa.cjs`.

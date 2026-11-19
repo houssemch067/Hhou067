@@ -13,7 +13,7 @@ const Cloud=(()=>{
  const NAVNEED={caisse:'f',stats:'f',ordonnances:'o',modeles:'o',medicaments:'o'};
  const PERM_TXT={f:'Caisse, devis et statistiques',o:'Ordonnances, certificats, modèles et médicaments',p:'Modifier les paramètres du cabinet'};
  const PROFILS=[['dentiste','Dentiste collaborateur','fop'],['assistante','Assistante','o'],['secretaire','Secrétaire / accueil','f'],['libre','Personnalisé','']];
- const C={st:null,out:{},busy:false,again:false,err:'',skew:0,pushed:{},rv:0,ot:0};
+ const C={st:null,out:{},busy:false,again:false,err:'',skew:0,pushed:{},rv:0,ot:0,hooks:[]};
  const NAV_ALL=NAV.slice();
 
  /* ---------- outils ---------- */
@@ -133,6 +133,7 @@ const Cloud=(()=>{
    C.st.last=Date.now();C.err='';await saveSt();saveOut();
    if(skipped)toast(plural(skipped,'fiche')+' trop volumineuse'+(skipped>1?'s':'')+' (photos) n’a pas pu être synchronisée.');
    if(changed){await Store.persistNow();if(cfg&&typeof licRefresh==='function')await licRefresh();refreshView()}
+   C.hooks.forEach(f=>{try{f()}catch(e){console.warn(e)}});
    if(manual)toast('Synchronisation terminée');
   }catch(e){
    if(e.status===401){C.busy=false;return kicked(e.message)}
@@ -499,5 +500,5 @@ const Cloud=(()=>{
   addEventListener('online',()=>{C.err='';sync()});addEventListener('offline',badge);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&on())sync()});
  }
- return {boot,sync,on,state:()=>C};
+ return {boot,sync,on,state:()=>C,call,perms,isOwner,clSheet,busyBtn,err,rel,plural,hooks:C.hooks};
 })();

@@ -19,3 +19,21 @@
 .sync.cl.bad{color:var(--crit)}
 .ob-join{display:block;width:100%;margin-top:12px}
 @media (max-width:400px){.sync.cl{display:inline-block;font-size:0;width:12px;height:12px;padding:0;border:0;background:var(--muted)}.sync.cl.ok{background:var(--ok)}.sync.cl.warn{background:var(--warn)}.sync.cl.bad{background:var(--crit)}}
+/* ---------- Assistant WhatsApp ---------- */
+.wa-banner{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 14px;padding:12px 14px;border-radius:14px;border:1px solid var(--ok);background:var(--surface);color:var(--tx,inherit);font:inherit;text-align:left;cursor:pointer}
+.wa-banner span{font-size:20px}.wa-banner b{flex:1}.wa-banner i{font-style:normal;color:var(--muted);font-weight:700}
+.wa-banner.urg{border-color:var(--crit);border-width:2px}
+.wa-small{font-size:12.5px;color:var(--muted)}
+label.f.wa-day{display:grid;grid-template-columns:84px minmax(0,1fr);align-items:center;gap:8px;text-align:left}
+label.f.wa-day input{width:100%;min-width:0}
+.wa-chat{height:46vh;min-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:12px;background:var(--surface2,#eef2ef);border:1px solid var(--line)}
+.wa-b{max-width:82%;padding:8px 11px;border-radius:12px;font-size:14px;line-height:1.4;white-space:normal;word-wrap:break-word}
+.wa-b.me{align-self:flex-end;background:#d9fdd3;color:#111;border-bottom-right-radius:4px}
+.wa-b.bot{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.wa-b.wait{opacity:.6}.wa-b.err{color:var(--crit)}
+.wa-in{display:flex;gap:8px;margin-top:10px;align-items:flex-end}
+.wa-in textarea{flex:1;resize:none;min-height:42px;max-height:120px;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.wa-item{border:1px solid var(--line);border-left:5px solid var(--info,#2563eb);border-radius:12px;padding:12px;margin:8px 0;display:grid;gap:8px;background:var(--surface);font-size:14px}
+.wa-item.t-urgence{border-left-color:var(--crit)}.wa-item.t-rdv{border-left-color:var(--ok)}.wa-item.t-annulation,.wa-item.t-deplacement{border-left-color:var(--warn)}
+.wa-item.done{opacity:.6}
+.wa-ih{display:flex;justify-content:space-between;gap:8px;font-weight:700}.wa-ih small{color:var(--muted);font-weight:600}

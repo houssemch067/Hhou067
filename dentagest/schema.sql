@@ -64,3 +64,44 @@ CREATE TABLE IF NOT EXISTS audit (
   at         INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS audit_cab ON audit(cabinet_id, at);
+
+-- ---------- Assistant WhatsApp ----------
+CREATE TABLE IF NOT EXISTS wa_config (
+  cabinet_id      TEXT PRIMARY KEY,
+  phone_number_id TEXT UNIQUE,                 -- identifiant du numéro dans l'API WhatsApp Cloud
+  display_phone   TEXT,
+  token           TEXT,                        -- jeton Meta, chiffré au repos
+  enabled         INTEGER NOT NULL DEFAULT 0,
+  quota           INTEGER NOT NULL DEFAULT 500, -- conversations par mois
+  profile         TEXT,                        -- infos publiques du cabinet + créneaux libres (aucun nom de patient)
+  pubkey          TEXT,                        -- clé publique : les demandes sont chiffrées pour les appareils du cabinet
+  updated_at      INTEGER
+);
+CREATE TABLE IF NOT EXISTS wa_convos (
+  cabinet_id TEXT NOT NULL,
+  wa_id      TEXT NOT NULL,
+  name       TEXT,
+  history    TEXT,                             -- effacé après 3 jours sans message
+  updated_at INTEGER NOT NULL,
+  PRIMARY KEY (cabinet_id, wa_id)
+);
+CREATE TABLE IF NOT EXISTS wa_requests (
+  id         TEXT PRIMARY KEY,
+  cabinet_id TEXT NOT NULL,
+  data       TEXT NOT NULL,                    -- chiffré pour le cabinet
+  kind       TEXT,
+  status     TEXT NOT NULL DEFAULT 'new',
+  created_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS wa_requests_cab ON wa_requests(cabinet_id, created_at);
+CREATE TABLE IF NOT EXISTS wa_usage (
+  cabinet_id TEXT NOT NULL,
+  month      TEXT NOT NULL,
+  convos     INTEGER NOT NULL DEFAULT 0,
+  msgs_in    INTEGER NOT NULL DEFAULT 0,
+  msgs_out   INTEGER NOT NULL DEFAULT 0,
+  tokens_in  INTEGER NOT NULL DEFAULT 0,
+  tokens_out INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (cabinet_id, month)
+);
+CREATE TABLE IF NOT EXISTS wa_seen (msg_id TEXT PRIMARY KEY, at INTEGER NOT NULL);

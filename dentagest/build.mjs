@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, copyFile
 
 const dir = new URL(".", import.meta.url).pathname;
 let html = readFileSync(dir + "src/app.html", "utf8");
-const cloud = readFileSync(dir + "src/cloud.js", "utf8");
+const cloud = readFileSync(dir + "src/cloud.js", "utf8") + "\n" + readFileSync(dir + "src/wa.js", "utf8");
 const css = readFileSync(dir + "src/cloud.css", "utf8");
 
 const BOOT = "Store.init().then(()=>{ui.ready=true;render();licStart()});";

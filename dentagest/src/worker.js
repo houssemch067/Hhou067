@@ -2,6 +2,7 @@
 import APP from "../build/index.html";
 import GUIDE from "./installer-android.html";
 import FILES from "../build/assets.js";
+import { WA_ROUTES, WaError, webhook } from "./assistant.js";
 
 const TYPES = { woff2: "font/woff2", png: "image/png", css: "text/css; charset=utf-8", js: "text/javascript; charset=utf-8", webmanifest: "application/manifest+json" };
 const PAGES = { "/": APP, "/index.html": APP, "/installer-android": GUIDE, "/installer-android.html": GUIDE };
@@ -304,9 +305,11 @@ async function api(req, env, ctx, path) {
     if (!b || typeof b !== "object") bad();
     if (ROUTES[path]) return json(await ROUTES[path](env, b));
     if (AUTHED[path]) { const u = await authed(req, env, ctx); return json(await AUTHED[path](env, u, b)); }
+    if (WA_ROUTES[path]) { const u = await authed(req, env, ctx); return json(await WA_ROUTES[path](env, u, b, req)); }
     return fail(404, "Inconnu");
   } catch (e) {
     if (e instanceof HttpError) return fail(e.status, e.message, e.extra);
+    if (e instanceof WaError) return fail(e.status, e.message);
     console.error(e);
     return fail(500, "Erreur serveur, réessayez.");
   }
@@ -316,6 +319,7 @@ export default {
   async fetch(req, env, ctx) {
     const u = new URL(req.url);
     if (u.pathname.startsWith("/api/")) return api(req, env, ctx, u.pathname.replace(/\/+$/, ""));
+    if (u.pathname === "/wa/webhook") return webhook(req, env, ctx);
     if (u.pathname.startsWith("/downloads/")) return Response.redirect(u.origin + "/installer-android", 302);
     const html = PAGES[u.pathname];
     if (html && (req.method === "GET" || req.method === "HEAD"))
