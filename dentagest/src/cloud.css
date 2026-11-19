@@ -1,0 +1,21 @@
+
+/* ---------- Cloud du cabinet ---------- */
+.cl-ul{margin:0 0 12px;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px}
+.cl-code{font:700 20px/1.4 ui-monospace,Menlo,Consolas,monospace;letter-spacing:1px;text-align:center;padding:14px;border:2px dashed var(--line);border-radius:12px;user-select:all;-webkit-user-select:all;word-break:break-all;background:var(--surface)}
+.cl-chk{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:14px;cursor:pointer}
+.cl-chk input{margin-top:2px;width:18px;height:18px;flex-shrink:0;accent-color:var(--accent,#0d9488)}
+.cl-mem{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0;display:grid;gap:8px;background:var(--surface)}
+.cl-mem.off{opacity:.6}
+.cl-mem small{display:block;color:var(--muted);margin-top:4px}
+.cl-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.cl-cred{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);align-items:center}
+.cl-cred span{color:var(--muted);font-size:13px}
+.cl-cred b{word-break:break-all}
+.cl-mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:17px;letter-spacing:1px}
+.cl-act{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.cl-act span{color:var(--muted);font-variant-numeric:tabular-nums}
+.sync.cl{cursor:pointer}
+.sync.cl.warn{color:var(--warn)}
+.sync.cl.bad{color:var(--crit)}
+.ob-join{display:block;width:100%;margin-top:12px}
+@media (max-width:400px){.sync.cl{display:inline-block;font-size:0;width:12px;height:12px;padding:0;border:0;background:var(--muted)}.sync.cl.ok{background:var(--ok)}.sync.cl.warn{background:var(--warn)}.sync.cl.bad{background:var(--crit)}}

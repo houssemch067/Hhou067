@@ -1,0 +1,15 @@
+# Version de test : https://dentagest-dz-test.dentagestdz.workers.dev
+name = "dentagest-dz-test"
+main = "src/worker.js"
+compatibility_date = "2025-06-01"
+account_id = "e78b872a8a559dab72f13f4ad15100f5"
+
+rules = [
+  { type = "Text", globs = ["**/*.html", "**/*.txt"], fallthrough = false },
+  { type = "Data", globs = ["**/*.bin"], fallthrough = false },
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dentagest-test"
+database_id = "02a19ecb-5557-48fb-bffc-cfb78900f4d3"
