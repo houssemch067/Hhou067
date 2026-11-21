@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><title>DentaGest DZ Ad v2</title>
+<link rel="stylesheet" href="dg/fonts/fonts.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0A0A0A;font-family:"Open Sans","Noto Color Emoji",sans-serif;-webkit-font-smoothing:antialiased}
+.L{position:absolute;inset:0;overflow:hidden}
+.O{font-family:Outfit,"Noto Color Emoji",sans-serif}
+#hookImg{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover;transform-origin:50% 45%}
+#hookShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 72%,rgba(0,0,0,.35) 100%)}
+.cap{position:absolute;left:50px;right:50px;top:240px;text-align:center;color:#fff;font-family:Outfit,"Noto Color Emoji",sans-serif;font-weight:800;font-size:78px;line-height:1.06;letter-spacing:-1.5px;
+  text-shadow:0 4px 0 rgba(0,0,0,.35),0 0 34px rgba(0,0,0,.6);opacity:0;transform-origin:50% 60%}
+.cap .hl{background:#fff;color:#0A0A0A;padding:0 18px 4px;border-radius:16px;display:inline-block;text-shadow:none;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.cap.small{font-size:66px}
+.cap .sm{display:block;font-size:44px;font-weight:600;margin-top:14px;letter-spacing:-.5px}
+#splash{position:absolute;left:50%;top:250px;display:flex;align-items:center;gap:24px;background:#0A0A0A;border-radius:40px;padding:24px 40px 24px 24px;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 3px rgba(255,255,255,.15);opacity:0;white-space:nowrap}
+#splash .ic{width:120px;height:120px;border-radius:30px;background:#fff;display:grid;place-items:center}
+#splash .ic img{width:120px;height:120px;filter:invert(1)}
+#splash b{font-family:Outfit;font-size:76px;font-weight:800;color:#fff;letter-spacing:-2px;display:flex;align-items:center;gap:16px;line-height:1}
+.dz{font-family:Outfit;font-size:.42em;font-weight:700;letter-spacing:1px;border:3px solid #fff;border-radius:99px;padding:4px 14px;line-height:1}
+#splash small{display:block;color:#a3a3a3;font-weight:600;font-size:22px;letter-spacing:4px;margin-top:12px}
+
+#feat{opacity:0;background:#0A0A0A}
+.glow{position:absolute;border-radius:50%;filter:blur(110px)}
+#g1{width:900px;height:900px;background:#3f3f46;left:-300px;top:-300px;opacity:.55}
+#g2{width:800px;height:800px;background:#27272a;right:-300px;top:1000px;opacity:.7}
+#grain{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1.6px,transparent 2px);background-size:40px 40px;mask-image:linear-gradient(180deg,#000,transparent 65%)}
+
+.hd{position:absolute;left:40px;right:40px;top:140px;text-align:center;opacity:0}
+.kick{display:inline-flex;align-items:center;gap:12px;border:2px solid rgba(255,255,255,.28);color:#e5e5e5;font-weight:700;font-size:26px;letter-spacing:4px;padding:10px 24px 10px 12px;border-radius:99px;text-transform:uppercase;font-family:Outfit}
+.kick i{width:38px;height:38px;border-radius:11px;background:#fff url(dg/icons/icon-192.png) center/86% no-repeat;filter:invert(1)}
+.hd h2{font-family:Outfit;color:#fff;font-weight:800;font-size:84px;line-height:1.02;letter-spacing:-2.5px;margin-top:24px}
+.hd h2 .hl{background:#fff;color:#0A0A0A;padding:0 18px 6px;border-radius:18px;display:inline-block;margin-top:8px}
+.hd p{color:#a3a3a3;font-size:34px;font-weight:600;margin-top:22px;line-height:1.3}
+
+#phone{position:absolute;left:245px;top:650px;width:590px;height:1242px;border-radius:84px;background:#18181b;padding:15px;
+  box-shadow:0 0 0 3px #3f3f46,0 60px 140px rgba(0,0,0,.8),0 0 120px rgba(255,255,255,.06);transform-origin:50% 30%}
+#screen{position:relative;width:560px;height:1212px;border-radius:70px;overflow:hidden;background:#fff}
+.scr{position:absolute;left:0;top:50px;width:560px;opacity:0}
+.full{position:absolute;inset:0;width:560px;height:1212px;object-fit:cover;opacity:0}
+#sbar{position:absolute;left:0;right:0;top:0;height:50px;display:flex;justify-content:space-between;align-items:center;padding:6px 46px 0 56px;font-weight:700;font-size:22px;z-index:3;font-family:Outfit}
+#notch{position:absolute;left:50%;top:10px;width:160px;height:38px;border-radius:30px;background:#18181b;transform:translateX(-50%);z-index:4}
+#tap{position:absolute;width:110px;height:110px;margin:-55px 0 0 -55px;border-radius:50%;background:rgba(0,0,0,.18);border:5px solid #fff;box-shadow:0 0 0 4px rgba(0,0,0,.6),0 0 30px rgba(0,0,0,.4);opacity:0;z-index:6}
+.ring{position:absolute;border:6px solid #0A0A0A;border-radius:22px;opacity:0;z-index:6;box-shadow:0 0 0 4px #fff,0 0 40px rgba(0,0,0,.35)}
+
+#wa{position:absolute;left:70px;width:760px;top:1290px;background:#DCF8C6;color:#111;border-radius:34px 34px 34px 8px;padding:26px 30px 18px;font-size:29px;line-height:1.38;box-shadow:0 30px 70px rgba(0,0,0,.55);opacity:0;z-index:8}
+#wa .h{display:flex;align-items:center;gap:12px;font-weight:700;color:#075E54;font-size:26px;margin-bottom:8px;font-family:Outfit}
+#wa .h i{width:38px;height:38px;border-radius:50%;background:#25D366;display:grid;place-items:center}
+#wa .t{text-align:right;font-size:22px;color:#667;margin-top:6px}
+
+.stick{position:absolute;background:#fff;color:#0A0A0A;font-family:Outfit;font-weight:800;font-size:40px;padding:16px 30px;border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,.6);opacity:0;white-space:nowrap;z-index:8}
+.stick small{display:block;font-size:22px;font-weight:600;color:#737373;letter-spacing:1px;text-transform:uppercase}
+.stick.red b{color:#dc2626}
+
+.pill{position:absolute;left:100px;width:880px;display:flex;align-items:center;gap:24px;background:#fff;border-radius:34px;padding:24px 30px;box-shadow:0 30px 70px rgba(0,0,0,.6);opacity:0;z-index:8}
+.pill .e{width:84px;height:84px;border-radius:24px;background:#0A0A0A;display:grid;place-items:center;font-size:44px;flex-shrink:0}
+.pill b{display:block;font-family:Outfit;font-size:42px;font-weight:800;color:#0A0A0A;letter-spacing:-.5px}
+.pill small{display:block;font-size:27px;font-weight:600;color:#737373;margin-top:2px}
+#reelTag{position:absolute;left:50%;top:1795px;transform:translateX(-50%);background:#fff;color:#0A0A0A;font-family:Outfit;font-weight:800;font-size:30px;padding:12px 28px;border-radius:99px;white-space:nowrap;opacity:0;z-index:8;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+
+#cta{opacity:0;background:radial-gradient(circle at 50% 36%,#262626 0%,#0A0A0A 60%)}
+#ctaIcon{position:absolute;left:50%;top:330px;width:300px;height:300px;margin-left:-150px;border-radius:76px;background:#0A0A0A;box-shadow:0 0 0 4px rgba(255,255,255,.9),0 40px 120px rgba(255,255,255,.12);opacity:0;overflow:hidden}
+#ctaIcon img{width:100%;height:100%}
+#ctaT{position:absolute;left:0;right:0;top:700px;display:flex;justify-content:center;align-items:center;gap:22px;color:#fff;font-family:Outfit;font-weight:800;font-size:130px;letter-spacing:-4px;opacity:0;line-height:1}
+#ctaSub{position:absolute;left:0;right:0;top:860px;text-align:center;color:#a3a3a3;font-family:Outfit;font-weight:600;font-size:32px;letter-spacing:8px;opacity:0}
+#ctaChecks{position:absolute;left:0;right:0;top:960px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;padding:0 60px;opacity:0}
+#ctaChecks span{border:2px solid rgba(255,255,255,.25);color:#e5e5e5;font-weight:700;font-size:30px;padding:10px 22px;border-radius:99px}
+#trial{position:absolute;left:50%;top:1170px;transform:translateX(-50%);background:#fff;color:#0A0A0A;font-family:Outfit;font-weight:800;font-size:66px;padding:30px 60px;border-radius:40px;white-space:nowrap;opacity:0;text-align:center;line-height:1.05}
+#trial small{display:block;font-size:30px;font-weight:600;color:#525252;margin-top:10px;letter-spacing:0}
+#ctaBtn{position:absolute;left:50%;top:1450px;transform:translateX(-50%);border:4px solid #fff;color:#fff;font-family:Outfit;font-weight:800;font-size:52px;padding:26px 60px;border-radius:99px;white-space:nowrap;opacity:0}
+#ctaLink{position:absolute;left:0;right:0;top:1600px;text-align:center;color:#e5e5e5;font-weight:700;font-size:34px;opacity:0}
+#by{position:absolute;left:0;right:0;bottom:110px;text-align:center;color:#737373;font-size:24px;letter-spacing:3px;opacity:0}
+#by b{color:#fff}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+</style></head><body>
+
+<div class="L" id="hook"><img id="hookImg" src="hook/f0001.jpg"><div id="hookShade"></div>
+  <div class="cap" id="c1">Encore des ordonnances<br><span class="hl">écrites à la main</span> ?! 😩</div>
+  <div class="cap" id="c2">Carnet de RDV, cahier de caisse,<br><span class="hl">papiers partout</span> 🙄</div>
+  <div class="cap small" id="c3">Jusqu’au jour où<br>j’ai découvert…</div>
+  <div id="splash"><div class="ic"><img src="dg/icons/icon-512.png"></div><div><b>DentaGest <span class="dz">DZ</span></b><small>GESTION DU CABINET DENTAIRE</small></div></div>
+  <div class="cap" id="c5">Tout mon cabinet<br>dans <span class="hl">une seule app</span> ✨</div>
+</div>
+
+<div class="L" id="feat">
+  <div class="glow" id="g1"></div><div class="glow" id="g2"></div><div id="grain"></div>
+  <div class="hd" id="h1"><span class="kick"><i></i>01 · Agenda</span><h2>Agenda &amp; rappels<br><span class="hl">WhatsApp</span></h2><p>Le message est déjà rédigé :<br>vous n’avez plus qu’à envoyer.</p></div>
+  <div class="hd" id="h2"><span class="kick"><i></i>02 · Patients</span><h2>Dossier patient &amp;<br><span class="hl">schéma dentaire</span></h2><p>Allergies, constats, soins à faire :<br>tout est noté, dent par dent.</p></div>
+  <div class="hd" id="h3"><span class="kick"><i></i>03 · Ordonnances</span><h2>Ordonnances<br>en <span class="hl">un clic</span></h2><p>18 modèles · 134 médicaments<br>PDF A5 / A4 à votre en-tête</p></div>
+  <div class="hd" id="h4"><span class="kick"><i></i>04 · Caisse</span><h2>Caisse &amp; <span class="hl">impayés</span><br>sous contrôle</h2><p>Actes, versements et reçus PDF.<br>Vous savez qui doit combien.</p></div>
+  <div class="hd" id="h5"><span class="kick"><i></i>05 · Vidéo</span><h2>Vos <span class="hl">avant / après</span><br>en reel</h2><p>11 modèles vidéo créés par l’app,<br>prêts à publier.</p></div>
+  <div class="hd" id="h6"><span class="kick"><i></i>06 · Partout</span><h2>Sur tous vos<br><span class="hl">appareils</span></h2><p>Mode clair ou sombre,<br>8 couleurs au choix.</p></div>
+
+  <div id="phone"><div id="screen">
+    <div id="sbar"><span id="sbt">9:41</span><span id="sbi" style="display:flex;gap:8px;align-items:center">
+      <svg width="30" height="20" viewBox="0 0 30 20" fill="currentColor"><rect x="0" y="13" width="5" height="7" rx="1.5"/><rect x="8" y="9" width="5" height="11" rx="1.5"/><rect x="16" y="5" width="5" height="15" rx="1.5"/><rect x="24" y="0" width="5" height="20" rx="1.5"/></svg>
+      <svg width="44" height="22" viewBox="0 0 44 22" fill="currentColor"><rect x="1" y="1" width="37" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/><rect x="4" y="4" width="28" height="14" rx="3.5"/><rect x="40" y="7" width="3" height="8" rx="1.5" opacity=".5"/></svg></span></div>
+    <div id="notch"></div>
+    <img class="scr" id="s_agenda" src="dg2/agenda.png"><img class="scr" id="s_rappels" src="dg2/rappels.png">
+    <img class="scr" id="s_patient" src="dg2/patient.png"><img class="scr" id="s_chart" src="dg2/patient-chart.png"><img class="scr" id="s_chart2" src="dg2/patient-chart2.png">
+    <img class="scr" id="s_ordo" src="dg2/ordo.png"><img class="scr" id="s_pers" src="dg2/pers.png"><img class="scr" id="s_pers1" src="dg2/pers1.png"><img class="scr" id="s_pers2" src="dg2/pers2.png">
+    <img class="scr" id="s_caisse" src="dg2/caisse.png"><img class="scr" id="s_pay" src="dg2/pay.png">
+    <img class="full" id="s_reel" src="dg2/reel/curseur_0000.jpg">
+    <img class="scr" id="s_dark" src="dg2/accueil-dark.png">
+    <div id="tap"></div><div class="ring" id="ring"></div>
+  </div></div>
+
+  <div id="wa"><div class="h"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg></i>Rappel envoyé à Karim</div>
+    Bonjour Karim, le cabinet Sourire Bab Ezzouar vous rappelle votre rendez-vous du mardi 17 novembre 2026 à 10:00. Merci de confirmer votre présence ou de nous prévenir au 0550 12 34 56 en cas d’empêchement.<div class="t">09:12 ✓✓</div></div>
+
+  <div class="stick red" id="stR" style="left:60px;top:1010px"><small>Reste à encaisser</small><b>19 000 DA</b></div>
+  <div class="stick" id="stE" style="left:640px;top:1180px"><small>Encaissé</small>16 000 DA</div>
+  <div class="stick" id="stP" style="left:80px;top:1400px">🧾 Reçu PDF</div>
+  <div id="reelTag">▶ Créé dans DentaGest DZ · MP4 1080×1920</div>
+
+  <div class="pill" id="q0" style="top:1150px"><div class="e">💻</div><div><b>PC, Android &amp; iPhone</b><small>Installation en un clic · APK &lt; 1 Mo</small></div></div>
+  <div class="pill" id="q1" style="top:1350px"><div class="e">📴</div><div><b>Fonctionne hors connexion</b><small>Pas d’internet ? Aucun souci.</small></div></div>
+  <div class="pill" id="q2" style="top:1550px"><div class="e">🔒</div><div><b>Vos données restent chez vous</b><small>Stockées sur votre appareil</small></div></div>
+</div>
+
+<div class="L" id="cta">
+  <div id="ctaIcon"><img src="dg/icons/icon-512.png"></div>
+  <div id="ctaT">DentaGest <span class="dz" style="font-size:52px;border-width:5px;padding:8px 22px">DZ</span></div>
+  <div id="ctaSub">GESTION DU CABINET DENTAIRE</div>
+  <div id="ctaChecks"><span>Agenda</span><span>Rappels WhatsApp</span><span>Patients</span><span>Ordonnances</span><span>Caisse</span><span>Reels</span></div>
+  <div id="trial">7 jours d’essai gratuit<small>puis 2 000 DA / mois ou 20 000 DA / an · sans engagement</small></div>
+  <div id="ctaBtn">Essayez maintenant 👇</div>
+  <div id="ctaLink">Lien en bio</div>
+  <div id="by">by <b>CH</b></div>
+</div>
+<div id="flash"></div>
+
+<script>
+const META = __META__;
+const K = 560/390, SB = 50;
+const $ = id => document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const P=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3), eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eb=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const lerp=(a,b,x)=>a+(b-a)*x;
+function st(el,o,tr){el.style.opacity=o;if(tr!==undefined)el.style.transform=tr}
+function win(t,a,b,fi=.25,fo=.2){return Math.max(0,Math.min(P(t,a,a+fi),1-P(t,b-fo,b)))}
+function cap(id,t,a,b){const el=$(id);if(t<a-.01||t>b){el.style.opacity=0;return}
+  const pin=eb(P(t,a,a+.28)),out=P(t,b-.15,b);el.style.opacity=Math.min(P(t,a,a+.12),1-out);
+  el.style.transform=`scale(${lerp(.7,1,pin)*(1-out*.08)}) translateY(${(1-pin)*30-out*20}px)`}
+function header(id,t,a,b){const el=$(id);const o=win(t,a,b,.35,.25);const pin=eo(P(t,a,a+.5)),out=P(t,b-.25,b);st(el,o,`translateY(${(1-pin)*60-out*40}px)`)}
+// element in phone px (css rect from a 390-wide screenshot that starts at screen y = SB)
+const px=r=>({x:r.x*K,y:SB+r.y*K,w:r.w*K,h:r.h*K});
+function tapAt(t,a,r){const tp=P(t,a,a+.35),el=$('tap');if(tp<=0||tp>=1)return;const q=px(r);el.style.left=(q.x+q.w/2)+'px';el.style.top=(q.y+q.h/2)+'px';el.style.opacity=1-tp*.7;el.style.transform=`scale(${.45+tp*.9})`}
+function ringAt(t,a,b,r,pad=6){const o=win(t,a,b,.15,.15);if(o<=0)return;const q=px(r),el=$('ring');el.style.left=(q.x-pad)+'px';el.style.top=(q.y-pad)+'px';el.style.width=(q.w+2*pad)+'px';el.style.height=(q.h+2*pad)+'px';el.style.opacity=o;el.style.transform=`scale(${1+Math.sin(t*14)*.025})`}
+
+const hookImg=$('hookImg'),reel=$('s_reel');let curF=0,curR='';
+async function setReel(src){if(src!==curR){curR=src;reel.src=src;await reel.decode().catch(()=>{})}}
+const SCR=['s_agenda','s_rappels','s_patient','s_chart','s_chart2','s_ordo','s_pers','s_pers1','s_pers2','s_caisse','s_pay','s_reel','s_dark'];
+
+async function R(t){
+  // ===== HOOK 0-10 =====
+  const fr=Math.min(300,Math.max(1,Math.floor(t*30)+1));
+  if(t<10.3&&fr!==curF){curF=fr;hookImg.src='hook/f'+String(fr).padStart(4,'0')+'.jpg';await hookImg.decode().catch(()=>{})}
+  const hz=P(t,9.7,10.15);
+  $('hook').style.opacity=t<10.15?1:0;
+  hookImg.style.transform=`scale(${1+0.035*P(t,0,9.7)+0.25*eio(hz)})`;hookImg.style.filter=`blur(${hz*14}px)`;
+  cap('c1',t,0.12,2.2);cap('c2',t,2.2,4.0);cap('c3',t,4.0,5.6);cap('c5',t,7.6,9.85);
+  {const el=$('splash'),a=5.6,b=7.6;if(t<a||t>b)el.style.opacity=0;else{const pin=eb(P(t,a,a+.4)),out=P(t,b-.15,b);
+    el.style.opacity=Math.min(P(t,a,a+.1),1-out);el.style.transform=`translateX(-50%) scale(${lerp(.4,1,pin)}) rotate(${(1-pin)*-6}deg)`}}
+
+  // ===== FEATURES 10-34 =====
+  $('feat').style.opacity=P(t,9.95,10.2)*(1-P(t,33.9,34.3));
+  $('g1').style.transform=`translate(${Math.sin(t*.5)*90}px,${Math.cos(t*.4)*70}px)`;$('g2').style.transform=`translate(${Math.cos(t*.45)*80}px,${Math.sin(t*.35)*90}px)`;
+  header('h1',t,10.1,14.0);header('h2',t,14.05,18.0);header('h3',t,18.05,22.4);header('h4',t,22.45,26.0);header('h5',t,26.05,31.0);header('h6',t,31.05,34.1);
+
+  const ph=$('phone');
+  const enter=eb(P(t,10.05,10.65));let py=(1-enter)*1300,rot=(1-enter)*8,pxo=0,sc=1,br=1;
+  for(const c of [14.0,18.0,22.4,26.0,31.0]){const k=P(t,c-.2,c+.35);py+=Math.sin(k*Math.PI)*46;rot+=Math.sin(k*Math.PI)*(c%2?1.5:-1.5)}
+  // whatsapp bubble: phone lifts a bit
+  const wl=eo(P(t,12.9,13.3))*(1-eo(P(t,13.85,14.1)));py-=40*wl;br-=.3*wl;
+  // caisse stickers: dim phone a little
+  const cd=eo(P(t,23.0,23.4))*(1-eo(P(t,25.8,26.0)));br-=.25*cd;
+  // reels: phone grows
+  const rz=eo(P(t,26.0,26.5))*(1-eo(P(t,30.8,31.1)));sc*=1+.05*rz;
+  // devices: dim behind pills
+  const dd=eo(P(t,31.7,32.1));br-=.35*dd;
+  ph.style.transform=`translate(${pxo}px,${py}px) rotate(${rot}deg) scale(${sc})`;ph.style.opacity=t<10?0:1;ph.style.filter=`brightness(${br})`;
+
+  // which screen
+  const show={};SCR.forEach(k=>show[k]=0);
+  const xf=(a,b,ta,tb)=>{const k=P(t,ta,tb);show[a]=Math.max(show[a],1-k);show[b]=Math.max(show[b],k);return k};
+  const tap=$('tap'),ring=$('ring');tap.style.opacity=0;ring.style.opacity=0;
+  const slide={};
+  let dark=false;
+  if(t<14.0){
+    show.s_agenda=1;
+    ringAt(t,10.9,11.7,META.ag_status,6);
+    tapAt(t,11.95,META.ag_rappels);
+    const k=xf('s_agenda','s_rappels',12.2,12.45); slide.s_rappels=(1-eo(k))*260;
+    if(t>=12.2) ringAt(t,12.7,13.4,META.rap_wa,6);
+    tapAt(t,13.05,META.rap_wa);
+  } else if(t<18.0){
+    show.s_patient=1;
+    ringAt(t,14.6,15.5,{x:16,y:296,w:358,h:41},4);
+    const k1=xf('s_patient','s_chart',15.7,15.95); slide.s_chart=(1-eio(k1))*400;
+    if(t>=15.95){show.s_patient=0}
+    if(t>=15.95&&t<17.0) ringAt(t,16.2,16.9,{x:33,y:META.pt_tooth?META.pt_tooth.y:312,w:324,h:330},4);
+    const k2=P(t,16.95,17.2); if(t>=16.95){show.s_chart=1-k2;show.s_chart2=k2;slide.s_chart2=(1-eio(k2))*400}
+  } else if(t<22.4){
+    show.s_ordo=1;
+    tapAt(t,19.25,META.ordo_pdf);
+    const k=xf('s_ordo','s_pers',19.75,20.0);slide.s_pers=(1-eo(k))*260;
+    if(t>=20.0){show.s_ordo=0;
+      const a=P(t,20.65,20.8),b=P(t,21.35,21.5);
+      show.s_pers=1-a;show.s_pers1=a*(1-b);show.s_pers2=b;
+      tapAt(t,20.5,{x:115,y:590,w:82,h:135});tapAt(t,21.2,{x:214,y:590,w:82,h:135});}
+  } else if(t<26.0){
+    show.s_caisse=1;
+    ringAt(t,22.95,23.8,{x:16,y:291,w:176,h:84},4);
+    const k=xf('s_caisse','s_pay',24.3,24.55);slide.s_pay=(1-eo(k))*260;
+    if(t>=24.55) tapAt(t,25.1,META.pay_pdf);
+  } else if(t<31.0){
+    show.s_reel=1;
+    const rt=t-26.05; let src;
+    if(rt<3.0) src='dg2/reel/curseur_'+String(Math.min(143,Math.max(0,Math.floor(rt*30)+30))).padStart(4,'0')+'.jpg';
+    else src='dg2/reel/neon_'+String(Math.min(89,Math.floor((rt-3.0)*30)+15)).padStart(4,'0')+'.jpg';
+    await setReel(src);
+    dark=true;
+  } else {
+    show.s_dark=1;dark=true;
+  }
+  for(const k of SCR){const el=$(k);el.style.opacity=show[k];el.style.transform=k==='s_reel'?'':`translateY(${slide[k]||0}px)`}
+  $('screen').style.background=dark?'#0A0A0A':'#fff';$('sbar').style.color=dark?'#fff':'#0A0A0A';
+
+  // whatsapp bubble
+  {const el=$('wa'),o=win(t,13.15,14.0,.2,.2),pin=eb(P(t,13.15,13.6));st(el,o,`translateY(${(1-pin)*120}px) scale(${lerp(.85,1,pin)})`)}
+  // caisse stickers
+  [['stR',23.25],['stE',23.6],['stP',25.25]].forEach(([id,a],i)=>{const el=$(id),o=win(t,a,26.0,.2,.2),pin=eb(P(t,a,a+.4));st(el,o,`scale(${lerp(.4,1,pin)}) rotate(${i%2?3:-3}deg) translateY(${Math.sin(t*2+i)*8}px)`)});
+  {const el=$('reelTag'),o=win(t,26.6,31.0,.25,.2),pin=eb(P(t,26.6,27.0));st(el,o,`translateX(-50%) translateY(${(1-pin)*40}px)`)}
+  [0,1,2].forEach(i=>{const a=31.7+i*.38,el=$('q'+i),o=win(t,a,34.15,.2,.2),pin=eb(P(t,a,a+.4));st(el,o,`translateY(${(1-pin)*120}px) scale(${lerp(.9,1,pin)})`)});
+
+  // ===== CTA 34-38 =====
+  $('cta').style.opacity=P(t,33.95,34.35);
+  {const p=eb(P(t,34.15,34.75));st($('ctaIcon'),P(t,34.15,34.3),`scale(${lerp(.2,1,p)}) rotate(${(1-p)*-18}deg) translateY(${Math.sin(t*2.2)*8}px)`);
+   const a=eo(P(t,34.45,34.9));st($('ctaT'),a,`translateY(${(1-a)*50}px)`);
+   const b=eo(P(t,34.65,35.05));st($('ctaSub'),b,`translateY(${(1-b)*30}px)`);
+   const c=eo(P(t,34.85,35.25));st($('ctaChecks'),c,`translateY(${(1-c)*30}px)`);
+   const d=eb(P(t,35.2,35.7));st($('trial'),P(t,35.2,35.35),`translateX(-50%) scale(${lerp(.5,1,d)})`);
+   const e=eb(P(t,35.7,36.15));st($('ctaBtn'),P(t,35.7,35.85),`translateX(-50%) scale(${lerp(.6,1,e)*(1+(t>36.3?Math.sin((t-36.3)*7)*.035:0))})`);
+   const f=eo(P(t,36.0,36.4));st($('ctaLink'),f,`translateY(${(1-f)*20}px)`);
+   st($('by'),P(t,36.2,36.6))}
+  $('flash').style.opacity=Math.max(0,1-Math.abs(t-10.05)/.13)*.5+Math.max(0,1-Math.abs(t-34.0)/.12)*.3;
+}
+window.R=R;
+</script></body></html>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Installer DentaGest DZ sur Android — guide pas à pas</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/png" href="icons/icon-32.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{--bg:#0A0A0A;--card:#141414;--line:#2A2A2A;--ink:#F3F3F3;--muted:#A8A8A8;--go:#22C55E;--hl:#FACC15}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Open Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.w{max-width:560px;margin:0 auto;padding:24px 18px 60px}
+.top{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.top img{width:56px;height:56px;border-radius:16px;box-shadow:0 0 0 1px var(--line)}
+.back{display:inline-block;color:var(--muted);font-size:17px;text-decoration:none;margin-bottom:18px;padding:8px 0}
+h1{font:800 32px/1.15 'Outfit',system-ui,sans-serif;margin:6px 0 6px}
+.ar{direction:rtl;text-align:right;font-family:'Noto Naskh Arabic','Tahoma',system-ui,sans-serif;color:var(--muted);font-size:19px;line-height:1.6}
+.intro{font-size:19px;line-height:1.55;color:#DADADA;margin:10px 0 6px}
+.tip{background:#13241a;border:1px solid #1f4d2e;color:#BFF0CF;border-radius:16px;padding:14px 16px;font-size:17px;line-height:1.5;margin:18px 0 26px}
+.dl{display:block;text-align:center;margin:18px 0 6px;padding:20px;border-radius:18px;background:var(--go);color:#04140A;font:800 22px 'Outfit',system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 30px rgba(34,197,94,.3)}
+.step{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px 18px 22px;margin:18px 0}
+.n{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.n b{flex-shrink:0;width:52px;height:52px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font:900 26px 'Outfit',system-ui,sans-serif}
+.n h2{font:800 23px/1.25 'Outfit',system-ui,sans-serif;margin:0}
+.txt{font-size:19px;line-height:1.55;margin:4px 0 6px}
+.txt q{quotes:"« " " »";font-weight:800;color:#fff}
+.small{font-size:16px;color:var(--muted);line-height:1.5;margin-top:8px}
+/* phone mockup */
+.ph{width:250px;height:440px;margin:18px auto 6px;border-radius:36px;background:#1d1d1f;padding:10px;box-shadow:0 0 0 2px #333,0 20px 50px rgba(0,0,0,.5);position:relative}
+.sc{width:100%;height:100%;border-radius:28px;background:#EDEDED;overflow:hidden;position:relative;color:#1b1b1b;font-family:Roboto,'Open Sans',system-ui,sans-serif}
+.sc.dim:before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.bar{height:26px;background:#fff;font-size:11px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;color:#555}
+.url{margin:6px 10px;background:#fff;border-radius:16px;padding:6px 10px;font-size:10.5px;color:#666;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.pg{padding:10px 14px}
+.mk{background:#0A0A0A;color:#fff;border-radius:10px;padding:9px;font-size:12px;font-weight:700;text-align:center;margin-top:8px}
+.dlg{position:absolute;left:12px;right:12px;background:#fff;border-radius:18px;padding:16px 14px 12px;box-shadow:0 8px 30px rgba(0,0,0,.35);z-index:2}
+.dlg.b{bottom:12px}.dlg.m{top:50%;transform:translateY(-50%)}
+.dlg h4{margin:0 0 6px;font-size:13.5px;font-weight:700}
+.dlg p{margin:0 0 10px;font-size:11.5px;line-height:1.4;color:#444}
+.btns{display:flex;justify-content:flex-end;gap:16px;font-size:12.5px;font-weight:700;color:#1a73e8}
+.btns span{padding:6px 4px;border-radius:8px;position:relative}
+.hl{outline:3px solid var(--hl);outline-offset:3px;animation:p 1.3s ease-in-out infinite;background:#FFF7CC}
+@keyframes p{0%,100%{outline-color:var(--hl)}50%{outline-color:rgba(250,204,21,.25)}}
+.hand{position:absolute;font-size:34px;z-index:3;animation:t 1.3s ease-in-out infinite;filter:drop-shadow(0 3px 4px rgba(0,0,0,.4))}
+@keyframes t{0%,100%{transform:translate(0,0)}50%{transform:translate(-4px,-6px)}}
+.snack{position:absolute;left:10px;right:10px;bottom:14px;background:#323232;color:#fff;border-radius:10px;padding:12px;font-size:11.5px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.snack span{color:#8AB4F8;font-weight:700;padding:4px 6px;border-radius:6px}
+.set{background:#fff;height:100%}
+.set .hdr{padding:14px 14px 8px;font-size:15px;font-weight:700}
+.row{display:flex;justify-content:space-between;align-items:center;padding:14px;font-size:12.5px;border-top:1px solid #eee}
+.sw{width:38px;height:22px;border-radius:12px;background:#1a73e8;position:relative}
+.sw:after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff}
+.home{background:linear-gradient(160deg,#2b5876,#4e4376);height:100%;padding:40px 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px 10px;align-content:start}
+.app{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;color:#fff}
+.app i{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.25);display:block}
+.app img{width:40px;height:40px;border-radius:12px}
+.done{text-align:center;background:#13241a;border:1px solid #1f4d2e;border-radius:24px;padding:24px 18px;margin-top:24px}
+.done h2{font:800 26px 'Outfit',system-ui,sans-serif;margin:6px 0}
+.help{margin-top:26px;font-size:17px;line-height:1.55;color:#DADADA}
+.help h3{font:800 21px 'Outfit',system-ui,sans-serif;margin:0 0 8px;color:#fff}
+.help li{margin:8px 0}
+
+.dl{border:0;width:100%;cursor:pointer}
+.alt{display:none;background:#2a1d05;border:1px solid #6b4d0f;color:#FDE7A8;border-radius:16px;padding:14px 16px;font-size:17px;line-height:1.5;margin:18px 0}
+.alt a{display:block;text-align:center;margin-top:12px;padding:14px;border-radius:14px;background:#FACC15;color:#1a1300;font:800 19px 'Outfit',system-ui,sans-serif;text-decoration:none}
+.ok{display:none;background:#13241a;border:1px solid #1f4d2e;color:#BFF0CF;border-radius:16px;padding:14px 16px;font-size:17px;margin:18px 0}
+.cbar{display:flex;align-items:center;gap:6px;margin:6px 8px}
+.cbar .url{flex:1;margin:0}
+.dots{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:900 16px/1 Roboto,sans-serif;color:#333;background:#fff}
+.menu{position:absolute;right:8px;top:30px;width:172px;background:#fff;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.3);padding:6px 0;z-index:2;font-size:11px}
+.menu div{padding:7px 12px;color:#222}
+.menu .sep{height:1px;background:#e5e5e5;padding:0;margin:4px 0}
+.mig{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px 18px;margin-top:26px;font-size:17px;line-height:1.55;color:#DADADA}
+.mig h3{font:800 21px 'Outfit',system-ui,sans-serif;margin:0 0 8px;color:#fff}
+</style>
+</head>
+<body>
+<div class="w">
+<a class="back" href="./">← Retour</a>
+<div class="top"><img src="icons/icon-192.png" alt=""><div style="font:800 20px 'Outfit',system-ui,sans-serif">DentaGest DZ</div></div>
+<h1>Installer l’application sur un téléphone Android</h1>
+<p class="ar">طريقة تثبيت التطبيق على هاتف أندرويد، خطوة بخطوة</p>
+<p class="intro">L’application s’installe directement depuis <b>Google Chrome</b>, sans fichier à télécharger. Cela prend <b>1 minute</b>. Le bouton à toucher est entouré en <b style="color:var(--hl)">jaune</b> avec une main 👆.</p>
+
+<div class="alt" id="inapp">⚠️ Vous êtes dans Facebook, Instagram ou une autre application. Pour installer DentaGest, il faut l’ouvrir dans <b>Chrome</b>.<div class="ar" style="color:#FDE7A8;margin-top:6px">يجب فتح الموقع في متصفح Chrome لتثبيت التطبيق.</div><a id="open-chrome" href="intent://dentagest-dz.dentagestdz.workers.dev/installer-android#Intent;scheme=https;package=com.android.chrome;end">Ouvrir dans Chrome</a></div>
+<div class="ok" id="ok">✅ DentaGest DZ est déjà installé sur ce téléphone. Ouvrez-le depuis vos applications.</div>
+
+<button class="dl" id="go">📲 Installer l’application</button>
+<p class="ar" style="text-align:center">اضغط هنا لتثبيت التطبيق</p>
+<p class="small" id="nogo" style="display:none;text-align:center">Le bouton n’a rien fait ? Suivez simplement les étapes ci-dessous.</p>
+
+<div class="tip">💡 Vous ne pouvez rien casser : si vous vous trompez, recommencez simplement à l’étape 1.<div class="ar" style="color:#BFF0CF;margin-top:6px">لا تقلق، لا يمكنك إفساد أي شيء. إذا أخطأت، ابدأ من جديد من الخطوة 1.</div></div>
+
+<!-- 1 -->
+<div class="step"><div class="n"><b>1</b><h2>Ouvrez DentaGest dans Chrome</h2></div>
+<p class="txt">Ouvrez l’application <q>Chrome</q> et allez sur <b>dentagest-dz.dentagestdz.workers.dev</b>. Vous y êtes déjà si vous lisez cette page dans Chrome.</p>
+<p class="ar">افتح متصفح Chrome وادخل إلى موقع DentaGest.</p>
+<div class="ph"><div class="sc"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div><div class="cbar"><div class="url hl">🔒 dentagest-dz…workers.dev</div><div class="dots">⋮</div></div><div class="pg"><div style="font-weight:800;font-size:15px;margin:10px 0 4px">Bonjour, Docteur</div><div style="font-size:10.5px;color:#666">DentaGest DZ</div><div class="mk">＋ Rendez-vous</div></div>
+ <div class="hand" style="left:90px;top:62px">👆</div></div></div>
+<p class="small">Vous avez ouvert le lien depuis <b>Facebook</b>, <b>Instagram</b> ou <b>WhatsApp</b> ? Touchez les <b>3 points</b> en haut, puis <b>« Ouvrir dans Chrome »</b> (ou « Ouvrir dans le navigateur »).</p>
+</div>
+
+<!-- 2 -->
+<div class="step"><div class="n"><b>2</b><h2>Touchez les 3 points ⋮ en haut à droite</h2></div>
+<p class="txt">En haut à droite de Chrome, touchez <q>⋮</q> pour ouvrir le menu.</p>
+<p class="ar">اضغط على النقاط الثلاث ⋮ في أعلى يمين الشاشة.</p>
+<div class="ph"><div class="sc"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div><div class="cbar"><div class="url">🔒 dentagest-dz…workers.dev</div><div class="dots hl">⋮</div></div><div class="pg"><div style="font-weight:800;font-size:15px;margin:10px 0 4px">Bonjour, Docteur</div><div style="font-size:10.5px;color:#666">DentaGest DZ</div><div class="mk">＋ Rendez-vous</div></div>
+ <div class="hand" style="left:196px;top:62px">👆</div></div></div>
+</div>
+
+<!-- 3 -->
+<div class="step"><div class="n"><b>3</b><h2>Touchez « Installer l’application »</h2></div>
+<p class="txt">Dans le menu, touchez <q>Installer l’application</q>. Sur certains téléphones, la ligne s’appelle <q>Ajouter à l’écran d’accueil</q>.</p>
+<p class="ar">اضغط على « تثبيت التطبيق » أو « إضافة إلى الشاشة الرئيسية ».</p>
+<div class="ph"><div class="sc dim"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div><div class="cbar"><div class="url">🔒 dentagest-dz…workers.dev</div><div class="dots">⋮</div></div>
+ <div class="menu"><div>Nouvel onglet</div><div>Historique</div><div>Téléchargements</div><div class="sep"></div><div>Partager…</div><div>Rechercher dans la page</div><div class="hl"><b>Installer l’application</b></div><div>Version pour ordinateur</div><div class="sep"></div><div>Paramètres</div></div>
+ <div class="hand" style="left:196px;top:204px">👆</div></div></div>
+</div>
+
+<!-- 4 -->
+<div class="step"><div class="n"><b>4</b><h2>Touchez « Installer »</h2></div>
+<p class="txt">Une fenêtre demande : <q>Installer l’application ?</q> Touchez <q>Installer</q>. Attendez quelques secondes.</p>
+<p class="ar">اضغط على « تثبيت » وانتظر بضع ثوانٍ.</p>
+<div class="ph"><div class="sc dim"><div class="bar"><span>9:41</span><span>▮▮ 📶</span></div>
+ <div class="dlg b"><div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><img src="icons/icon-192.png" style="width:30px;height:30px;border-radius:8px" alt=""><h4 style="margin:0">Installer l’application ?</h4></div><p>DentaGest DZ<br>dentagest-dz.dentagestdz.workers.dev</p>
+ <div class="btns"><span>Annuler</span><span class="hl">Installer</span></div></div>
+ <div class="hand" style="left:186px;top:395px">👆</div></div></div>
+<p class="small">Pas de message Play Protect, pas d’autorisation à donner : l’installation depuis Chrome est sûre.</p>
+</div>
+
+<!-- 5 -->
+<div class="step"><div class="n"><b>5</b><h2>C’est installé ! Ouvrez DentaGest</h2></div>
+<p class="txt">L’icône <b>DentaGest DZ</b> (une dent blanche sur fond noir) est maintenant avec vos autres applications. Touchez-la pour ouvrir DentaGest à tout moment, même sans internet.</p>
+<p class="ar">تم التثبيت! ستجد أيقونة DentaGest DZ (سنّ بيضاء على خلفية سوداء) مع تطبيقاتك.</p>
+<div class="ph"><div class="sc"><div class="home">
+ <div class="app"><i></i>Photos</div><div class="app"><i></i>WhatsApp</div><div class="app"><i></i>Chrome</div><div class="app"><i></i>Appareil</div>
+ <div class="app"><i></i>Messages</div><div class="app"><img class="hl" src="icons/icon-192.png" alt="">DentaGest DZ</div><div class="app"><i></i>Horloge</div><div class="app"><i></i>Fichiers</div>
+ </div><div class="hand" style="left:98px;top:150px">👆</div></div></div>
+</div>
+
+<div class="done">
+ <div style="font-size:44px">🎉</div>
+ <h2>Bravo, c’est terminé !</h2>
+ <p class="txt">Ouvrez DentaGest DZ et remplissez le nom de votre cabinet. Vous avez <b>7 jours d’essai gratuit</b>. L’application se met à jour toute seule.</p>
+ <p class="ar">مبروك! افتح التطبيق وأدخل اسم عيادتك. لديك 7 أيام تجربة مجانية. يتم تحديث التطبيق تلقائيًا.</p>
+</div>
+
+<div class="mig">
+ <h3>Vous aviez l’ancienne application (fichier APK) ?</h3>
+ Vos patients sont enregistrés dans l’ancienne application. Pour les retrouver dans la nouvelle :
+ <ol style="margin:8px 0 0;padding-left:22px">
+  <li>Dans l’<b>ancienne</b> application : <b>Paramètres</b> › <b>Données</b> › <b>Exporter une sauvegarde</b>.</li>
+  <li>Dans la <b>nouvelle</b> : <b>Patients</b> › <b>Importer</b> › choisissez le fichier <b>dentagest-sauvegarde-….json</b> (dossier Téléchargements).</li>
+  <li>Vérifiez que vos patients sont bien là, puis vous pouvez désinstaller l’ancienne application.</li>
+ </ol>
+ <p class="ar" style="font-size:16px;margin-top:8px">إذا كان لديك التطبيق القديم: صدّر نسخة احتياطية منه (الإعدادات › البيانات)، ثم استوردها في التطبيق الجديد (المرضى › استيراد).</p>
+</div>
+
+<div class="help">
+ <h3>Un problème ?</h3>
+ <ul>
+  <li><b>Pas de ligne « Installer l’application » dans le menu</b> : touchez <b>« Ajouter à l’écran d’accueil »</b>, puis <b>Installer</b>.</li>
+  <li><b>Navigateur Samsung Internet</b> : touchez le menu <b>≡</b> en bas › <b>Ajouter page à</b> › <b>Écran d’accueil</b>.</li>
+  <li><b>L’icône n’apparaît pas</b> : attendez quelques secondes, ou cherchez « DentaGest » dans la liste de vos applications.</li>
+  <li>Les menus peuvent avoir des noms un peu différents selon la marque du téléphone (Samsung, Xiaomi, Oppo…), mais les étapes sont les mêmes.</li>
+ </ul>
+</div>
+<a class="back" href="./" style="display:block;text-align:center;margin-top:10px">← Retour</a>
+</div>
+<script>
+(function(){
+ var ua=navigator.userAgent,go=document.getElementById('go'),deferred=null;
+ var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+ if(/FBAN|FBAV|FB_IAB|Instagram|Line\/|Snapchat|TikTok|musical_ly|; wv\)/i.test(ua)&&/Android/i.test(ua))document.getElementById('inapp').style.display='block';
+ if(standalone){document.getElementById('ok').style.display='block';go.style.display='none'}
+ window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e});
+ window.addEventListener('appinstalled',function(){document.getElementById('ok').style.display='block';go.style.display='none'});
+ go.addEventListener('click',function(){
+  if(deferred){deferred.prompt();deferred.userChoice.then(function(){deferred=null});return}
+  document.getElementById('nogo').style.display='block';document.querySelector('.step').scrollIntoView({behavior:'smooth'});
+ });
+})();
+</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2688e7dea06f42bb8dacfbc1cf781181"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
