@@ -194,6 +194,18 @@ label.f{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:
 .cv .cs2{border-top:1px dotted #777;padding-top:.6em;margin-top:.4em;font-size:.82em;color:#555}
 .cv.edit .el{cursor:move;touch-action:none;outline:1px dashed rgba(11,122,106,.35);user-select:none;-webkit-user-select:none}
 .cv.edit .el.sel{outline:2px solid #0B7A6A;background:rgba(11,122,106,.07)}
+.cv img.el-bg{height:100%;object-fit:fill}
+.cv img.el-bg.ghost{opacity:.35}
+.cv.edit img.el-bg{cursor:default;outline:none;background:none}
+.cv.edit img.el-bg.sel{outline:3px solid #0B7A6A;outline-offset:-3px}
+.scwrap{position:relative;width:100%;max-width:520px;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.scwrap canvas{width:100%;display:block;border-radius:6px}
+.scwrap svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.scwrap polygon{fill:rgba(11,122,106,.12);stroke:#0B7A6A;stroke-width:4;vector-effect:non-scaling-stroke}
+.sch{position:absolute;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;border:3px solid #fff;background:rgba(11,122,106,.35);box-shadow:0 0 0 2px #0B7A6A,0 4px 12px rgba(0,0,0,.35);touch-action:none;cursor:grab}
+.scout{max-width:260px;width:100%;margin:0 auto}
+.scout canvas{width:100%;display:block;border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.sccheck{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600}
 .cv.edit .el-l{height:16px;margin-top:-8px}.cv.edit .el-l::before{top:8px}
 .sheet.wide{max-width:760px;max-height:96%}
 .chipfile{padding:7px 12px;border-radius:99px;border:1px solid var(--line);font-size:13px;font-weight:700;background:var(--surface2);cursor:pointer}
@@ -1007,7 +1019,7 @@ function initDictation(){
 function sheet(title,body,footer){
  $('#modal').innerHTML='<div class="overlay" data-a="overlay"><div class="sheet" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="sheet-h"><h2>'+esc(title)+'</h2><button class="iconbtn" data-a="close" aria-label="Fermer">'+ic('x')+'</button></div><div class="sheet-b" id="sheet-b">'+body+'</div>'+(footer?'<div class="sheet-f">'+footer+'</div>':'')+'</div></div>';
 }
-function closeSheet(){$('#modal').innerHTML='';formCb=null;TS=null;ED=null}
+function closeSheet(){$('#modal').innerHTML='';formCb=null;TS=null;ED=null;SC=null}
 let formCb=null,confirmCb=null;
 function field(f){
  const id='f_'+f.k,v=f.v??'';let h;
@@ -1278,12 +1290,12 @@ function osDraw(){
    '<button class="btn sm pri" data-a="lg-open" data-back="studio">✦ '+(c.logo?'Créer un nouveau logo':'Créer mon logo')+'</button><label class="btn sm">Importer une image<input type="file" id="os_logo" accept="image/*" hidden></label>'+(c.logo?'<button class="btn sm" data-a="os-nologo">'+(OS.logo?'Ne pas afficher':'Afficher')+'</button>':'')+'</div>'+
   '<p class="lbl">4 · Vos informations</p><div class="form two">'+OS_INFO.map(([k,l])=>k==='mentions'?'<label class="f full">'+l+'<textarea id="os_'+k+'" rows="2">'+esc(OS.info[k])+'</textarea></label>':'<label class="f">'+l+'<input type="text" id="os_'+k+'" value="'+esc(OS.info[k])+'"></label>').join('')+'</div>'+
   '<small style="color:var(--muted)">L’aperçu utilise une patiente et des médicaments d’exemple. Vos ordonnances reprendront automatiquement le nom, l’âge et la date du patient.</small></div></div>',
-  '<button class="btn" data-a="os-free" style="margin-right:auto">Ajuster à la main</button><button class="btn" data-a="close">Annuler</button><button class="btn pri" data-a="os-save">Utiliser cette ordonnance</button>');
+  '<button class="btn" data-a="sc-open">📷 Mon ordonnance papier</button><button class="btn" data-a="os-free" style="margin-right:auto">Ajuster à la main</button><button class="btn" data-a="close">Annuler</button><button class="btn pri" data-a="os-save">Utiliser cette ordonnance</button>');
  $('.sheet').classList.add('wide','xwide');osPrev();osMinis();
 }
 
 /* ---------- Mise en page libre de l'ordonnance (éditeur visuel) ---------- */
-const NAVY='#1F3A6E',INK='#222222',COLS_ED=['#1F3A6E','#222222','#666666','#0B7A6A','#B4861C','#C0392F'];
+const NAVY='#1F3A6E',INK='#222222',COLS_ED=['#1F3A6E','#222222','#666666','#0B7A6A','#B4861C','#C0392F','#FFFFFF'];
 function defaultTpl(){
  const c=S.config;let n=0;const id=()=>'e'+(++n)+Date.now().toString(36).slice(-3);
  const T=(x,y,w,s,txt,o)=>({id:id(),t:'text',x,y,w,s,txt:txt||'',c:INK,a:'l',f:'serif',...o}),Ln=(x,y,w,c2,th,dash)=>({id:id(),t:'line',x,y,w,c:c2,th,dash:dash?1:0});
@@ -1301,6 +1313,7 @@ function elHTML(e,o,ctx,edit){
  const base='left:'+U(e.x)+';top:'+U(e.y)+';width:'+U(e.w)+';',at=edit?' data-el="'+e.id+'"':'',cls='el'+(edit&&ED&&ED.sel===e.id?' sel':'');
  if(e.t==='rect')return '<div class="'+cls+'"'+at+' style="'+base+'height:'+U(e.h)+';background:'+esc(e.c)+'"></div>';
  if(e.t==='text')return '<div class="'+cls+'"'+at+' style="'+base+'font-size:'+U(e.s*0.3528)+';color:'+esc(e.c)+';text-align:'+{l:'left',c:'center',r:'right'}[e.a||'l']+';font-family:'+(e.f==='sans'?'Arial,sans-serif':"Georgia,'Times New Roman',serif")+';font-weight:'+(e.b?700:400)+';font-style:'+(e.i?'italic':'normal')+'">'+esc(edit?e.txt:fillTxt(e.txt,ctx))+'</div>';
+ if(e.t==='bg')return '<img class="'+cls+' el-bg'+(!edit&&e.print===0?' ghost':'')+'"'+at+' style="left:0;top:0;width:100%" src="'+esc(e.src)+'" alt="">';
  if(e.t==='img')return '<img class="'+cls+'"'+at+' style="'+base+'" src="'+esc(e.src)+'" alt="">';
  if(e.t==='line')return '<div class="'+cls+' el-l"'+at+' style="'+base+'--bt:'+U(Math.max(e.th,0.25))+' '+(e.dash?'dotted':'solid')+' '+esc(e.c)+'"></div>';
  return '<div class="'+cls+' el-b"'+at+' style="'+base+'font-size:'+U(e.s*0.3528)+';color:'+esc(e.c)+'">'+o.lignes.map((l,i)=>{const m=splitMed(l.med);return '<div class="bm"><div class="l1"><span><b>'+(i+1)+'. '+esc(m[0])+'</b>'+(m[1]?' — <i>'+esc(m[1])+'</i>':'')+'</span><i>'+esc(l.qte||'')+'</i></div><i class="ps">'+esc(l.poso+dureeTxt(l.duree))+'</i></div>'}).join('')+(o.conseils?'<div class="cs2">'+esc(o.conseils)+'</div>':'')+'</div>';
@@ -1313,6 +1326,7 @@ function ordoPDFfree(o){
   if(e.t==='text'){d.setFont(e.f==='sans'?'helvetica':'times',e.b&&e.i?'bolditalic':e.b?'bold':e.i?'italic':'normal');d.setFontSize(e.s*k);d.setTextColor(...rgb(e.c));
    const t=d.splitTextToSize(pdfTxt(fillTxt(e.txt,ctx)),e.w*k),ax=e.a==='c'?e.x+e.w/2:e.a==='r'?e.x+e.w:e.x;d.text(t,ax*k,e.y*k,{align:{l:'left',c:'center',r:'right'}[e.a||'l'],baseline:'top'})}
   else if(e.t==='rect'){d.setFillColor(...rgb(e.c));d.rect(e.x*k,e.y*k,e.w*k,e.h*k,'F')}
+  else if(e.t==='bg'){if(e.print!==0)try{d.addImage(e.src,'JPEG',0,0,148*k,210*k,'scanbg','FAST')}catch(x){}}
   else if(e.t==='img'){try{d.addImage(e.src,String(e.src).indexOf('image/png')>0?'PNG':'JPEG',e.x*k,e.y*k,e.w*k,e.w*k/(e.r||1))}catch(x){}}
   else if(e.t==='line'){d.setDrawColor(...rgb(e.c));d.setLineWidth(Math.max(e.th,0.1)*k);d.setLineDashPattern(e.dash?[0.3*k,0.5*k]:[],0);d.line(e.x*k,e.y*k,(e.x+e.w)*k,e.y*k);d.setLineDashPattern([],0)}
  });
@@ -1341,7 +1355,7 @@ const SAMPLE=()=>({patientId:'',date:today(),num:1,lignes:TEMPLATES[3].lignes.ma
 const edSel=()=>ED.els.find(e=>e.id===ED.sel);
 function edOpen(){ED={els:clone(S.config.tpl&&S.config.tpl.length?S.config.tpl:defaultTpl()),sel:null};edDraw()}
 function edDraw(){
- sheet('Mise en page de l’ordonnance','<div class="chips"><button data-a="e-add" data-k="text">+ Texte</button><button data-a="e-add" data-k="line">+ Ligne</button><label class="chipfile">+ Image<input type="file" id="e_img" accept="image/*" hidden></label><button data-a="e-add" data-k="{date}">+ Date</button><button data-a="e-add" data-k="{nom}">+ Nom</button><button data-a="e-add" data-k="{prenom}">+ Prénom</button><button data-a="e-add" data-k="{age}">+ Âge</button></div>'+
+ sheet('Mise en page de l’ordonnance','<div class="chips"><button data-a="e-add" data-k="text">+ Texte</button><button data-a="e-add" data-k="line">+ Ligne</button><label class="chipfile">+ Image<input type="file" id="e_img" accept="image/*" hidden></label><button data-a="e-add" data-k="{date}">+ Date</button><button data-a="e-add" data-k="{nom}">+ Nom</button><button data-a="e-add" data-k="{prenom}">+ Prénom</button><button data-a="e-add" data-k="{age}">+ Âge</button><button data-a="e-add" data-k="mask">+ Cache blanc</button><button data-a="sc-open" data-keep="1">📷 '+(ED.els.some(e=>e.t==='bg')?'Changer le fond scanné':'Mon ordonnance papier en fond')+'</button></div>'+
   '<div id="ed-cv">'+cvHTML(ED.els,SAMPLE(),null,true)+'</div><div id="ed-tools"></div>',
   '<button class="btn danger" data-a="tpl-reset" style="margin-right:auto">Réinitialiser</button><button class="btn" data-a="close">Annuler</button><button class="btn pri" data-a="lay-save">Enregistrer</button>');
  $('.sheet').classList.add('wide');edTools();
@@ -1352,6 +1366,7 @@ function edTools(){
  if(!e){el.innerHTML='<div class="note">Touchez un élément de la page pour le modifier, puis faites-le glisser pour le déplacer. Les mentions entre accolades, comme {nom}, sont remplacées par les données du patient.</div>';return}
  const rng=(id,l,v,min,max,st)=>'<label class="f">'+l+'<input type="range" id="'+id+'" min="'+min+'" max="'+max+'" step="'+st+'" value="'+v+'"></label>',on=(c)=>c?' class="on"':'';
  const cols='<div><label class="f" style="margin-bottom:6px">Couleur</label><div class="chips">'+COLS_ED.map(c=>'<button data-a="e-col" data-c="'+c+'" class="sw'+(e.c===c?' on':'')+'" style="--sw:'+c+'" aria-label="Couleur '+c+'"></button>').join('')+'</div></div>';
+ if(e.t==='bg'){el.innerHTML='<b>Fond : votre ordonnance papier</b><div class="chips"><button data-a="e-bgp" data-k="1"'+on(e.print!==0)+'>Imprimer le fond</button><button data-a="e-bgp" data-k="0"'+on(e.print===0)+'>Ne pas l’imprimer</button></div><small style="color:var(--muted)">'+(e.print===0?'Pour imprimer sur vos feuilles déjà imprimées : seuls le patient, la date et les médicaments sortent à l’impression.':'Le fond scanné est imprimé avec le texte, sur papier blanc.')+'</small><div class="row"><button class="btn sm" data-a="sc-open" data-keep="1">📷 Changer le scan</button><button class="btn sm danger" data-a="e-del">Retirer le fond</button></div><div class="note">Touchez un texte ou la zone des médicaments pour le déplacer. Pour masquer une écriture de la feuille d’origine, ajoutez un « cache blanc ».</div>';return}
  let h='<b>'+({text:'Texte',line:'Ligne',img:'Image',body:'Zone des médicaments',rect:'Bloc de couleur'}[e.t])+'</b>';
  if(e.t==='rect')h+=rng('e_h','Hauteur',e.h,1,210,0.5);
  if(e.t==='text')h+='<label class="f">Contenu<textarea id="e_txt">'+esc(e.txt)+'</textarea></label><div class="chips"><button data-a="e-b"'+on(e.b)+'>Gras</button><button data-a="e-i"'+on(e.i)+'>Italique</button><button data-a="e-al" data-k="l"'+on((e.a||'l')==='l')+'>Gauche</button><button data-a="e-al" data-k="c"'+on(e.a==='c')+'>Centre</button><button data-a="e-al" data-k="r"'+on(e.a==='r')+'>Droite</button><button data-a="e-font">Police : '+(e.f==='sans'?'bâton':'serif')+'</button></div>';
@@ -1368,6 +1383,7 @@ document.addEventListener('pointerdown',ev=>{
  if(!n){if(ev.target.closest('#cv')){ED.sel=null;edCanvas();edTools()}return}
  const e=ED.els.find(x=>x.id===n.dataset.el);if(!e)return;
  if(ED.sel!==e.id){ED.sel=e.id;document.querySelectorAll('#cv .sel').forEach(x=>x.classList.remove('sel'));n.classList.add('sel');edTools()}
+ if(e.t==='bg')return;
  DRAG={e,n,x0:ev.clientX,y0:ev.clientY,ex:e.x,ey:e.y,k:$('#cv').getBoundingClientRect().width/148};ev.preventDefault();
 });
 document.addEventListener('pointermove',ev=>{
@@ -1377,6 +1393,83 @@ document.addEventListener('pointermove',ev=>{
 });
 ['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,()=>{DRAG=null}));
 function readImage(file,cb){const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const w=Math.min(600,img.width),h=Math.round(img.height*w/img.width),cv=document.createElement('canvas');cv.width=w;cv.height=h;const x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);URL.revokeObjectURL(url);cb(cv.toDataURL('image/jpeg',0.9),w/h)};img.onerror=()=>toast('Image illisible. Choisissez un fichier PNG ou JPG.');img.src=url}
+
+/* ---------- Importer une ordonnance papier : photo → redressée (4 coins) → fond du modèle ---------- */
+let SC=null,SCD=null;const SCW=1000,SCH=Math.round(1000*210/148);
+function scOpen(keep){SC={img:null,src:null,q:null,enh:true,rot:0,out:null,keep:keep||null};ED=null;scDraw()}
+function scDraw(){
+ const has=!!(SC&&SC.src);
+ sheet('Importer mon ordonnance papier',has?
+  '<div class="note">Faites glisser les 4 ronds sur les 4 coins de la feuille : l’image est redressée comme avec un scanner.</div>'+
+  '<div class="scwrap" id="sc_wrap"><canvas id="sc_src"></canvas><svg id="sc_svg" preserveAspectRatio="none"><polygon id="sc_poly"/></svg>'+[0,1,2,3].map(i=>'<span class="sch" data-h="'+i+'"></span>').join('')+'</div>'+
+  '<div class="row"><button class="btn sm" data-a="sc-rot">↻ Pivoter</button><button class="btn sm" data-a="sc-full">Toute la photo</button><label class="sccheck"><input type="checkbox" id="sc_enh"'+(SC.enh?' checked':'')+'> Effet scanner (fond blanc, ombres retirées)</label></div>'+
+  '<p class="lbl">Résultat</p><div class="scout"><canvas id="sc_out" width="'+SCW+'" height="'+SCH+'"></canvas></div>'+
+  '<small style="color:var(--muted)">À l’étape suivante, placez le nom du patient, la date et les médicaments sur les bons espaces de votre feuille. Vous pourrez aussi cacher une zone avec un « cache blanc ».</small>'
+  :'<div class="note">Prenez en photo une de vos ordonnances papier, de préférence vierge, posée à plat et bien éclairée, ou choisissez un scan. Elle devient le fond de vos ordonnances : DentaGest écrit le nom du patient, la date et les médicaments par-dessus, aux endroits que vous choisissez.</div>'+
+  '<label class="btn pri" style="justify-self:start">📷 Prendre une photo ou choisir une image<input type="file" id="sc_file" accept="image/*" hidden></label>',
+  has?'<label class="btn" style="margin-right:auto">Autre photo<input type="file" id="sc_file" accept="image/*" hidden></label><button class="btn" data-a="close">Annuler</button><button class="btn pri" data-a="sc-use">Utiliser comme modèle</button>'
+  :'<button class="btn" data-a="close">Annuler</button>');
+ if(has){$('.sheet').classList.add('wide');const c=$('#sc_src');c.width=SC.src.width;c.height=SC.src.height;c.getContext('2d').drawImage(SC.src,0,0);$('#sc_svg').setAttribute('viewBox','0 0 '+SC.src.width+' '+SC.src.height);scHandles();scOut()}
+}
+function scPrep(){
+ const img=SC.img,r=SC.rot,iw=img.naturalWidth,ih=img.naturalHeight,s=Math.min(1,1600/Math.max(iw,ih)),w=Math.round(iw*s),h=Math.round(ih*s),sw=r%180?h:w,sh=r%180?w:h;
+ const c=document.createElement('canvas');c.width=sw;c.height=sh;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,sw,sh);x.translate(sw/2,sh/2);x.rotate(r*Math.PI/180);x.drawImage(img,-w/2,-h/2,w,h);
+ SC.src=c;SC.sd=x.getImageData(0,0,sw,sh);SC.q=scAuto()||[[.04*sw,.04*sh],[.96*sw,.04*sh],[.96*sw,.96*sh],[.04*sw,.96*sh]];
+}
+/* repère la feuille (zone claire) sur une version réduite de la photo pour placer les coins automatiquement */
+function scAuto(){
+ const W=SC.src.width,H=SC.src.height,k=Math.max(1,Math.round(Math.max(W,H)/200)),w=Math.floor(W/k),h=Math.floor(H/k),d=SC.sd.data,L=new Float32Array(w*h);
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){const p=((y*k)*W+x*k)*4;L[y*w+x]=(d[p]*0.3+d[p+1]*0.59+d[p+2]*0.11)}
+ const srt=Float32Array.from(L).sort(),thr=Math.max(140,srt[Math.floor(srt.length*0.5)]*0.85),m=new Uint8Array(w*h);for(let i=0;i<m.length;i++)m[i]=L[i]>=thr?1:0;
+ const c=rlComps(m,w,h);let best=0;c.st.forEach((s,i)=>{if(s&&(!best||s.a>c.st[best].a))best=i});if(!best)return null;const b=c.st[best];if(b.a<w*h*0.15)return null;
+ const sc=[(x,y)=>x+y,(x,y)=>-x+y,(x,y)=>-x-y,(x,y)=>x-y],q=[null,null,null,null],v=[1e9,1e9,1e9,1e9];
+ for(let y=b.y0;y<=b.y1;y++)for(let x=b.x0;x<=b.x1;x++){if(c.lab[y*w+x]!==best)continue;for(let j=0;j<4;j++){const s=sc[j](x,y);if(s<v[j]){v[j]=s;q[j]=[x,y]}}}
+ const pts=q.map(p=>[Math.min(W,(p[0]+0.5)*k),Math.min(H,(p[1]+0.5)*k)]);
+ const area=Math.abs(pts.reduce((s,p,i)=>{const n=pts[(i+1)%4];return s+p[0]*n[1]-n[0]*p[1]},0))/2;return area>W*H*0.12?pts:null;
+}
+function scHandles(){
+ if(!SC||!SC.q)return;const W=SC.src.width,H=SC.src.height;
+ document.querySelectorAll('.sch').forEach(h=>{const p=SC.q[+h.dataset.h];h.style.left=(p[0]/W*100)+'%';h.style.top=(p[1]/H*100)+'%'});
+ const pl=$('#sc_poly');if(pl)pl.setAttribute('points',SC.q.map(p=>p.join(',')).join(' '));
+}
+function scHomog(from,to){ /* matrice 3x3 qui envoie les points 'from' sur les points 'to' */
+ const A=[],b=[];for(let i=0;i<4;i++){const [x,y]=from[i],[u,v]=to[i];A.push([x,y,1,0,0,0,-u*x,-u*y]);b.push(u);A.push([0,0,0,x,y,1,-v*x,-v*y]);b.push(v)}
+ for(let c=0;c<8;c++){let p=c;for(let r=c+1;r<8;r++)if(Math.abs(A[r][c])>Math.abs(A[p][c]))p=r;[A[c],A[p]]=[A[p],A[c]];[b[c],b[p]]=[b[p],b[c]];if(Math.abs(A[c][c])<1e-12)return null;
+  for(let r=0;r<8;r++){if(r===c)continue;const f=A[r][c]/A[c][c];if(!f)continue;for(let k=c;k<8;k++)A[r][k]-=f*A[c][k];b[r]-=f*b[c]}}
+ return b.map((v,i)=>v/A[i][i]).concat(1);
+}
+function scOut(){
+ if(!SC||!SC.src)return;const Hm=scHomog([[0,0],[SCW,0],[SCW,SCH],[0,SCH]],SC.q);if(!Hm)return;
+ const W=SC.src.width,H=SC.src.height,s=SC.sd.data,out=new ImageData(SCW,SCH),o=out.data;
+ for(let y=0,p=0;y<SCH;y++)for(let x=0;x<SCW;x++,p+=4){
+  const z=Hm[6]*x+Hm[7]*y+1,u=(Hm[0]*x+Hm[1]*y+Hm[2])/z,v=(Hm[3]*x+Hm[4]*y+Hm[5])/z;
+  if(u<0||v<0||u>W-1||v>H-1){o[p]=o[p+1]=o[p+2]=255;o[p+3]=255;continue}
+  const x0=u|0,y0=v|0,x1=Math.min(W-1,x0+1),y1=Math.min(H-1,y0+1),fx=u-x0,fy=v-y0,a=(y0*W+x0)*4,b=(y0*W+x1)*4,c=(y1*W+x0)*4,e=(y1*W+x1)*4;
+  for(let k=0;k<3;k++)o[p+k]=(s[a+k]*(1-fx)+s[b+k]*fx)*(1-fy)+(s[c+k]*(1-fx)+s[e+k]*fx)*fy;o[p+3]=255}
+ if(SC.enh)scClean(out);
+ const c=$('#sc_out')||document.createElement('canvas');c.width=SCW;c.height=SCH;c.getContext('2d').putImageData(out,0,0);SC.out=c;
+}
+function scClean(im){ /* effet scanner : divise par l'éclairage estimé (fond), puis renforce l'encre */
+ const sw=40,sh=Math.round(40*SCH/SCW),fx=SCW/sw,fy=SCH/sh,d=im.data,bg=new Float32Array(sw*sh*3),mx=new Float32Array(sw*sh*3);
+ for(let j=0;j<sh;j++)for(let i=0;i<sw;i++){const r=[0,0,0];for(let y=Math.floor(j*fy);y<Math.floor((j+1)*fy);y+=2)for(let x=Math.floor(i*fx);x<Math.floor((i+1)*fx);x+=2){const p=(y*SCW+x)*4;for(let k=0;k<3;k++)if(d[p+k]>r[k])r[k]=d[p+k]}for(let k=0;k<3;k++)bg[(j*sw+i)*3+k]=r[k]}
+ for(let j=0;j<sh;j++)for(let i=0;i<sw;i++)for(let k=0;k<3;k++){let m=0;for(let b=-1;b<=1;b++)for(let a=-1;a<=1;a++){const ii=Math.min(sw-1,Math.max(0,i+a)),jj=Math.min(sh-1,Math.max(0,j+b)),v=bg[(jj*sw+ii)*3+k];if(v>m)m=v}mx[(j*sw+i)*3+k]=Math.max(60,m)}
+ for(let y=0,p=0;y<SCH;y++){const gy=Math.min(sh-1.001,Math.max(0,y/fy-0.5)),j0=gy|0,ty=gy-j0;
+  for(let x=0;x<SCW;x++,p+=4){const gx=Math.min(sw-1.001,Math.max(0,x/fx-0.5)),i0=gx|0,tx=gx-i0;
+   for(let k=0;k<3;k++){const g=(a,b)=>mx[(b*sw+a)*3+k],B=(g(i0,j0)*(1-tx)+g(i0+1,j0)*tx)*(1-ty)+(g(i0,j0+1)*(1-tx)+g(i0+1,j0+1)*tx)*ty;
+    let v=Math.min(1,d[p+k]/B);v=v>0.9?1:Math.pow(v/0.9,1.35);d[p+k]=v*255}}}
+}
+function scUse(){
+ if(!SC||!SC.out)return;const src=SC.out.toDataURL('image/jpeg',0.72),bg={id:'bg'+newId(),t:'bg',x:0,y:0,w:148,src,print:1};
+ let els;
+ if(SC.keep)els=[bg,...SC.keep.filter(e=>e.t!=='bg')];
+ else{const T=(x,y,w,s,txt,o)=>({id:'n'+newId(),t:'text',x,y,w,s,txt,c:INK,a:'l',f:'sans',...o});
+  els=[bg,T(92,40,46,10,'{date}',{a:'r'}),T(14,48,80,11,'{prenom} {nom}',{b:1}),T(92,48,46,10,'Âge : {age}',{a:'r'}),{id:'n'+newId(),t:'body',x:14,y:78,w:120,s:11,c:INK}]}
+ SC=null;ED={els,sel:null};edDraw();toast('Faites glisser le nom, la date et les médicaments sur les bons espaces, puis Enregistrer');
+}
+document.addEventListener('pointerdown',ev=>{const h=ev.target.closest&&ev.target.closest('.sch');if(!h||!SC)return;SCD=+h.dataset.h;h.setPointerCapture&&h.setPointerCapture(ev.pointerId);ev.preventDefault()});
+document.addEventListener('pointermove',ev=>{if(SCD===null||!SC)return;const r=$('#sc_wrap');if(!r)return;const b=r.getBoundingClientRect(),W=SC.src.width,H=SC.src.height;
+ SC.q[SCD]=[Math.min(W,Math.max(0,(ev.clientX-b.left)/b.width*W)),Math.min(H,Math.max(0,(ev.clientY-b.top)/b.height*H))];scHandles()});
+['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,()=>{if(SCD!==null){SCD=null;scOut()}}));
 
 /* ---------- Vidéo avant/après (reel vertical 1080x1920, 18 s) ---------- */
 const RL={view:'gallery',before:null,after:null,tf:{dx:0,dy:0,s:1},sens:50,R:null,raf:0,rec:null,blob:null,url:null,ext:'webm',busy:false,timer:0};
@@ -2216,7 +2309,7 @@ const ordoRow=o=>'<button class="item" data-a="ordo-open" data-id="'+o.id+'"><sp
 const payRow=x=>'<button class="item" data-a="pay-edit" data-id="'+x.id+'"><span class="grow"><b>'+esc(x.acte)+'</b><small>'+esc(pname(pat(x.patientId)))+' · '+fr(x.date)+' · '+da(x.montant)+'</small></span>'+(reste(x)>0?'<span class="pill '+(Number(x.verse)>0?'warn':'crit')+' num">Reste '+da(reste(x))+'</span>':'<span class="pill ok">Payé</span>')+'</button>';
 const ordoSeg=r=>'<div class="seg"><a href="#ordonnances" class="'+(r==='ordonnances'?'on':'')+'">Ordonnances</a><a href="#modeles" class="'+(r==='modeles'?'on':'')+'">Modèles</a><a href="#medicaments" class="'+(r==='medicaments'?'on':'')+'">Médicaments</a></div>';
 function persCard(){const c=S.config,done=c.modele==='libre'&&c.tpl&&c.tpl.length;
- return '<div class="persc"><div class="pc-t"><b>'+(done?'Votre ordonnance personnalisée':'Créez votre ordonnance personnalisée')+'</b><small>'+(done?'Changez de style, de couleur ou de logo à tout moment.':'Choisissez un style et une couleur, ajoutez votre logo : c’est prêt en une minute.')+'</small><div class="row"><button class="btn" data-a="pers-open">'+ic('ordonnances')+(done?'Modifier':'Personnaliser')+'</button><button class="btn ghost" data-a="lg-open">✦ Créer un logo</button></div></div>'+
+ return '<div class="persc"><div class="pc-t"><b>'+(done?'Votre ordonnance personnalisée':'Créez votre ordonnance personnalisée')+'</b><small>'+(done?'Changez de style, de couleur ou de logo à tout moment.':'Choisissez un style et une couleur, ajoutez votre logo : c’est prêt en une minute.')+'</small><div class="row"><button class="btn" data-a="pers-open">'+ic('ordonnances')+(done?'Modifier':'Personnaliser')+'</button><button class="btn ghost" data-a="lg-open">✦ Créer un logo</button><button class="btn ghost" data-a="sc-open">📷 Importer mon ordonnance papier</button></div></div>'+
  '<div class="pc-art" aria-hidden="true">'+(done?cvHTML(c.tpl,osSample(),SPAT,false):cvHTML(osEls({style:'moderne',col:'#0B7A6A',logo:true,info:Object.fromEntries(OS_INFO.map(([k])=>[k,c[k]||'']))}),osSample(),SPAT,false))+'</div></div>'}
 function vOrdos(){
  const l=[...S.ordos].sort((a,b)=>(b.date+String(b.num).padStart(6,'0')).localeCompare(a.date+String(a.num).padStart(6,'0')));
@@ -3028,6 +3121,11 @@ const A={
  'cfg-save'(){CFG_TXT.forEach(k=>S.config[k]=$('#c_'+k).value.trim());S.config.modele=$('#c_modele').value;if(S.config.modele==='libre'&&!(S.config.tpl&&S.config.tpl.length))S.config.tpl=defaultTpl();Store.saveConfig();render();toast('Paramètres enregistrés')},
  'cfg-preview'(){CFG_TXT.forEach(k=>S.config[k]=$('#c_'+k).value.trim());S.config.modele=$('#c_modele').value;const t=TEMPLATES[3];sheet('Aperçu du modèle',paperHTML({patientId:'',date:today(),lignes:t.lignes.map(l=>({...l,qte:'1 boîte'})),conseils:t.conseils}),'<button class="btn pri" data-a="close">Fermer</button>')},
  'tpl-edit'(){edOpen()},
+ 'sc-open'(d){scOpen(d.keep&&ED?ED.els:null)},
+ 'sc-rot'(){SC.rot=(SC.rot+90)%360;scPrep();scDraw()},
+ 'sc-full'(){const W=SC.src.width,H=SC.src.height;SC.q=[[0,0],[W,0],[W,H],[0,H]];scHandles();scOut()},
+ 'sc-use'(){scUse()},
+ 'e-bgp'(d){edSel().print=Number(d.k);edCanvas();edTools()},
  pay(){payOpen()},
  more(d){const y=$('main').scrollTop;ui[d.k]=(ui[d.k]||PAGE)+PAGE*2;if(d.k==='patN'){const el=$('#plist');if(el){el.innerHTML=patListHTML();return}}render();$('main').scrollTop=y},
  'look-mode'(d){lookSet('mode',d.k);render()},
@@ -3052,7 +3150,7 @@ const A={
  'os-free'(){Object.assign(S.config,OS.info);const els=osEls(OS);S.config.osCfg={style:OS.style,col:OS.col,logo:OS.logo};OS=null;closeSheet();ED={els,sel:null};edDraw()},
  'lay-save'(){S.config.tpl=ED.els;S.config.modele='libre';Store.saveConfig();closeSheet();render();toast('Mise en page enregistrée')},
  'tpl-reset'(){ED.els=defaultTpl();ED.sel=null;edCanvas();edTools();toast('Mise en page d’origine rétablie')},
- 'e-add'(d){const k=d.k,e=k==='line'?{id:'n'+newId(),t:'line',x:34,y:100,w:80,c:NAVY,th:0.5,dash:0}:{id:'n'+newId(),t:'text',x:44,y:100,w:60,s:11,txt:k==='text'?'Nouveau texte':k,c:INK,a:'l',f:k==='text'?'serif':'sans'};ED.els.push(e);ED.sel=e.id;edCanvas();edTools()},
+ 'e-add'(d){const k=d.k,e=k==='mask'?{id:'n'+newId(),t:'rect',x:44,y:96,w:60,h:12,c:'#FFFFFF'}:k==='line'?{id:'n'+newId(),t:'line',x:34,y:100,w:80,c:NAVY,th:0.5,dash:0}:{id:'n'+newId(),t:'text',x:44,y:100,w:60,s:11,txt:k==='text'?'Nouveau texte':k,c:INK,a:'l',f:k==='text'?'serif':'sans'};if(k==='mask')ED.els.splice(ED.els.filter(x=>x.t==='bg').length,0,e);else ED.els.push(e);ED.sel=e.id;edCanvas();edTools()},
  'e-b'(){const e=edSel();e.b=e.b?0:1;edCanvas();edTools()},
  'e-i'(){const e=edSel();e.i=e.i?0:1;edCanvas();edTools()},
  'e-al'(d){edSel().a=d.k;edCanvas();edTools()},
@@ -3133,6 +3231,8 @@ document.addEventListener('change',e=>{
  if(t.id==='imp_file'&&t.files&&t.files[0]){const f=t.files[0];t.value='';impRead(f);return}
  if(t.id==='imp_hdr'&&IMP){IMP.hdr=t.checked?0:-1;impMap();impSheet();return}
  if(t.dataset&&t.dataset.ic!=null&&IMP){const k=t.value,i=+t.dataset.ic;if(k&&!IMP_MULTI.has(k))IMP.map=IMP.map.map(x=>x===k?'':x);IMP.map[i]=k;impSheet();return}
+ if(t.id==='sc_file'&&SC&&t.files&&t.files[0]){const f=t.files[0];t.value='';rlLoad(f).then(img=>{if(!SC||!img.naturalWidth)throw 0;SC.img=img;SC.rot=0;scPrep();scDraw()}).catch(()=>toast(/hei[cf]/i.test(f.type+' '+f.name)?'Les photos HEIC de l’iPhone ne s’ouvrent pas ici : envoyez la photo en JPG.':'Image illisible. Choisissez une photo JPG ou PNG.'));return}
+ if(t.id==='sc_enh'&&SC){SC.enh=t.checked;scOut();return}
  if(t.id==='e_img'&&ED&&t.files&&t.files[0]){readImage(t.files[0],(src,r)=>{if(!ED)return;const e={id:'n'+newId(),t:'img',x:54,y:90,w:40,src,r};ED.els.push(e);ED.sel=e.id;edCanvas();edTools()});return}
  if((t.id==='rl_before'||t.id==='rl_after')&&t.files&&t.files[0]){const k=t.id==='rl_before'?'before':'after';const f=t.files[0],heic=/hei[cf]/i.test(f.type+' '+f.name);t.value='';
   if(f.type&&!/^image\//.test(f.type)&&!heic){toast('Ce fichier n’est pas une photo. Choisissez un JPG ou un PNG.');return}
